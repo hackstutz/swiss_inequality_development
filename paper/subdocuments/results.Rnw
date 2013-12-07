@@ -1,0 +1,36 @@
+%%%-------------------------------------------------%%%
+%%% Sub document results %%%
+%%%-------------------------------------------------%%%
+
+\section{Results}
+
+% Remove the lipsum and the example plots and tables to fill in your abstract text here
+
+\subsection{Subheading}
+
+\lipsum[1-2]
+
+<<test_plot, fig.width=3.27, fig.height=2.5, echo=FALSE>>= 
+   ggplot(cars, aes(x=dist, y=speed)) +
+   geom_point(shape=1) + geom_smooth(method = "lm", size = 1) +
+   theme_osp() 
+@
+
+\lipsum 
+
+\begin{equation}
+   \sqrt[3]{1-y^2}
+\end{equation}
+
+<<test_plot_two, fig.width=3.415, fig.height=2.5, echo=FALSE>>=
+   ggplot(movies, aes(x=rating)) +
+   geom_density() +
+   theme_osp() 
+
+   ggplot(mtcars, aes(factor(cyl), mpg)) +
+   geom_boxplot() +
+   theme_osp() 
+@
+
+\lipsum[1-5]
+

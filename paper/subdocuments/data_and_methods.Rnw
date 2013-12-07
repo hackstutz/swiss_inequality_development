@@ -1,0 +1,10 @@
+%%%-------------------------------------------------%%%
+%%% Sub document for data and methods %%%
+%%%-------------------------------------------------%%%
+
+\section{Data And Methods}
+
+% Remove the lipsum and example table fill in your material and methods text here
+
+\lipsum[1] 
+
