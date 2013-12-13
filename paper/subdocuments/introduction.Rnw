@@ -4,22 +4,5 @@
 
 \section{Introduction}
 
-% Remove the lipsum and the list example and fill in your introduction text here
+The purpose of the following paper is threefold. First of all, information about economic inequality in Switzerland is sparse. E.g. the well known Worldbank data do not contain any Gini-coefficient for Switzerland which is a rare exception within Europe. We try to fill this gap with official data from the Swiss Federal Tax Administration (FTA). Second, we assess the suitability of the FTA data to report inequality and its changes over time. An important aspect here is that the data do not contain all income earning persons in Switzerland but are left censored as federal taxes are payable only above a certain threshold. We report magnitude and variance of this bias. Third, we integrate the development of swiss inequality into the international picture. We can show similarities and differences to the worldwide trends and therefore contribute to the classical theories (\cite{kuznets1955economic}, \cite{nielsen_kuznets_1997}).
 
-%\capital{T} his is just an introduction text snippet to show how drop caps look in this document.
-\lipsum[1]
-\cite{renwick_chemical_2002}
-
-\begin{itemize}
-  \item One
-    \begin{itemize}
-      \item One One
-        \begin{itemize}
-          \item One One One
-        \end{itemize}
-    \end{itemize}
-  \item Two
-  \item Three
-\end{itemize}
-
-\lipsum[1-2]

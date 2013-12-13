@@ -4,8 +4,7 @@
 
 \begin{abstract}
 
-% Remove the lipsum and fill in your abstract text here
-\lipsum[1]
+Maximal 200 Wörter
 
 \end{abstract}
 

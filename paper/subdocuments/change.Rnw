@@ -1,0 +1,25 @@
+%%%-------------------------------------------------%%%
+%%% Sub document for discussion %%%
+%%%-------------------------------------------------%%%
+
+\section{How did inequality change over time}
+
+\subsection{Previous evidence (Literatursammlung haben wir)}
+
+Information about inequality is sparse in Switzerland. For example Gini coefficients have been reported for certain periods, e.g. \cite{Abele1977}, \cite{buhmann1988}, \cite{ernst1983wohlstandsverteilung}, \cite{foerster2005}, \cite{suter2002}, \cite{isengard2009umverteilung}, \cite{atkinson1995}. While most studies report Gini coefficients for isolated or very view points of time, \cite{Abele1977} provide the longest and most consistent time series of inequality in Switzerland which is however outdated by years. We use the same source, that is data from the Federal Tax Administration (FTA) but expand the time series to 2010. 
+
+\textcolor{red}{Oli: du kannst französisch oder? Könntest du Abele (1977) mal überfliegen, ob das so stimmt?}
+
+\subsection{Data quality (previous data)}
+
+Evtl. überflüssig
+
+\subsection{Kuznets, Great-U-Turn, Welfare State}
+
+Literature on inequality and its development over time is very extensive for most developed countries. One branch of theory focusses on \cite{kuznets1955economic} ideas about sectoral change, that is the transition from an agrarian (primary sector) to an industrial country (secondary sector) and with the extensions of \cite{nielsen_kuznets_1997} the emergence of a tertiary sector within which incomes are varying more. What can be seen from international comparative research is that patterns of changing inequality are similar for many developed countries which strenghens arguments like the one Kuznets made but parallel other ideas exist why patterns are similar to each other. One concurrent argument is that the developments and downsizings of welfare states occured in the same periods of history for many countries (e.g. after the oil crisis). Therefore we want to contribute the information from Switzerland to the "big picture".
+  
+\subsection{Switzerland compared to the rest of the world}
+
+\textcolor{red}{Hier könnten wir gleich mal eine Gesamtschweizer  Grafik droppen, Vergleich zu Europa/USA. Sowas wie du in den SGS Slides hattest.}
+
+\textcolor{red}{Die ganze Sektion gehört aber evtl. zu "Results"}
