@@ -72,7 +72,8 @@
 \usepackage{lipsum} % Package to generate dummy text throughout this template
 
 \usepackage[sc]{mathpazo} % Use the Palatino font
-\usepackage[T1]{fontenc} % Use 8-bit encoding that has 256 glyphs
+%\usepackage[T1]{fontenc} % Use 8-bit encoding that has 256 glyphs
+\usepackage[utf8]{inputenc}
 \linespread{1.05} % Line spacing - Palatino needs more space between lines
 \usepackage{microtype} % Slightly tweak font spacing for aesthetics
 
@@ -85,6 +86,8 @@
 
 \usepackage{lettrine} % The lettrine is the first enlarged letter at the beginning of the text
 \usepackage{paralist} % Used for the compactitem environment which makes bullet points with less space between them
+
+\usepackage{color} % used to mark parts that need to be edited
 
 \usepackage{abstract} % Allows abstract customization
 \renewcommand{\abstractnamefont}{\normalfont\bfseries} % Set the "Abstract" text to bold
@@ -130,9 +133,14 @@
 
 \author{
 \large
-\textsc{John Smith}\thanks{A thank you or further information}\\[2mm] % Your name
-\normalsize University of California \\ % Your institution
-\normalsize \href{mailto:john@smith.com}{john@smith.com} % Your email address
+\textsc{Oliver Hümbelin}\\[2mm] % Your name
+\normalsize Bern University of Applied Sciences \\ % Your institution
+\normalsize \href{mailto:oliver.huembelin@bfh.ch}{oliver.huembelin@bfh.ch} % Your email address
+\vspace{5mm}\\
+\large
+\textsc{Rudolf Farys}\\[2mm] % Your name
+\normalsize University of Bern \\ % Your institution
+\normalsize \href{mailto:rudolf.farys@soz.unibe.ch}{rudolf.farys@soz.unibe.ch} % Your email address
 \vspace{-5mm}
 }
 \date{}
@@ -161,8 +169,7 @@
 
 \begin{abstract}
 
-% Remove the lipsum and fill in your abstract text here
-\lipsum[1]
+Maximal 200 Wörter
 
 \end{abstract}
 
@@ -186,25 +193,41 @@
 
 \section{Introduction}
 
-% Remove the lipsum and the list example and fill in your introduction text here
+The purpose of the following paper is threefold. First of all, information about economic inequality in Switzerland is sparse. E.g. the well known Worldbank data do not contain any Gini-coefficient for Switzerland which is a rare exception within Europe. We try to fill this gap with official data from the Swiss Federal Tax Administration (FTA). Second, we assess the suitability of the FTA data to report inequality and its changes over time. An important aspect here is that the data do not contain all income earning persons in Switzerland but are left censored as federal taxes are payable only above a certain threshold. We report magnitude and variance of this bias. Third, we integrate the development of swiss inequality into the international picture. We can show similarities and differences to the worldwide trends and therefore contribute to the classical theories (\cite{kuznets1955economic}, \cite{nielsen_kuznets_1997}).
 
-%\capital{T} his is just an introduction text snippet to show how drop caps look in this document.
-\lipsum[1]
-\cite{renwick_chemical_2002}
 
-\begin{itemize}
-  \item One
-    \begin{itemize}
-      \item One One
-        \begin{itemize}
-          \item One One One
-        \end{itemize}
-    \end{itemize}
-  \item Two
-  \item Three
-\end{itemize}
 
-\lipsum[1-2]
+%%%-------------------------------------------------%%%
+%%% How did inequality change over time %%%
+%%%-------------------------------------------------%%%
+
+
+%%%-------------------------------------------------%%%
+%%% Sub document for discussion %%%
+%%%-------------------------------------------------%%%
+
+\section{How did inequality change over time}
+
+\subsection{Previous evidence (Literatursammlung haben wir)}
+
+Information about inequality is sparse in Switzerland. For example Gini coefficients have been reported for certain periods, e.g. \cite{Abele1977}, \cite{buhmann1988}, \cite{ernst1983wohlstandsverteilung}, \cite{foerster2005}, \cite{suter2002}, \cite{isengard2009umverteilung}, \cite{atkinson1995}. While most studies report Gini coefficients for isolated or very view points of time, \cite{Abele1977} provide the longest and most consistent time series of inequality in Switzerland which is however outdated by years. We use the same source, that is data from the Federal Tax Administration (FTA) but expand the time series to 2010. 
+
+\textcolor{red}{Oli: du kannst französisch oder? Könntest du Abele (1977) mal überfliegen, ob das so stimmt?}
+
+\subsection{Data quality (previous data)}
+
+Evtl. überflüssig
+
+\subsection{Kuznets, Great-U-Turn, Welfare State}
+
+Literature on inequality and its development over time is very extensive for most developed countries. One branch of theory focusses on \cite{kuznets1955economic} ideas about sectoral change, that is the transition from an agrarian (primary sector) to an industrial country (secondary sector) and with the extensions of \cite{nielsen_kuznets_1997} the emergence of a tertiary sector within which incomes are varying more. What can be seen from international comparative research is that patterns of changing inequality are similar for many developed countries which strenghens arguments like the one Kuznets made but parallel other ideas exist why patterns are similar to each other. One concurrent argument is that the developments and downsizings of welfare states occured in the same periods of history for many countries (e.g. after the oil crisis). Therefore we want to contribute the information from Switzerland to the "big picture".
+  
+\subsection{Switzerland compared to the rest of the world}
+
+\textcolor{red}{Hier könnten wir gleich mal eine Gesamtschweizer  Grafik droppen, Vergleich zu Europa/USA. Sowas wie du in den SGS Slides hattest.}
+
+\textcolor{red}{Die ganze Sektion gehört aber evtl. zu "Results"}
+
 
 
 %%%-------------------------------------------------%%%
@@ -216,11 +239,43 @@
 %%% Sub document for data and methods %%%
 %%%-------------------------------------------------%%%
 
-\section{Data And Methods}
+\section{Hypotheses, Methods and Data}
 
-% Remove the lipsum and example table fill in your material and methods text here
+\subsection{Hypotheses}
+Based on the theories we test the following hypotheses:
 
-\lipsum[1] 
+\begin{itemize}
+\item H1: Develpment of inequality is driven by sectoral change
+\item H2: Development of inequality is driven by political change, i.e. economic crisis contribute to inequality because welfare states tend to be downsized
+\end{itemize}
+
+\subsection{Data and Variables}
+
+We use data from the Swiss Federat Tax Administration (FTA) where our data about incomes ranges from the years 1941/42 to 2010. While the data results in a long and consistent time series to illustrate swiss inequality development, there are a few pitfalls we want to adress which might be of interest for other research on this topic (be it in Switzerland or other countries).
+
+\subsubsection{Left censored data}
+
+The FTA provides data about all tax units in Switzerland that are liable to pay federal taxes.A tax unit may be a single person or a household. The taxable population however is not identical to the population which should be used to calculate measures of inequality. Precisely, the data do not contain tax units with very little incomes so calculations based on these data treat the lowest percentiles equally to tax units with zero income.Figure X shows the threshold to be hit to enter the statistic.
+
+\textcolor{red}{[FIGURE X ABOUT HERE] soll zeigen: Zeitreihe der Untergrenze von 1941-2010}
+
+So first of all, there is a bias in the level of an inequality measure one could calculate with the   FTA data. Furthermore, also the changes over time might not be interpreted savely as over time the number of tax unit within this "hidden range" might vary or might even have a certain trend. We will adress this issue in detail in the methods chapter.
+
+\subsubsection{Different measures, different populations}
+
+The FTA data makes two kinds of distinctions. First, data was collected for so called "normal cases" and "special cases", i.e. a "normal case" is a taxable (for the complete tax period) person or household domiciled in a swiss canton without income from outside of Switzerland. A "special case" therefore is a diffuse reference category that contains tax units that are taxed at source, were not taxable for the complete tax period or generated additional income in another country. Second, the FTA reports two measures, that is taxable income and absolute income \textcolor{red}{(meine vorläufige Übersetzung von Reineinkommen)}. Absolute income is the sum of all incomes (earnings, interest income, rental incomes) minus expenses (e.g. from self-employment or credit cost). The taxable income is calculated as the difference of absolute income and deductions (e.g. children, insurance rates). The longest consistent time series exists for the taxable income of normal cases. So all statements we make with our data only apply to this subpopulation.
+
+\subsubsection{Changes in taxation and measurement}
+The swiss tax system is highly federal. That means, communities raise taxes which then go to the communities, the canton and the state. If we want to calculate overall swiss measures, we need to take into account, that cantons vary (between cantons and over time) with regard to the tax deductions that are possible and also the mechanism how taxes are collected. The latter adresses a comprehensive reorganization of the swiss tax system where between 1995 and 2003 cantons changed from taxing the past two years of income (postnumerando system) to taxing the present single year (praenumerando system). For details see \textcolor{red}{Martinez (xxxx) or some other author (xxxx)}. Aggregate measures of inequality therefore have to be estimated for the periods 1995 to 2003 which we adress shortly in the methods chapter.
+
+\subsection{Methodology Used}
+There are two steps of data analyses which need to be described to the reader. First, the estimation of the bias we introduce by estimating measures of inequality when tax units with too little income are not observed. Second, the steps undertaken to estimate aggregate swiss measures by imputing taxable income for those cantons and periods where the change of the tax system produced a gap (1995 to 2003, depending on the canton). 
+
+\subsubsection{Imputing the gap}
+The imputation is not a focus of the paper so we basically follow the most simple approach of Martinez (xxxx). That is estimating the missing taxable income statistics via OLS using information from time trends and cantons. Our imputation model therefore includes canton inequality measures and periods dummies to explain aggregate swiss inequality.
+
+\subsubsection{Estimating the bias}
+For most of the observed range (1941 to 2010) we do not have any information how many tax units fall into the category of having income that is not zero but is too little to qualify for federal taxation. However starting 1995, the FTA provides exactly this information for each canton. This enables us to estimate the bias we introduce for each canton and each period between 1995 and 2010. Consequently we can obtain information whether the bias is stable over time (which maes it possible to safely interpret the changes of inequality over time) and whether the bias is different for each canton. \textcolor{red}{Unterschiede zwischen Kantonen wären gut um zu argumentieren, dass andere Länder auch davon betroffen sind, in etwa sowas wie "je höher der Steuerfreibetrag, umso stärker der Bias". Länder de erst sehr spät besteuern (und über nicht Besteuerte dann auch nicht Buch führen) haben einen krassen Bias. Wir könnten dann empfehlungen geben, ab welchem Perzentil man save interpretieren kann oder so.}
 
 
 
@@ -235,36 +290,9 @@
 
 \section{Results}
 
-% Remove the lipsum and the example plots and tables to fill in your abstract text here
-
-\subsection{Subheading}
-
-\lipsum[1-2]
-
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
-\includegraphics[width=\maxwidth]{figure/test_plot} 
-
-\end{knitrout}
-
-
-\lipsum 
-
-\begin{equation}
-   \sqrt[3]{1-y^2}
-\end{equation}
-
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
-\includegraphics[width=\maxwidth]{figure/test_plot_two1} 
-
-\includegraphics[width=\maxwidth]{figure/test_plot_two2} 
-
-\end{knitrout}
-
-
-\lipsum[1-5]
-
+\textcolor{red}{Gesamtschweizer Grafik (mit imputierten Daten) einmal eine Linie mit Bias, einmal ohne
+Kantonsweise Grafiken
+Kuznets / U-Turn, Test der Hypothesen mit den final Daten. Der link zwischen rein deskriptiv  und Theorie plus Modell ist aktuell noch ein krasser Drahtseilakt...}
 
 
 %%%-------------------------------------------------%%%

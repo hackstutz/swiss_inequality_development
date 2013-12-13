@@ -23,7 +23,8 @@
 \usepackage{lipsum} % Package to generate dummy text throughout this template
 
 \usepackage[sc]{mathpazo} % Use the Palatino font
-\usepackage[T1]{fontenc} % Use 8-bit encoding that has 256 glyphs
+%\usepackage[T1]{fontenc} % Use 8-bit encoding that has 256 glyphs
+\usepackage[utf8]{inputenc}
 \linespread{1.05} % Line spacing - Palatino needs more space between lines
 \usepackage{microtype} % Slightly tweak font spacing for aesthetics
 
@@ -36,6 +37,8 @@
 
 \usepackage{lettrine} % The lettrine is the first enlarged letter at the beginning of the text
 \usepackage{paralist} % Used for the compactitem environment which makes bullet points with less space between them
+
+\usepackage{color} % used to mark parts that need to be edited
 
 \usepackage{abstract} % Allows abstract customization
 \renewcommand{\abstractnamefont}{\normalfont\bfseries} % Set the "Abstract" text to bold
@@ -71,9 +74,14 @@
 
 \author{
 \large
-\textsc{John Smith}\thanks{A thank you or further information}\\[2mm] % Your name
-\normalsize University of California \\ % Your institution
-\normalsize \href{mailto:john@smith.com}{john@smith.com} % Your email address
+\textsc{Oliver Hümbelin}\\[2mm] % Your name
+\normalsize Bern University of Applied Sciences \\ % Your institution
+\normalsize \href{mailto:oliver.huembelin@bfh.ch}{oliver.huembelin@bfh.ch} % Your email address
+\vspace{5mm}\\
+\large
+\textsc{Rudolf Farys}\\[2mm] % Your name
+\normalsize University of Bern \\ % Your institution
+\normalsize \href{mailto:rudolf.farys@soz.unibe.ch}{rudolf.farys@soz.unibe.ch} % Your email address
 \vspace{-5mm}
 }
 \date{}
@@ -109,6 +117,14 @@
 
 <<subdoc_content_introduction, child='subdocuments/introduction.Rnw', eval=T>>=
 @
+
+%%%-------------------------------------------------%%%
+%%% How did inequality change over time %%%
+%%%-------------------------------------------------%%%
+
+<<subdoc_content_introduction, child='subdocuments/change.Rnw', eval=T>>=
+@
+
 
 %%%-------------------------------------------------%%%
 %%% Include data and methods %%%
