@@ -7,3 +7,19 @@
 \textcolor{red}{Gesamtschweizer Grafik (mit imputierten Daten) einmal eine Linie mit Bias, einmal ohne
 Kantonsweise Grafiken
 Kuznets / U-Turn, Test der Hypothesen mit den final Daten. Der link zwischen rein deskriptiv  und Theorie plus Modell ist aktuell noch ein krasser Drahtseilakt...}
+
+%Switzerland (income and wealth)
+%- graph with gini over time> identify periods of change
+%- closer look at interesting periods with relative distribution methods-> is change because of down- or upgrading?
+%Cantonal level (income and wealth)
+%- different development on regional level 
+%Switzerland in international comparison
+%- Comparison with other data sources- LIS (inequality in Switzerland is decreasing, which is quite special, because the common pattern in western countries shows an increase in inequality
+
+%- Comparison with other countries (similar data)
+
+
+% Es scheinen mir aktuell etwas viele Ergebnisse zu sein und ich frage mich, ob wir Ergebnisse auf der Kantonsebene ausklammern sollen. Wenn wir drei Ergebniss haben (1) Unterscheidung von unterschiedlichen Perioden der Ungleichheitsentwicklung (2) Beurteilung dieser Perioden hinsichtlich dem Bereich der Veränderungen (Arme, Reiceh) und Entwicklung der Vermögensungleichheit, dann haben wir bereits viel. Falls wir spezifische Erkenntnisse nur aus dem Kantonsvergleich bekommen (Bias durch Nuller o.ä.), dann sollten wir trotzdem damit arbeiten.
+
+
+

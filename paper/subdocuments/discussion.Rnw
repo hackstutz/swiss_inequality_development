@@ -4,5 +4,12 @@
 
 \section{Discussion}
 
-% Remove the lipsum and fill in your discussion text here
-\lipsum[1-4]
+% Hier könnte allenfalls der Bogen zur Theorie gespannt werden 
+
+%Methodological Main findings 
+%(1) Tax data is useful because it’s possible to construct consistent measures over time for income and wealth, which is useful to asses changes over time and conducted studies about impact of structural changes.(2) Concerning accuracy of inequality tax data has advantages and shortcomings. It’s superior to survey data, because the latter is affected by non-responded bias. Tax data includes data about the whole population … [was finden wir wegen den Nullern raus] . or at least it should (tax evasion).(3) The FTA-Tax data has different shortcomings, which cannot be handled like a measure of income and wealth which (a) cannot be corrected for household size and (b) is neither a pre-transfer nor a post-transfer income measure. Therefor it’s comparability with other surveys is harsh as long as the main sources of data on inequality are based on measures, which cannot be replicated with taxable income. This FTA-Tax data problem can be handled with non-aggregated tax-data .
+
+
+%Main findings for Switzerland (1) Our data suggests that income inequality overall slightly increased in Switzerland and we might distinguish three episodes: 1. Substantial increase in times of economic growth 1950 to 1974 ending with the oil crisis 2. Ups and downs from 1970 to 2000 3. Relatively steep increase in inequality in the early 2000s
+%(2) Despite the recent increase, overall income inequality in Switzerland is not very high in international comparison. With respect to inequality in wealth, however, Switzerland takes a leading position in the world.
+%(3) While the overall Swiss inequality remained pretty stable over decades, inequality between cantons underwent a bizarre development.

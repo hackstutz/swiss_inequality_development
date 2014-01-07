@@ -4,5 +4,4 @@
 
 \section{Acknowledgements}
 
-% Remove the lipsum and fill in your acknowledgements here
-\lipsum[4-5]
+We thank Ben Jann, Robert Fluder and Tobias Fritschi for helpful comments on the article. We also like to thank Stefan Ilic for the prepartion of the data set.

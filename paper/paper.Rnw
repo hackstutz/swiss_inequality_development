@@ -70,7 +70,7 @@
 %  TITLE SECTION
 %----------------------------------------------------------------------------------------
 
-\title{\vspace{-15mm}\fontsize{24pt}{10pt}\selectfont\textbf{Article Title}} % Article title
+\title{\vspace{-15mm}\fontsize{24pt}{10pt}\selectfont\textbf{Assessing inequality with tax data - Switzerland from 1945 to 2010}} % Article title
 
 \author{
 \large
@@ -90,7 +90,7 @@
 
 \begin{document}
 
-\maketitle % Insert title
+\maketitle 
 
 \thispagestyle{fancy} % All pages have headers and footers
 
@@ -122,8 +122,8 @@
 %%% How did inequality change over time %%%
 %%%-------------------------------------------------%%%
 
-<<subdoc_content_introduction, child='subdocuments/change.Rnw', eval=T>>=
-@
+%<<subdoc_content_introduction, child='subdocuments/change.Rnw', eval=T>>=
+%@
 
 
 %%%-------------------------------------------------%%%
