@@ -5,7 +5,7 @@
 \section{Introduction}
 
 % Ich würde hier ohne Unterkapitel arbeiten und die Einführung einfach durch Abschnitte gliedern.
-
+% 1.Abschnitt: Soziologie und Ungleichheit 
 
 
 % 2.Abschnitt Trends in inequality research
@@ -18,7 +18,7 @@
   \item inequality and the middle class (Estache and Leipziger, 2009; Littrell et al., 2001; Birdsall, 2010; Ravallion, 2010; Frank,2007)
 \end{itemize}
 
-% 3.Abschnitt: Studien mit Steuerdaten
+% 3.Abschnitt: Studien mit Steuerdaten (Vielleicht eher weglassen)
 
 \emph{Studien mit Steuerdaten}
 \begin{itemize}
