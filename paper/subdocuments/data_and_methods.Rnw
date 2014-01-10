@@ -4,12 +4,12 @@
 
 \section{Measurement concepts, Data and Methods}
 
-To discuss the suitability of a specific data source it is crucial to have an idea about an ideal measure. Based on a review on the literature about the measurment concepts in an ideal world, we discuss briefly the advantages and shortcomings of tax data compared to other data sources - namly survey data. Afterwards we discribe the tax data published by the Swiss Federal Tax Administration highligthing the important aspects, which have to be considered working wiht FTA-Data. In the last section, we describe the methods and corrections we used to construct the time-series of inequality-measure for income an wealth for switzerland.
+To discuss the suitability of a specific data source it is crucial to have an idea about an ideal measure. Based on a review on the literature about the measurement concepts in an ideal world, we discuss briefly the advantages and shortcomings of tax data compared to other data sources - namely survey data. Afterwards we describe the tax data published by the Swiss Federal Tax Administration highlighting the important aspects, which have to be considered working with FTA-Data. In the last section, we describe the methods and corrections we used to construct the time-series of inequality-measure for income an wealth for Switzerland.
 
 \subsection{Standards for measuring economic resources and inequality}
 
 \emph{Concepts on measuring economic resources}  \\
-Economic resources are ideally conceptualized with measures for income, wealth and consumption together. \\
+Most studies on inequality focus on income inequality, while economic resources are ideally conceptualized with measures for income, wealth and consumption together. \\
 
 \emph{Defining income}
 
