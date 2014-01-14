@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.7.30)  10 JAN 2014 18:02
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.7.30)  14 JAN 2014 17:54
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -938,38 +938,24 @@ Package microtype Info: Character `013' is missing
 LaTeX Font Info:    Font shape `OT1/pplx/bx/n' in size <10> not available
 (Font)              Font shape `OT1/pplx/b/n' tried instead on input line 170.
 
-Underfull \hbox (badness 10000) in paragraph at lines 202--204
-
- []
-
-LaTeX Font Info:    Try loading font information for TS1+pplx on input line 204
-.
-(/usr/local/texlive/2013/texmf-dist/tex/latex/psnfss/ts1pplx.fd
-File: ts1pplx.fd 2004/09/06 font definitions for TS1/pplx.
-)
-Underfull \hbox (badness 10000) in paragraph at lines 221--222
+Underfull \hbox (badness 10000) in paragraph at lines 204--206
 
  []
 
 
-Underfull \hbox (badness 7740) in paragraph at lines 223--224
-[]\OT1/pplx/m/n/10 (+20) Accoring to EU-SILC,Eurostat (2013),
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 223--224
+Underfull \hbox (badness 10000) in paragraph at lines 211--212
 
  []
 
 [1{/usr/local/texlive/2013/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 225--226
+Underfull \hbox (badness 10000) in paragraph at lines 216--217
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 227--228
+Underfull \hbox (badness 10000) in paragraph at lines 224--225
 
  []
 
@@ -979,107 +965,114 @@ Underfull \hbox (badness 10000) in paragraph at lines 229--230
  []
 
 
+Underfull \hbox (badness 10000) in paragraph at lines 234--235
+
+ []
+
+
 Package multicol Warning: I moved some lines to the next page.
-(multicol)                Footnotes on page 2 might be wrong on input line 230.
+(multicol)                Footnotes on page 2 might be wrong on input line 235.
 
 
 [2]
-Underfull \hbox (badness 10000) in paragraph at lines 231--232
+Underfull \hbox (badness 10000) in paragraph at lines 238--239
 
  []
 
 
-LaTeX Warning: Citation `kuznets1955economic' on page 3 undefined on input line
- 242.
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 269--271
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 282--283
+Underfull \hbox (badness 10000) in paragraph at lines 273--275
 
  []
 
 [3]
-Underfull \hbox (badness 10000) in paragraph at lines 284--287
+LaTeX Font Info:    Try loading font information for TS1+pplx on input line 281
+.
+ (/usr/local/texlive/2013/texmf-dist/tex/latex/psnfss/ts1pplx.fd
+File: ts1pplx.fd 2004/09/06 font definitions for TS1/pplx.
+)
+Underfull \hbox (badness 10000) in paragraph at lines 288--289
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 292--293
+Underfull \hbox (badness 10000) in paragraph at lines 294--297
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 294--295
+Underfull \hbox (badness 10000) in paragraph at lines 302--303
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 304--305
 
  []
 
 [4]
-Underfull \hbox (badness 10000) in paragraph at lines 336--337
+Underfull \hbox (badness 10000) in paragraph at lines 346--347
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 357--358
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 359--361
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 362--363
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 364--366
+Underfull \hbox (badness 10000) in paragraph at lines 353--354
 
  []
 
 [5]
-Underfull \hbox (badness 10000) in paragraph at lines 367--369
+Underfull \hbox (badness 10000) in paragraph at lines 370--371
 
  []
 
-(./paper.bbl)
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 510.
- [6]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 510.
+
+Underfull \hbox (badness 10000) in paragraph at lines 372--374
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 375--376
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 377--379
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 380--382
+
+ []
+
+[6] (./paper.bbl)
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 523.
+ [7]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 523.
  (./paper.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 510.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 510.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 523.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 523.
 Package rerunfilecheck Info: File `paper.out' has not changed.
 (rerunfilecheck)             Checksum: E09E914DF336642F9132E2488A9680FF;733.
-
-
-LaTeX Warning: There were undefined references.
-
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 510.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 523.
  ) 
 Here is how much of TeX's memory you used:
- 10279 strings out of 493315
- 156278 string characters out of 6137904
- 371863 words of memory out of 5000000
- 13266 multiletter control sequences out of 15000+600000
- 46190 words of font info for 276 fonts, out of 8000000 for 9000
+ 10289 strings out of 493315
+ 156341 string characters out of 6137904
+ 378872 words of memory out of 5000000
+ 13265 multiletter control sequences out of 15000+600000
+ 46665 words of font info for 283 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
- 36i,14n,43p,1512b,581s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 36i,14n,43p,1499b,584s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2013/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
 exlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/te
 xlive/2013/texmf-dist/fonts/type1/public/fpl/fplrc8a.pfb></usr/local/texlive/20
 13/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb></usr/local/texlive/2013/texm
 f-dist/fonts/type1/urw/palatino/uplr8a.pfb></usr/local/texlive/2013/texmf-dist/
 fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on paper.pdf (6 pages, 103896 bytes).
+Output written on paper.pdf (7 pages, 105602 bytes).
 PDF statistics:
- 107 PDF objects out of 1000 (max. 8388607)
- 93 compressed objects within 1 object stream
- 20 named destinations out of 1000 (max. 500000)
+ 112 PDF objects out of 1000 (max. 8388607)
+ 97 compressed objects within 1 object stream
+ 21 named destinations out of 1000 (max. 500000)
  45649 words of extra memory for PDF output out of 51595 (max. 10000000)
 

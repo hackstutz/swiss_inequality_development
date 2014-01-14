@@ -70,7 +70,7 @@
 %  TITLE SECTION
 %----------------------------------------------------------------------------------------
 
-\title{\vspace{-15mm}\fontsize{24pt}{10pt}\selectfont\textbf{Assessing inequality with tax data - Switzerland from 1945 to 2010}} % Article title
+\title{\vspace{-15mm}\fontsize{24pt}{10pt}\selectfont\textbf{Assessing economic inequality with tax data - Switzerland from 1945 to 2010}} % Article title
 
 \author{
 \large

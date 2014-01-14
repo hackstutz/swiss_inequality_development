@@ -11,6 +11,8 @@ To discuss the suitability of a specific data source it is crucial to have an id
 \emph{Concepts on measuring economic resources}  \\
 Most studies on inequality focus on income inequality, while economic resources are ideally conceptualized with measures for income, wealth and consumption together. \\
 
+% We neither can examine consumption nor the jointly distribution of income and wealth on the individual level. We could analyse the jointly pattern on the cantonal level and analze the data following the question if income inequality and wealth inqueality are correlated.
+
 \emph{Defining income}
 
 \begin{itemize}
@@ -22,6 +24,10 @@ Most studies on inequality focus on income inequality, while economic resources 
 \end{itemize}
 
 The appropriateness of the income concept is bound to the research interest. Studies focusing on labor market outcome look at market income. Studies focusing on human wellbeing follow the approach as propagated by the oecd (2013). This concept is largely implemented by the Federal Office of statistics. Following this concept one should look at income after taxes and transfers inclusive the adjustment for household members, because this is the measure which frames the consumption possibilities. Lastly, studies focusing on the effect of institutions (social welfare, taxation) compare the distribution of pre- and post-income measures. \\   
+
+\emph{Defining wealth}
+While the apropiateness of the conceptualization of income is widely discuded, there is no agreed definition of personal wealth yet and the appropriate methods of valuation are not always clear. 
+Wealth can be defined as the marketable value of financial assets plus non-financial assets (housing and land) less debts (Credit Suisse 2011:5).
 
 \emph{Population Coverage} \\
 All Residents? Working Residents? Single Person vs household/family. Households without income \\
@@ -82,6 +88,9 @@ See for other countries: Siminski et al 2003 (Australia), Brewer et al 2008, UK,
 %	•	Capital gains? Should not be included 
 The discussion about problems with reporting income is fairly exhaustive. What about wealth?
 
+It is well recognized that the traditional sources of wealth distribution data are unlikely to provide an accurate picture of wealth ownership in the top-tail of the distribution. Credit Suisse (2011) makes use of the information in the "Rich Lists'' published by Forbes Magazine to adjust the wealth distribution pattern in the highest wealth ranges. \\
+
+Additonaly the Credit Suisse Reports states (2011:8) that these data my be less subject to response bias, but my be more prone to valuation problems, especially in connection with pension assets and debts.
 
 \subsection{Tax data published by the Swiss Federal Tax Administration}
 
