@@ -162,6 +162,67 @@ Studies on income try to focus on the disposable income, which subtracts certain
 %\subsubsection{Imputing the gap}
 %The imputation is not a focus of the paper so we basically follow the most simple approach of Martinez (xxxx). That is estimating the missing taxable income statistics via OLS using information from time trends and cantons. Our imputation model therefore includes canton inequality measures and periods dummies to explain aggregate swiss inequality.
 
-%\subsubsection{Estimating the bias}
-%For most of the observed range (1941 to 2010) we do not have any information how many tax units fall into the category of having income that is not zero but is too little to qualify for federal taxation. However starting 1995, the FTA provides exactly this information for each canton. This enables us to estimate the bias we introduce for each canton and each period between 1995 and 2010. Consequently we can obtain information whether the bias is stable over time (which maes it possible to safely interpret the changes of inequality over time) and whether the bias is different for each canton. \textcolor{red}{Unterschiede zwischen Kantonen wären gut um zu argumentieren, dass andere Länder auch davon betroffen sind, in etwa sowas wie "je höher der Steuerfreibetrag, umso stärker der Bias". Länder de erst sehr spät besteuern (und über nicht Besteuerte dann auch nicht Buch führen) haben einen krassen Bias. Wir könnten dann empfehlungen geben, ab welchem Perzentil man save interpretieren kann oder so.}
+\subsubsection{Estimating the bias}
+For most of the observed range (1941 to 2010) we do not have any information how many tax units fall into the category of having income that is not zero but is too little to qualify for federal taxation (lets call those "zeros" for convenience) . However starting 1995, the FTA provides exactly this information for each canton. This enables us to estimate the bias we introduce for each canton and each period between 1995 and 2010. Consequently we can obtain information whether the bias is stable over time (which makes it possible to safely interpret the changes of inequality over time) and whether the bias is different for each canton. \textcolor{red}{Unterschiede zwischen Kantonen wären gut um zu argumentieren, dass andere Länder auch davon betroffen sind, in etwa sowas wie "je höher der Steuerfreibetrag, umso stärker der Bias". Länder de erst sehr spät besteuern (und über nicht Besteuerte dann auch nicht Buch führen) haben einen krassen Bias. Wir könnten dann empfehlungen geben, ab welchem Perzentil man save interpretieren kann oder so.}
 
+One can take a first look at the descriptives plotting the share of zeros over time seperately for each canton .
+
+<<setup echo=FALSE>>=
+library(foreign)
+df <- read.dta("data/ginis_und_perzentile.dta")
+@
+
+<<zero_descriptives>>=
+library(ggplot2)
+df$zeros <- df$null_norm/df$cpop # i only use normal cases here
+ggplot(df[df$steuerperiode>=1995,], aes(x=steuerperiode,y=zeros))+geom_line()+facet_wrap(~kanton)
+@
+
+We can see multiple things here:
+
+\begin{enumerate}
+\item There is a small overall upward trend which we assume to be the Federal Administrations inflation adjustments to the tax threshold.
+\item Geneva and Tessin show wild changes but those might be explained by the tax gap ("Bemessungslücke") that people exploited when the cantons changed the tax system. It remains unclear however why we can't see similar patter within other cantons.
+\item There is some variance and we see different patterns over time and cantons. When estimating gini coefficients or the like we must therefore assume that ignoring "the zeros" leads to a bias that is not stable over time.
+\end{enumerate}
+
+We might try two strategies to moderate the problem:
+
+\begin{enumerate}
+\item Add the zeros as a seperate group
+\item Fit a model to predict the inequality measure (e.g. the gini coefficient) using the share of zeros as a predictor
+\end{enumerate}
+
+By adding the zeros as a seperate group we face several problems. With the exception of Geneva 1995/96 Pareto interpolation of percentiles p20 and above seems viable. Low percentiles however would need to be extrapolated so we might impose unrealistic assuptioms. Even when estimating "safe" measures above p20 (better p50) or a gini coefficient we need to make an assumption about the income structure of that group (a distribution, a mean income or zero-income). To be consistent with the measure of "taxable income" we could assume an income of zero for that group, calculate gini coefficients and compare them with the original (uncorrected/plain) version. To get a rough number we could (cantonwise) check the squared correlation between plain and corrected gini.
+
+The second approach however is more robust as we do not impose additional assumptions but instead exercise a little curve fitting.
+
+<<correct_gini>>=
+fit <- lm(G~kanton+kanton:zeros+factor(steuerperiode)+factor(steuerperiode):zeros,data=df)
+summary(fit)
+@
+
+The model outputs a teststatisic for each canton that tells us whether the variation of the zero-rate over time leads to a significant deviation from the typical "canton gini-level". As the model has a decent fit we are not in great danger of omitted variable bias. Using a joint F-Test we can now test if all canton#zeros interactions are zero. 
+
+<<ftest>>=
+library(survey)
+regTermTest(fit,"kanton:zeros")
+@
+
+In our case we can clearly reject the hypothesis that all interactions are zero. This leads to the conclusion  that gini coefficients are biased by the variation of the zero-share which is kind of obvious but at the same time we can use the model to report adjusted gini coefficients. For example one might be interested in how inequality would had developed if the zero-share would have been constant over time. (Note RF: predict all data point using canton, time and the initial OR final zero-share to homogenize the time series)
+Furthermore we can quantify how large the bias is and we can do this seperately for tax periods or seperately for cantons. 
+
+For all cantons:
+
+<<magnitude_of_bias>>=
+reduced_fit <- lm(G~kanton+factor(steuerperiode),data=df)
+summary(reduced_fit)
+@
+
+We can see the the model fit reduces to explaining 61.5\% of the gini variation versus 92.6\% when the information from the zero-shares was used. Although this so some extent attributable to the additional 26 paramters: this is huge. 
+
+The model indicates some cases that deserve more attention: Schwyz (positive coefficient) and Geneva (negative coefficient) and the tax period 2000 as well as the most recent periods.
+
+A positive coefficient (e.g. Schwyz) can be read as follows: In periods with many zeros we measure higher gini coefficients. Our conclusion is that people with low income are more successfully hidden. If those people would be taxed and therefore appear in the statistic they would sharply contrast the high income earners.
+
+A negative coefficient (e.g. Geneva) means the more zeros there the are the smaller the gini measure was compared to other tax periods within that canton (remember this is a fixed-effects model). This is less obvious than the Schwyz case and our reading is: more zeros mask inequality that arises from the bottom.
