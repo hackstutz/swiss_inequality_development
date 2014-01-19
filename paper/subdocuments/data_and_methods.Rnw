@@ -167,6 +167,7 @@ df <- read.dta("data/ginis_und_perzentile.dta")
 library(ggplot2)
 df$zeros <- df$null_norm/df$cpop # i only use normal cases here
 ggplot(df[df$steuerperiode>=1995,], aes(x=steuerperiode,y=zeros))+geom_line()+facet_wrap(~kanton)
+ggplot(df[df$steuerperiode>=1995,], aes(x=steuerperiode,y=zeros))+geom_line()+facet_wrap(~kanton)+geom_line(aes(y=G),color="blue")
 @
 
 We can see multiple things here:
@@ -214,6 +215,52 @@ We can see the the model fit reduces to explaining 61.5\% of the gini variation 
 
 The model indicates some cases that deserve more attention: Schwyz (positive coefficient) and Geneva (negative coefficient) and the tax period 2000 as well as the most recent periods.
 
+<<echo=FALSE>>=
+# checking the impact of zeros on an artificial distribution
+# generate a few differently scewed distributions and introduce zeros.
+x02 <- rgamma(1000,shape=0.2,scale=5)
+x05 <- rgamma(1000,shape=0.5,scale=2)
+x1 <- rgamma(1000,shape=1,scale=1/1)
+x2 <- rgamma(1000,shape=2,scale=1/2)
+x3 <- rgamma(1000,shape=3,scale=1/3)
+x4 <- rgamma(1000,shape=4,scale=1/4)
+x1 <- x1[order(x1)]
+x2 <- x2[order(x2)]
+x3 <- x3[order(x3)]
+x4 <- x4[order(x4)]
+# delete the lowest 20%
+x02_20 <- x02
+x02_20[1:200] <- NA
+x05_20 <- x05
+x05_20[1:200] <- NA
+x1_20 <- x1
+x1_20[1:200] <- NA
+x2_20 <- x2
+x2_20[1:200] <- NA
+x3_20 <- x3
+x3_20[1:200] <- NA
+x4_20 <- x4
+x4_20[1:200] <- NA
+
+gini(x02)-gini(na.omit(x02_20))
+
+gini(x05)-gini(na.omit(x05_20))
+
+gini(x1)-gini(na.omit(x1_20))
+
+gini(x2)-gini(na.omit(x2_20))
+
+gini(x3)-gini(na.omit(x3_20))
+
+gini(x4)-gini(na.omit(x4_20))
+# gini inceases
+@
+
+
 A positive coefficient (e.g. Schwyz) can be read as follows: In periods with many zeros we measure higher gini coefficients. Our conclusion is that people with low income are more successfully hidden. If those people would be taxed and therefore appear in the statistic they would sharply contrast the high income earners.
 
-A negative coefficient (e.g. Geneva) means the more zeros there the are the smaller the gini measure was compared to other tax periods within that canton (remember this is a fixed-effects model). This is less obvious than the Schwyz case and our reading is: more zeros mask inequality that arises from the bottom.
+A negative coefficient (e.g. Geneva) means the more zeros there are the smaller the gini measure was compared to other tax periods within that canton (remember this is a fixed-effects model). This is less obvious than the Schwyz case and our reading is: more zeros mask inequality that arises from the bottom.
+
+
+\subsubsection{Descriptives - where do we put this?}
+nice grapics for taxable income, reines einkommen and income after taxes here...
