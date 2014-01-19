@@ -21,5 +21,6 @@ Kuznets / U-Turn, Test der Hypothesen mit den final Daten. Der link zwischen rei
 
 % Es scheinen mir aktuell etwas viele Ergebnisse zu sein und ich frage mich, ob wir Ergebnisse auf der Kantonsebene ausklammern sollen. Wenn wir drei Ergebniss haben (1) Unterscheidung von unterschiedlichen Perioden der Ungleichheitsentwicklung (2) Beurteilung dieser Perioden hinsichtlich dem Bereich der Veränderungen (Arme, Reiceh) und Entwicklung der Vermögensungleichheit, dann haben wir bereits viel. Falls wir spezifische Erkenntnisse nur aus dem Kantonsvergleich bekommen (Bias durch Nuller o.ä.), dann sollten wir trotzdem damit arbeiten.
 
+%rf: genau. kantone unterstreichen die probleme mit dem 0er bias und die probleme mit "imputing the gap". mehr muss erstmal nicht sein.
 
 
