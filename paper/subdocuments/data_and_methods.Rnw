@@ -273,3 +273,10 @@ A negative coefficient (e.g. Geneva) means the more zeros there are the smaller 
 
 \subsubsection{Descriptives - where do we put this?}
 nice grapics for taxable income, reines einkommen and income after taxes here...
+<<different_ginis>>=
+df$G_reink[df$G_reink==1]<-NA
+df$G_taxed[df$G_taxed==1]<-NA
+ggplot(df[df$kanton=="CH",], aes(x=steuerperiode,y=G_steink))+geom_line()+facet_wrap(~kanton)+geom_line(aes(y=G_reink),color="blue")+geom_line(aes(y=G_taxed),color="green")
+ggplot(df, aes(x=steuerperiode,y=G_steink))+geom_line()+facet_wrap(~kanton)+geom_line(aes(y=G_reink),color="blue")+geom_line(aes(y=G_taxed),color="green")
+@
+
