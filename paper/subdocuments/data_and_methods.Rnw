@@ -167,16 +167,16 @@ For most of the observed range (1941 to 2010) we do not have any information how
 
 One can take a first look at the descriptives plotting the share of zeros over time seperately for each canton .
 
-<<setup echo=FALSE>>=
+<<setup>>=
 library(foreign)
-df <- read.dta("data/ginis_und_perzentile.dta")
+df <- read.dta("../../data/ginis_und_perzentile.dta")
+df$zeros <- df$null_norm/df$cpop # i only use normal cases here
 @
 
 <<zero_descriptives>>=
 library(ggplot2)
-df$zeros <- df$null_norm/df$cpop # i only use normal cases here
 ggplot(df[df$steuerperiode>=1995,], aes(x=steuerperiode,y=zeros))+geom_line()+facet_wrap(~kanton)
-ggplot(df[df$steuerperiode>=1995,], aes(x=steuerperiode,y=zeros))+geom_line()+facet_wrap(~kanton)+geom_line(aes(y=G),color="blue")
+ggplot(df[df$steuerperiode>=1995,], aes(x=steuerperiode,y=zeros))+geom_line()+facet_wrap(~kanton)+geom_line(aes(y=G_steink),color="blue")
 @
 
 We can see multiple things here:
@@ -199,8 +199,8 @@ By adding the zeros as a seperate group we face several problems. With the excep
 The second approach however is more robust as we do not impose additional assumptions but instead exercise a little curve fitting.
 
 <<correct_gini>>=
-fit <- lm(G~kanton+kanton:zeros+factor(steuerperiode)+factor(steuerperiode):zeros,data=df)
-summary(fit)
+fit <- lm(G_steink~kanton+kanton:zeros+factor(steuerperiode)+factor(steuerperiode):zeros,data=df)
+#summary(fit)
 @
 
 The model outputs a teststatisic for each canton that tells us whether the variation of the zero-rate over time leads to a significant deviation from the typical "canton gini-level". As the model has a decent fit we are not in great danger of omitted variable bias. Using a joint F-Test we can now test if all canton#zeros interactions are zero. 
@@ -216,8 +216,8 @@ Furthermore we can quantify how large the bias is and we can do this seperately 
 For all cantons:
 
 <<magnitude_of_bias>>=
-reduced_fit <- lm(G~kanton+factor(steuerperiode),data=df)
-summary(reduced_fit)
+reduced_fit <- lm(G_steink~kanton+factor(steuerperiode),data=df)
+#summary(reduced_fit)
 @
 
 We can see the the model fit reduces to explaining 61.5\% of the gini variation versus 92.6\% when the information from the zero-shares was used. Although this so some extent attributable to the additional 26 paramters: this is huge. 
@@ -251,6 +251,7 @@ x3_20[1:200] <- NA
 x4_20 <- x4
 x4_20[1:200] <- NA
 
+library(reldist)
 gini(x02)-gini(na.omit(x02_20))
 
 gini(x05)-gini(na.omit(x05_20))

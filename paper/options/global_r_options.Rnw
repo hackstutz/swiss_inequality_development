@@ -11,6 +11,9 @@
 
   ## Knitr 
 
+  # RF: I turn source code off
+  opts_chunk$set(echo=FALSE)
+
   # messages 
   opts_chunk$set(warning=FALSE)
   # code evaluation 
