@@ -196,14 +196,59 @@ We might try two strategies to moderate the problem:
 
 By adding the zeros as a seperate group we face several problems. With the exception of Geneva 1995/96 Pareto interpolation of percentiles p20 and above seems viable. Low percentiles however would need to be extrapolated so we might impose unrealistic assuptioms. Even when estimating "safe" measures above p20 (better p50) or a gini coefficient we need to make an assumption about the income structure of that group (a distribution, a mean income or zero-income). To be consistent with the measure of "taxable income" we could assume an income of zero for that group, calculate gini coefficients and compare them with the original (uncorrected/plain) version. To get a rough number we could (cantonwise) check the squared correlation between plain and corrected gini.
 
-The second approach however is more robust as we do not impose additional assumptions but instead exercise a little curve fitting.
+The second approach however is more robust as we do not impose additional assumptions but instead exercise some curve fitting.
 
-<<correct_gini>>=
-fit <- lm(G_steink~kanton+kanton:zeros+factor(steuerperiode)+factor(steuerperiode):zeros,data=df)
+<<corrected_gini>>=
+df$J<-factor(df$steuerperiode)
+fit <- lm(G_steink~kanton+kanton:zeros+J+zeros:J,data=df)
 #summary(fit)
+SmoothCoefficientPlot <- function(models, modelnames = "", removeintercept = FALSE){
+  # models must be a list()
+ 
+  Alphas <- seq(1, 99, 2) / 100
+ 
+  Multiplier <- qnorm(1 - Alphas / 2)
+  zzTransparency <<- 1/(length(Multiplier)/4)
+  #CoefficientTables <- lapply(models, function(x){summary(x)$coef})
+  CoefficientTables <- summary(models)$coef
+  #TableRows <- unlist(lapply(CoefficientTables, nrow))
+  TableRows <- nrow(CoefficientTables)
+ 
+  if(modelnames[1] == ""){
+    ModelNameLabels <- rep(paste("Model", 1:length(TableRows)), TableRows)
+    } else {
+    ModelNameLabels <- rep(modelnames, TableRows)
+    }
+ 
+  MatrixofModels <- cbind(do.call(rbind, list(CoefficientTables)), ModelNameLabels)
+  if(removeintercept == TRUE){
+    MatrixofModels <- MatrixofModels[!rownames(MatrixofModels) == "(Intercept)", ]
+    }
+  MatrixofModels <- data.frame(cbind(rownames(MatrixofModels), MatrixofModels))
+ 
+  MatrixofModels <- data.frame(cbind(MatrixofModels, rep(Multiplier, each = nrow(MatrixofModels))))
+ 
+  colnames(MatrixofModels) <- c("IV", "Estimate", "StandardError", "TValue", "PValue", "ModelName", "Scalar")
+  MatrixofModels$IV <- factor(MatrixofModels$IV, levels = MatrixofModels$IV)
+  MatrixofModels[, -c(1, 6)] <- apply(MatrixofModels[, -c(1, 6)], 2, function(x){as.numeric(as.character(x))})
+  MatrixofModels$Emphasis <- by(1 - seq(0, 1, length = length(Multiplier) + 1)[-1], as.character(round(Multiplier, 5)), mean)[as.character(round(MatrixofModels$Scalar, 5))]
+ 
+  OutputPlot <- qplot(data = MatrixofModels, x = IV, y = Estimate,
+   ymin = Estimate - Scalar * StandardError, ymax = Estimate + Scalar * StandardError,
+   ylab = NULL, xlab = NULL, alpha = I(zzTransparency), colour = I(gray(0)), geom = "blank")
+  OutputPlot <- OutputPlot + geom_hline(yintercept = 0, lwd = I(7/12), colour = I(hsv(0/12, 7/12, 7/12)), alpha = I(5/12))
+  OutputPlot <- OutputPlot + geom_linerange(data = MatrixofModels, aes(size = as.integer(1/Emphasis)), alpha = I(zzTransparency), colour = I(gray(0)))
+  OutputPlot <- OutputPlot + scale_size_continuous(legend = FALSE)
+  OutputPlot <- OutputPlot + facet_grid(~ ModelName) + coord_flip() + geom_point(aes(x = IV, y = Estimate), colour = I(gray(0))) + theme_bw()
+  return(OutputPlot)
+  }
+
+library(grid) #for arrow() function
+SmoothCoefficientPlot(fit,modelnames=paste0("By cantons: Impact of the share of zeros on inequality (Gini) Rsq=", round(summary(fit)$r.squared,2)))+geom_text(show_guide=FALSE,x=77,y=2.2,size=4,label="effect variation\nover time")+geom_segment(aes(x = 85, y = 1.5, xend = 71, yend = 1.5))+geom_segment(aes(x = 71, y = 1.5, xend = 71, yend = 1.3))+geom_segment(aes(x = 85, y = 1.5, xend = 85, yend = 1.3))+geom_text(show_guide=FALSE,x=57,y=1.9,size=4,label="effect variation\nby cantons")+geom_segment(aes(x = 71, y = 1.2, xend = 45, yend = 1.2))+geom_segment(aes(x = 71, y = 1.2, xend = 71, yend = 1.0))+geom_segment(aes(x = 45, y = 1.2, xend = 45, yend = 1.0))+ggtitle("Bias variation by time and cantons")
+
 @
 
-The model outputs a teststatisic for each canton that tells us whether the variation of the zero-rate over time leads to a significant deviation from the typical "canton gini-level". As the model has a decent fit we are not in great danger of omitted variable bias. Using a joint F-Test we can now test if all canton#zeros interactions are zero. 
+The model outputs a test statisic for each canton that tells us whether the variation of the zero-rate over time leads to a significant deviation from the typical "canton gini-level". As the model has a decent fit we are not in great danger of omitted variable bias. Using a joint F-Test we can now test if all canton#zeros interactions are zero. 
 
 <<ftest>>=
 library(survey)
@@ -224,55 +269,15 @@ We can see the the model fit reduces to explaining 61.5\% of the gini variation 
 
 The model indicates some cases that deserve more attention: Schwyz (positive coefficient) and Geneva (negative coefficient) and the tax period 2000 as well as the most recent periods.
 
-<<echo=FALSE>>=
-# checking the impact of zeros on an artificial distribution
-# generate a few differently scewed distributions and introduce zeros.
-x02 <- rgamma(1000,shape=0.2,scale=5)
-x05 <- rgamma(1000,shape=0.5,scale=2)
-x1 <- rgamma(1000,shape=1,scale=1/1)
-x2 <- rgamma(1000,shape=2,scale=1/2)
-x3 <- rgamma(1000,shape=3,scale=1/3)
-x4 <- rgamma(1000,shape=4,scale=1/4)
-x1 <- x1[order(x1)]
-x2 <- x2[order(x2)]
-x3 <- x3[order(x3)]
-x4 <- x4[order(x4)]
-# delete the lowest 20%
-x02_20 <- x02
-x02_20[1:200] <- NA
-x05_20 <- x05
-x05_20[1:200] <- NA
-x1_20 <- x1
-x1_20[1:200] <- NA
-x2_20 <- x2
-x2_20[1:200] <- NA
-x3_20 <- x3
-x3_20[1:200] <- NA
-x4_20 <- x4
-x4_20[1:200] <- NA
+A positive coefficient (e.g. Schwyz) can be read as follows: In periods with many zeros we measure higher gini coefficients. We can derive, that the distribution of income is more scewed for high incomes than for low incomes. Simply speaking, the contrast between low and middle class is less pronounced than the contrast between middle und high class. One possible explanation would be that incomes stem from two different populations: 1) the people of Schwyz who possibly follow a log-normal or gamma distribution and 2) particularly rich people who moved to Schwyz to avoid taxes. 
 
-library(reldist)
-gini(x02)-gini(na.omit(x02_20))
+A negative coefficient (e.g. Geneva) means the more zeros there are the smaller the gini measure was compared to other tax periods within that canton (remember this is a fixed-effects model). This is the case we would usually expect: more zeros mask inequality that arises from the bottom.
 
-gini(x05)-gini(na.omit(x05_20))
+What can we conclude from that analysis? First one must notice that aggregate measure like the gini (or others) do not always react in the same way when we cut off one part of the distribution, therefore the measures calculated from tax data is biased. On the other hand, the model coefficient of Switzerland as a whole is not significant suggesting that the cantonal biases cancel out each other. This seems plausible. Most of the "tax optimization" happens within Switzerland so the rich people who moved to Schwyz are now missing at another canton.
 
-gini(x1)-gini(na.omit(x1_20))
+We can even see more from the model coefficients. The period dummies indicate how the distribution of incomes has changed: compared to 1995, the subsequent periods have a negative coefficient, i.e. the bias we introduce by omitting the zeros increased, especially from the mid nineties to the mid 2000s. To simplify: cutting off zeros more and more seems to lead to an underestimation of our inequality measure, probably because the skewness in the left part of the distribution increased pointing to an increased pauperization that is masked by omitting the left tail of the income distribution.
 
-gini(x2)-gini(na.omit(x2_20))
-
-gini(x3)-gini(na.omit(x3_20))
-
-gini(x4)-gini(na.omit(x4_20))
-# gini inceases
-@
-
-
-A positive coefficient (e.g. Schwyz) can be read as follows: In periods with many zeros we measure higher gini coefficients. Our conclusion is that people with low income are more successfully hidden. If those people would be taxed and therefore appear in the statistic they would sharply contrast the high income earners.
-
-A negative coefficient (e.g. Geneva) means the more zeros there are the smaller the gini measure was compared to other tax periods within that canton (remember this is a fixed-effects model). This is less obvious than the Schwyz case and our reading is: more zeros mask inequality that arises from the bottom.
-
-
-\subsubsection{Descriptives - where do we put this?}
+\subsubsection{Descriptives - has to be moved to results}
 nice grapics for taxable income, reines einkommen and income after taxes here...
 <<different_ginis>>=
 df$G_reink[df$G_reink==1]<-NA
