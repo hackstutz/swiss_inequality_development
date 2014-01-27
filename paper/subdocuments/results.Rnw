@@ -8,6 +8,48 @@
 Kantonsweise Grafiken
 Kuznets / U-Turn, Test der Hypothesen mit den final Daten. Der link zwischen rein deskriptiv  und Theorie plus Modell ist aktuell noch ein krasser Drahtseilakt...}
 
+\subsection{Gini coefficients for taxable income, income before deductions and taxable income after tax}
+
+<<setup>>=
+library(foreign)
+library(ggplot2)
+df <- read.dta("../../data/ginis_und_perzentile.dta")
+df$zeros <- df$null_norm/df$cpop # i only use normal cases here
+@
+
+<<different_ginis>>=
+df$G_reink[df$G_reink==1]<-NA
+df$G_taxed[df$G_taxed==1]<-NA
+library(reshape)
+dflong <- melt(df[,c("G_steink","G_reink","G_taxed","kanton","steuerperiode")], id=c("kanton","steuerperiode"))
+names(dflong)[3]<-"Type"
+names(dflong)[4]<-"Gini"
+levels(dflong$Type)<-c("taxable income","income before deductions","taxable income after tax")
+ggplot(dflong[dflong$kanton=="CH",], aes(x=steuerperiode,y=Gini,colour=Type))+geom_line(size=1)+theme_bw()+xlab("tax period")
+ggplot(dflong, aes(x=steuerperiode,y=Gini,colour=Type))+geom_line()+facet_wrap(~kanton)+theme_bw()+xlab("tax period")
+@
+
+\subsection{Zero share}
+
+Estimation using population statistics (1945/46-1993/94) and official tax administration statistics (1995/96 and later) 
+
+
+\subsection{Income measures with and without zeros}
+
+taxable income with and without zeros
+
+<<with_without_zeros>>=
+dflong <- melt(df[,c("G_steink","G_steink0","kanton","steuerperiode")], id=c("kanton","steuerperiode"))
+names(dflong)[3]<-"Type"
+names(dflong)[4]<-"Gini"
+levels(dflong$Type)<-c("without zeros","including zeros")
+ggplot(dflong[dflong$kanton=="CH" & dflong$steuerperiode>=1995.5,], aes(x=steuerperiode,y=Gini,colour=Type))+geom_line(size=1)+theme_bw()+xlab("tax period")
+ggplot(dflong[dflong$steuerperiode>=1995.5,], aes(x=steuerperiode,y=Gini,colour=Type))+geom_line()+facet_wrap(~kanton)+theme_bw()+xlab("tax period")+ opts(axis.text.x=theme_text(angle=60))
+
+@
+
+Including zeros leads to significantly higher gini coefficients. However we must keep in mind, that these might be artifically high values as we assume zero income for everyone in the zero group. We can conclude more from the graphic: the ratio between both measures seems to be quite constant although for aggregate Switzerland but there are minor deviations for multiple cantons as well as strong deviations for the cantons Geneva and Tessin. However the problems seem not to result from a shift in the zero-share over time but they are specific for the time-period when the tax system changed. 
+
 %Switzerland (income and wealth)
 %- graph with gini over time> identify periods of change
 %- closer look at interesting periods with relative distribution methods-> is change because of down- or upgrading?

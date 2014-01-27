@@ -277,12 +277,4 @@ What can we conclude from that analysis? First one must notice that aggregate me
 
 We can even see more from the model coefficients. The period dummies indicate how the distribution of incomes has changed: compared to 1995, the subsequent periods have a negative coefficient, i.e. the bias we introduce by omitting the zeros increased, especially from the mid nineties to the mid 2000s. To simplify: cutting off zeros more and more seems to lead to an underestimation of our inequality measure, probably because the skewness in the left part of the distribution increased pointing to an increased pauperization that is masked by omitting the left tail of the income distribution.
 
-\subsubsection{Descriptives - has to be moved to results}
-nice grapics for taxable income, reines einkommen and income after taxes here...
-<<different_ginis>>=
-df$G_reink[df$G_reink==1]<-NA
-df$G_taxed[df$G_taxed==1]<-NA
-ggplot(df[df$kanton=="CH",], aes(x=steuerperiode,y=G_steink))+geom_line()+facet_wrap(~kanton)+geom_line(aes(y=G_reink),color="blue")+geom_line(aes(y=G_taxed),color="green")
-ggplot(df, aes(x=steuerperiode,y=G_steink))+geom_line()+facet_wrap(~kanton)+geom_line(aes(y=G_reink),color="blue")+geom_line(aes(y=G_taxed),color="green")
-@
 
