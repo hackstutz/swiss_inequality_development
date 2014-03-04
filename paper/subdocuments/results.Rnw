@@ -13,7 +13,7 @@ Kuznets / U-Turn, Test der Hypothesen mit den final Daten. Der link zwischen rei
 <<setup>>=
 library(foreign)
 library(ggplot2)
-df <- read.dta("../../data/ginis_und_perzentile.dta")
+df <- read.dta("data/ginis_und_perzentile.dta")
 df$zeros <- df$null_norm/df$cpop # i only use normal cases here
 @
 
