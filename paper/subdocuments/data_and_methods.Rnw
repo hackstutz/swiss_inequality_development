@@ -9,7 +9,7 @@ To discuss the suitability of a specific data source it is crucial to have an id
 \subsection{Standards for measuring economic resources and inequality}
 
 \emph{Concepts on measuring economic resources}  \\
-Most studies on inequality focus on income inequality, while economic resources are ideally conceptualized with measures for income, wealth and consumption together. \\
+Most studies on inequality focus on income inequality, while economic resources are ideally conceptualized with measures for income, wealth and consumption together. In generall it has to be stateted, that ideal measures only can be defined in context of a given reaserach question. This holds, if one thinks about the ideal measure of economic well-being, but also about the unit of analysis. Nevertheless, some more or less unified concepts exists, which can be taken as a starting point. OECD (2013) \\
 
 % We neither can examine consumption nor the jointly distribution of income and wealth on the individual level. We could analyse the jointly pattern on the cantonal level and analze the data following the question if income inequality and wealth inqueality are correlated.
 
@@ -25,13 +25,21 @@ Most studies on inequality focus on income inequality, while economic resources 
 
 The appropriateness of the income concept is bound to the research interest. Studies focusing on labor market outcome look at market income. Studies focusing on human wellbeing follow the approach as propagated by the oecd (2013). This concept is largely implemented by the Federal Office of statistics. Following this concept one should look at income after taxes and transfers inclusive the adjustment for household members, because this is the measure which frames the consumption possibilities. Lastly, studies focusing on the effect of institutions (social welfare, taxation) compare the distribution of pre- and post-income measures. \\   
 
+% an income which is adjusted for the household size is not a real income anymore. It is a measure of indivdual welfare or of the standard of living (BFS:2012)
+
+
 \emph{Defining wealth}
 While the apropiateness of the conceptualization of income is widely discuded, there is no agreed definition of personal wealth yet and the appropriate methods of valuation are not always clear. 
 Wealth can be defined as the marketable value of financial assets plus non-financial assets (housing and land) less debts (Credit Suisse 2011:5).
 
+% Streichen
+
 \emph{Population Coverage} \\
 All Residents? Working Residents? Single Person vs household/family. Households without income \\
 see for details: OCED Framework for Statistics on the Distribution of Houshold income, consumption and wealth (2013) \\
+
+The income of the household generally plays the major role in the living standards attained by its members, so the way earners and non-earners grouped together in households, has to be incorporated into the analysis. Especially when the the focus of interesst lays in unrevealing the role of demographic factors. 
+
 
 \emph{Measuring inequality and concentration} \\
 To be able to make qualifying statements about a distribution or to compare different distributions, the concept of inequality turned out to be the most appropriate and thus the most commonly used dimension. Vgl. Allison (1978), Engelhardt (2000), Cowell (2000) oder Hao/Naiman (2010)
@@ -47,10 +55,12 @@ Alvaredo (2010) shows formally, how top incomes shares are related to the gini-c
 
 \subsection{Comparison of tax data and other data sources - advantages and shortcomings}
 
+% Suitability of data sources can be judeged by different criterias. crossectional or longidutional perspective. longidutional perspective allows for dynamic 
+
 %[ich stelle mir eine Tabelle mit verschiedenen Dimensionen vor, anhand derer eine Einordnung unterschiedlicher Datenquellen geschieht.]
 % Mögliche Vergleichsdimensionen
 %- Suitability of cross country comparison
-%- Assessing inequality accurately
+%- Coverage of the population of interesst
 %- Implementation of common concepts of economic ressources
 %- contingency for intertemporal comparision
 
