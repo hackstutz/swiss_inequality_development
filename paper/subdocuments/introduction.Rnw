@@ -42,6 +42,20 @@ The most recent official figures published by the Swiss Federal Statistical Offi
 % Allenfalls erwähnen, dass die Schweiz nicht Teil des GINI database ist.
 http://www.gini-research.org/articles/data_2
 
+<<Swiss inequality Plot>>=
+library(ggplot2)
+library(foreign)
+number_ticks <- function(n) {function(limits) pretty(limits, n)}
+swissGini<-read.csv("data/swissGini.csv",header=TRUE,sep=";")
+ggplot(swissGini, aes(x=Year,y=LIS))+
+  geom_line(aes(x=Year,y=LIS))+
+  geom_point(aes(x=Year,y=LIS),size=3.5)+
+  xlab("Year") +
+  scale_x_continuous(breaks=number_ticks(10))+
+  ylab("Gini") +
+  scale_y_continuous(limits=c(0,0.5)) +
+  theme_bw()
+@
 
 % 5.Abschnitt: What do we know about Switzerland
 % Studies with tax data
@@ -49,6 +63,7 @@ http://www.gini-research.org/articles/data_2
 Whereas the aforementioned publications focused on disposable household income from survey data, the revival of tax-data-inequality studies lead to fruitful insights for Switzerland as well. Dell et al. (2007) used tax data from the Federal Tax Administration to assess the development of concentration of the highest incomes and wealth (top-shares). In contrast to most other examined countries, Switzerland did not experience a reduction in income and wealth concentration from the pre-First World War period to the decades following the second World War (up to 1996). Using the same approach Foellmi and Martinez (2013) expand the Dell et al. timeline to 2008 finding that the share of top income has risen, the top 0.01\% share even doubled in the last observed 20 years. A result which opposes the outcome of official data published by the Swiss Federal Statistical Office.\footnote{There are other studies on Switzerland covering different periods but not the recent years. Flückiger et al. (2007) and also Jeitziner and Peters (2007,2009) report constant inequality from 1960-1996 respectively from 1995 to 2003. Covering a similar time period Bauer and Spycher (1994) and Bolzani and Abul Naga (2002) found decreasing inequality. On the other hand Buchmann and Sacchi (1995) and Ernst et al. (2009) found an increase in the 1980s).} \\
 
 % 
+
 
 
 % 6. Abschnitt: Zwischenbilanz und Herausforderungen
@@ -73,6 +88,8 @@ Shorrock et al. (2013) unify several datasources (including tax data) to assess 
 % Studies on inequality have to adress several thorny challenges. One has to define the centrale measure of inequality and find adquate data. Recent studies accentuate the importance of a broader concept of economic wellbeeing including measures for income, consumption and wealth alike. But each area is confronted with own measurement problems. Measure of consumptions are largely missing in tax data, albeit deductions can be understood as mandatory consumptions somehow. Measures of wealth are included in tax data, but are not connectable to the respctive income and therefore can only be analyzed separate. In danger of falling a pittraps it seems appriate to move in small steps. Therefore we focus our analysis on income, which is undoubtly a crucial indicator of economic wellbeeing.
 % Also the Federal Statistical Office is increasing their effort to get sound data concering the distribution of wealth vgl. Müller und Schoch (2014).
 
+
+% Zusammenfassung Stand der Forschung und festlegen unserer Ausrichtung
 
 Up to the day, Switzerland can be situated according to the actual level of income inequality in western societies as there is a huge effort to collect data which can be harmonized to comparable measures (see Luxembourg income study, EU-SILC). However, it is unclear how the bias through non-response affects the overall measure of inequality. Likewise a long and consistent time-series allowing to identify and explore development patterns on every point of the distribution (not only the top-shares) and a time series for inequality of wealth is missing. Building on recent developments in the field of inequality research, we assess the suitability of the publicly accessible tax data to report inequality and its changes over time. First of all this includes a discussion of the accessible measures in context of a reflection about the state of the art conceptualization of economic resources as an indicator for economic well-being. Second, we summarize and apply tax data specific technics to construct suitable measures of inequality. We expand the given set by an in depth discussion of a newly applied step to handle the incomplete coverage in tax data statistics. Third, we integrate the development of Swiss inequality into the international picture.
 
