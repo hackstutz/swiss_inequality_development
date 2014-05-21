@@ -30,11 +30,6 @@ This holds for Swizterland too, although the HBS study is strongly influced by t
 
 The appropriateness of the income concept is bound to the research interest. Studies focusing on labor market outcome look at market income. Studies focusing on human wellbeing follow the approach as propagated by the oecd (2013). This concept is largely implemented by the Federal Office of statistics. Following this concept one should look at income after taxes and transfers inclusive the adjustment for household members, because this is the measure which frames the consumption possibilities. Lastly, studies focusing on the effect of institutions (social welfare, taxation) compare the distribution of pre- and post-income measures. \\   
 
-% an income which is adjusted for the household size is not a real income anymore. It is a measure of indivdual welfare or of the standard of living (BFS:2012)
-
-
-
-% Streichen
 
 \emph{Population Coverage} \\
 All Residents? Working Residents? Single Person vs household/family. Households without income \\
