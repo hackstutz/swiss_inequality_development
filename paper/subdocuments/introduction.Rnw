@@ -42,20 +42,25 @@ The most recent official figures published by the Swiss Federal Statistical Offi
 % Allenfalls erwähnen, dass die Schweiz nicht Teil des GINI database ist.
 http://www.gini-research.org/articles/data_2
 
-<<Swiss inequality Plot>>=
+<<Swiss inequality from other studies>>=
 library(ggplot2)
-library(foreign)
+library(reshape)
 number_ticks <- function(n) {function(limits) pretty(limits, n)}
-swissGini<-read.csv("data/swissGini.csv",header=TRUE,sep=";")
-ggplot(swissGini, aes(x=Year,y=LIS))+
-  geom_line(aes(x=Year,y=LIS))+
-  geom_point(aes(x=Year,y=LIS),size=3.5)+
-  xlab("Year") +
-  scale_x_continuous(breaks=number_ticks(10))+
+swissGini_long<-melt(swissGini,id="Year")
+ggplot(data=swissGini_long,
+  aes(y=value,x=Year),shape=variable)+
   ylab("Gini") +
-  scale_y_continuous(limits=c(0,0.5)) +
+  scale_y_continuous(limits=c(0.18,0.4)) +
+  scale_x_continuous(limits=c(1982,2012),breaks=number_ticks(10)) +
+  geom_point(aes(shape=variable),size=3)+
+  geom_line(data=swissGini_long[!is.na(swissGini_long$value),],aes(linetype=variable))+
   theme_bw()
 @
+
+
+% Darauf verweisen, dass der Trend eher abwärts weist bzw. auf Stabilität. Aber auch darauf hinweisen, dass eine lange und konsistente Zeitreihe nicht vorliegt.  
+
+
 
 % 5.Abschnitt: What do we know about Switzerland
 % Studies with tax data
@@ -82,7 +87,7 @@ While there are several studies about income inequality in Switzerland, the publ
 % ab hier wird es irgnediwe unklar
 Shorrock et al. (2013) unify several datasources (including tax data) to assess the pattern of global wealth. Their databook includes figures for Switzerland. In contrast to inequality of income concerning inequality of wealth Switzerland takes a leading position \\
 
-% Albeit the awarness of an assessment of income and wealth simuntanously is rising, we focus in this paper on income inequality, which is the know as the core driver of economic inequlity
+% Albeit the awarness of an assessment of income and wealth simuntanously is rising, we focus in this paper on income inequality, which is  know as the core driver of economic inequlity
 % Dann lassen sich einige Passagen streichen. Man könnte auch auf verschiedene Publikationen verweisen, welche die Bedeutung von Vermögen untersuchen -> Buch von Piketty, Müller und Schoch und dann aber ziemlich schnell darauf verweisen, dass wir uns hier auf Einkommen konzentrieren.
 % Auch erste Dell Studie erwähnen -> es hat Zahlen zur Schweiz. Auch Probleme erwähnen (Fehlende Informationen zu Altersvorsorgevermögen -> hat aber niemand eine Lösung bisher.)
 % Studies on inequality have to adress several thorny challenges. One has to define the centrale measure of inequality and find adquate data. Recent studies accentuate the importance of a broader concept of economic wellbeeing including measures for income, consumption and wealth alike. But each area is confronted with own measurement problems. Measure of consumptions are largely missing in tax data, albeit deductions can be understood as mandatory consumptions somehow. Measures of wealth are included in tax data, but are not connectable to the respctive income and therefore can only be analyzed separate. In danger of falling a pittraps it seems appriate to move in small steps. Therefore we focus our analysis on income, which is undoubtly a crucial indicator of economic wellbeeing.
