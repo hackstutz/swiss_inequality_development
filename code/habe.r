@@ -8,7 +8,7 @@ library(dplyr)
 
 ##############################################################
 ### Setup Data ###############################################
-##############################################################
+############################################################## 
 
 setwd("C:/Users/Hackstutz/Dropbox/Git/swiss_inequality_development/")
 habe0911<-read.table("C:/Users/Hackstutz/Dropbox/Ungleichheit/HABE/HABE091011/HABE091011_Standard_130717UOe.txt", header=TRUE)
