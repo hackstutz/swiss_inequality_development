@@ -46,7 +46,7 @@ http://www.gini-research.org/articles/data_2
 library(ggplot2)
 library(foreign)
 number_ticks <- function(n) {function(limits) pretty(limits, n)}
-swissGini<-read.csv("data/swissGini.csv",header=TRUE,sep=";")
+swissGini<-read.csv("../../data/swissGini.csv",header=TRUE,sep=";")
 ggplot(swissGini, aes(x=Year,y=LIS))+
   geom_line(aes(x=Year,y=LIS))+
   geom_point(aes(x=Year,y=LIS),size=3.5)+
