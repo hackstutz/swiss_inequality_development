@@ -1,0 +1,14 @@
+# estv-gini-kt.dta
+Bens file with interpolations by cantons and brackets
+
+# ginis_und_perzentile_normal.csv
+Processed version of steuerdaten20140522.dta where Gini and percentiles were calculated using calculate_ginis_and_percentiles_normal.do (only Normalfälle)
+
+# ginis_und_perzentile_sonder.csv
+Processed version of steuerdaten20140522.dta where Gini and percentiles were calculated using calculate_ginis_and_percentiles_sonder.do (only Sonderfälle)
+
+# steuerdaten20140522.dta
+Stata merge of all FTA .xls files
+
+# swissGini
+Swiss Gini Coefficients for a few years (SILC, LIS and HABE)
