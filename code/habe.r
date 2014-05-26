@@ -5,6 +5,7 @@
 library(foreign)
 library(ggplot2)
 library(dplyr)
+library(reldist)
 
 ##############################################################
 ### Setup Data ###############################################
@@ -27,4 +28,8 @@ habe <- habe %.%
 ggplot(habe, aes(x=log(VerfuegbaresEinkommen08)))+geom_histogram()+facet_wrap(~Jahr08)
 ggplot(habe, aes(y=log(VerfuegbaresEinkommen08),x=percentiles))+geom_line()+facet_wrap(~Jahr08)
 ggplot(habe, aes(x=log(VerfuegbaresEinkommen08),group=Jahr08,color=factor(Jahr08)))+geom_density()
-ggplot(filter(habe,Jahr08%in%c(2006,2008)), aes(x=log(VerfuegbaresEinkommen08),group=Jahr08,color=factor(Jahr08)))+geom_density()
+ggplot(filter(habe,Jahr08%in%c(2006,2008)), aes(x=log(VerfuegbaresEinkommen08),group=Jahr08,fill=factor(Jahr08)))+geom_density(alpha=0.5)
+
+reldist(y=habe$VerfuegbaresEinkommen08[habe$Jahr08==2008],yo=habe$VerfuegbaresEinkommen08[habe$Jahr08==2006])
+reldist(y=habe$VerfuegbaresEinkommen08[habe$Jahr08==2011],yo=habe$VerfuegbaresEinkommen08[habe$Jahr08==2006])
+reldist(y=habe$VerfuegbaresEinkommen08[habe$Jahr08==2011],yo=habe$VerfuegbaresEinkommen08[habe$Jahr08==2010])
