@@ -2,7 +2,7 @@ capture cd C:/Users/Hackstutz/Dropbox/Git/swiss_inequality_development/data
 capture cd C:/Users/rudi/Dropbox/Git/swiss_inequality_development/data
 //add more paths; using capture -> no need to comment out
 
-use steuerdaten20140522.dta, clear
+use steuerdaten20140522_stata12.dta, clear
 
 sort steuerperiode kanton eink_ll
 replace steink = steink[_n+481]-steink_diff if steuerperiode ==1945.5
@@ -26,50 +26,6 @@ by kanton steuerperiode: gen Gc = ppop * finc / 2
 by kanton steuerperiode: replace Gc = Gc + ppop * finc[_n-1] / 2 if _n>1
 by kanton steuerperiode: gen G_steink = (0.5 - sum(Gc))/0.5
 by kanton steuerperiode: replace G_steink = . if _n<_N
-
-* Gini für reink
-replace reink = steink+abzug if reink==.
-by kanton steuerperiode: gen rcinc = sum(reink)
-by kanton steuerperiode: gen rfinc = rcinc/rcinc[_N]
-by kanton steuerperiode: gen Grc = ppop * rfinc / 2
-by kanton steuerperiode: replace Grc = Grc + ppop * rfinc[_n-1] / 2 if _n>1
-by kanton steuerperiode: gen G_reink = (0.5 - sum(Grc))/0.5
-by kanton steuerperiode: replace G_reink = . if _n<_N
-
-* Gini für steink nach Steuern
-gen steink_taxed = steink-(steuerertrag/1000)
-by kanton steuerperiode: gen tcinc = sum(steink_taxed)
-by kanton steuerperiode: gen tfinc = tcinc/tcinc[_N]
-by kanton steuerperiode: gen Gtc = ppop * tfinc / 2
-by kanton steuerperiode: replace Gtc = Gtc + ppop * tfinc[_n-1] / 2 if _n>1
-by kanton steuerperiode: gen G_taxed = (0.5 - sum(Gtc))/0.5
-by kanton steuerperiode: replace G_taxed = . if _n<_N
-
-* Inkl. Nuller-Kategorie
-bysort kanton steuerperiode (eink_ll): gen first=1 if _n==1
-expand 2 if first==1, gen(expanded)
-replace eink_ll=0 if expanded==1
-replace eink_ul=0 if expanded==1
-replace steuerertrag=0 if expanded==1
-replace steink=0 if expanded==1
-replace reink=0 if expanded==1
-replace anz_pflichtige=null_norm if expanded==1
-sort kanton steuerperiode eink_ll eink_ul
-
-* Ginis für steink noch mal berechnen inkl. Nuller
-
-by kanton steuerperiode: gen cpop0 = sum(anz_pflichtige)
-by kanton steuerperiode: gen cpopp0 = cpop0/cpop0[_N]
-by kanton steuerperiode: gen ppop0 = anz_pflichtige/cpop0[_N]
-
-by kanton steuerperiode: gen cinc0 = sum(steink)
-by kanton steuerperiode: gen finc0 = cinc0/cinc0[_N]
-by kanton steuerperiode: gen Gc0 = ppop0 * finc0 / 2
-by kanton steuerperiode: replace Gc0 = Gc0 + ppop0 * finc0[_n-1] / 2 if _n>1
-by kanton steuerperiode: gen G_steink0 = (0.5 - sum(Gc0))/0.5
-by kanton steuerperiode: replace G_steink0 = . if _n<_N
-
-drop if expanded==1
 
 * Perzentile Ansatz nach wikipedia http://en.wikipedia.org/wiki/Pareto_interpolation
 
@@ -120,12 +76,11 @@ sort kanton steuerperiode eink_ll
 * Mean
 by kanton steuerperiode: gen mean = cinc[_N]/cpop[_N]
 
-drop if G_steink== . | G_steink0== . | G_steink==1 | G_steink0==1 |  G_reink== . | G_reink==1 |  G_taxed== . | G_taxed==1
+drop if G_steink== . | G_steink==1
 
 keep steuerperiode G_* kanton p* mean anz_pflichtige cpop cinc null*
 drop ppop
 
 
-export delimited using "C:\Users\rudi\Dropbox\Git\swiss_inequality_development\data\ginis_und_perzentile_sonder.csv", replace
-
+outsheet using "ginis_und_perzentile_sonder.csv", replace
 
