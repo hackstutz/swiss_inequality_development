@@ -2,54 +2,48 @@
 %%% Sub document for data and methods %%%
 %%%-------------------------------------------------%%%
 
-\section{ Data, Measurement concepts,and Methods}
+\section{Data, Measurement concepts,and Methods}
 
-<<<<<<< HEAD
-To discuss the suitability of a specific data source it is crucial to have an idea about an ideal measure. Based on a review on the literature about the measurement concepts in an ideal world, we discuss briefly the advantages and shortcomings of tax data compared to other data sources - namely survey data. Afterwards we describe the tax data published by the Swiss Federal Tax Administration highlighting the important aspects, which have to be considered working with FTA-Data. In the last section, we describe the methods and corrections we used to construct the time-series of inequality-measure for income an wealth for Switzerland.
-=======
-Studies on inequality have to adress several thorny challenges. It starts with answering three crucial questions: First of all one has to define, which concepts should to be looked at. This refers to answering the question about inequality of what. Secondly one has to be clear about the unit of analysis. This refers to answering the question about inequality among whom. Thirdly, one has to choose an appropriate measure of inequality. All this questions are ideally answered considering theory and a given research question. Often it has to be answered in context of a given dataset. Based on a review on the literature about the measurement concepts in an ideal world, we discuss  the advantages and shortcomings of tax data compared to other data sources - namely survey data. Afterwards we describe the tax data published by the Swiss Federal Tax Administration highlighting the important aspects, which have to be considered working with FTA-Data. In the last section, we describe the methods and corrections we used to construct the time-series of inequality-measure for income for Switzerland.
 
-% Allenfalls mit dem Beschrieb der Daten beginnen und bereits stärker auf die Möglichkeiten und Schwierigkeiten von Steuerdaten eingehen
+Studies on inequality have to adress several thorny challenges. It starts with answering three crucial questions: First of all one has to define, which concepts should to be looked at. This refers to answering the question about inequality of what. Secondly one has to be clear about the unit of analysis. This refers to answering the question about inequality among whom. Thirdly, one has to choose an appropriate measure of inequality. All this questions are ideally answered considering theory and a given research question. Often it has to be answered in context of a given dataset. Therefore we start this section with a description of the FTA-Tax Data. Based on a review on the literature about the measurement concepts in an ideal world, we discuss  the advantages and shortcomings of tax data compared to other data sources - namely survey data. Along with the despriction we explain the methods and thechnics we use to construct time-series of inequality-measure for income for Switzerland, which we will present in the result sections. By doing this, we demonstrate the suitability of the FTA Tax Data to assess the development of inequality in Switzerland
 
->>>>>>> d21c323... completed subsection "concepts on measuring economic resources" and "defining income"
+\subsection{Tax statistics in Swizterland}
+
 
 \subsection{Standards for measuring economic resources and inequality}
 
 \emph{Concepts on measuring economic resources}  \\
-Most studies on inequality focus on income inequality, while economic resources are ideally conceptualized with measures for income, wealth and consumption together. In generall it has to be stateted, that ideal measures only can be defined in context of a given reaserach question. This holds, if one thinks about the ideal measure of economic well-being, but also about the unit of analysis. Nevertheless, some more or less unified concepts exists, which can be taken as a starting point. OECD (2013) \\
 
-<<<<<<< HEAD
-% We neither can examine consumption nor the jointly distribution of income and wealth on the individual level. We could analyse the jointly pattern on the cantonal level and analze the data following the question if income inequality and wealth inqueality are correlated.
-=======
-
-A lot of studies on inequality focus on income inequality solely. However, recent activities emphasize the need of a broader conceptualization. A recent publication from the oecd (2013) condense these activities into the ICW framework (income, consumption and wealth), which is ment to be an internationally agreed framework of micro-level statistics.\footnote{Harmonisation with other international standards was an important objective that guided the work of the Expert Group in developing the ICW Framewrok presented in this publication. Considered main stadards were the System of National Accounts (SNA 2008), the canberra Group Handbook on Household Income Statistics (United Nations 2011), the final report of the 17th International Conference of Labour Statisticians (ILO 2004) and the UNECE/CES recommendations for the 2010 Censuses of Population and Housing (UNECE & Eurostat 2006)} According to the framework it is best to look at income, consumption and wealth as three separate but interrelated dimensions of people's economic well-being. It is recomended to look at the distribution of all three distributions together to gain policy relevant insight. Some households with low income, for example, may report adequate levels of consumption expenditure or welth holdings, or vice-versa. But it is also stated (OED 2013:18):"[...] integrated analysis at the household level has significant data requirements that go beyond the measurement efforts currently undertaken in most countries."\footnote{The Luxembourg Wealth Study Database is currently facing this shortcomings by colecting and provding a database following ths broader concept of economic well-being. http://www.lisdatacenter.org/our-data/lws-database/} \\
+Most studies on inequality focus on income inequality solely. However, recent activities emphasize the need of a broader conceptualization. A recent publication from the oecd (2013) condense these ideas into the ICW framework (income, consumption and wealth), which is ment to be an internationally agreed framework on micro-level statistics.\footnote{Harmonisation with other international standards was an important objective that guided the work of the Expert Group in developing the ICW Framewrok presented in this publication. Considered main stadards were the System of National Accounts (SNA 2008), the canberra Group Handbook on Household Income Statistics (United Nations 2011), the final report of the 17th International Conference of Labour Statisticians (ILO 2004) and the UNECE/CES recommendations for the 2010 Censuses of Population and Housing (UNECE & Eurostat 2006)} According to the framework it is best to look at income, consumption and wealth as three separate but interrelated dimensions of people's economic well-being. To gain policy relevant insight, it is recomended to look at the distribution of all three distributions simultaneously. Some households with low income, for example, may report adequate levels of consumption expenditure or welth holdings, or vice-versa. But it is also stated (OED 2013:18):"[...] integrated analysis at the household level has significant data requirements that go beyond the measurement efforts currently undertaken in most countries."\footnote{The Luxembourg Wealth Study Database is currently facing this shortcomings by colecting and provding a database following ths broader concept of economic well-being. http://www.lisdatacenter.org/our-data/lws-database/} \\
 
 This last statment holds for Swizterland too, although the HBS study is strongly influced by the recommendations of the Canberra group handbook (United Nations, 2011), which concepts are part of the ICW framework. Albeit the awarness of an assessment of income, consumption and wealth simuntanously is rising, we  focus our analysis on income, which is undoubtly a crucial indicator of economic wellbeeing. However, the Federal Tax Office publishes statistics on income and wealth . But it is not possible to analyse the jointly distribution on the individual or household level. Also measures of consumption are largely missing in tax data, albeit deductions can be understood as mandatory consumptions somehow.
 
->>>>>>> d21c323... completed subsection "concepts on measuring economic resources" and "defining income"
 
 \emph{Defining income}
 
-% Eine Grafik/Tabelle machen?
-% Mit den Brülhart-Daten hätte man noch mehr...
-
-The assessment of income inequality is influenced by the conceptual definition of the income itself. Marketincome or  disposable income for example differ by substantial meaning and be the expected degree of inequality. Therefore the awarness of the analyzed concept is crucial. Terminology can sligthly differ, while common concepts can be identified (for detailed discussion see: OECD (2013:44), Canberra group (2011:24)). Figure xy shows a stylized framework, which includes a distinction of common income sources \footnote{Income from production of household services for own consumption is excluded because this income is hard to measure and not covered in the FTA tax data} and shows the central steps of redistribution. Within this framework common income definitions are situated. These definitions are contrasted with income concepts, which can be derived out of the FTA Tax data.
+The assessment of income inequality is influenced by the definition of the income itself. Marketincome or disposable income for example differ by substantial meaning and by the expected degree of inequality. Therefore the awarness of the analyzed concept is crucial. Terminology can sligthly differ, while common concepts can be identified (for detailed discussion see: OECD (2013:44), Canberra group (2011:24)). Figure xy shows a stylized framework, which includes a distinction of common income sources \footnote{Income from production of household services for own consumption is excluded because this income is hard to measure and not covered in the FTA tax data} and shows the central steps of redistribution. Within this framework common income definitions are situated. These definitions are contrasted with income concepts, which can be derived out of the FTA Tax data.
 
 \includegraphics[scale=0.5]{"/figure/income_definition.png}
 
-The central income according to tax data is the taxable income. It includes all reported incomes (income from employment, income from property and received transfers\footnote{Mean-tested benefits are not taxed and therefore not included in Tax data. Income for low income groups are therefore underestimated.}) minus several deductions. It is therefore neither a pre-transfer income  nor a post-transfer income measure. It's rather something inbetween. As the FTA tax statistitcs include some but not all deductions it is possible to calculate a sort of "total income". As some deducations can be interpreted as compulsary expenses similar to taxes to step towards the Total income is a step away from the income, which can be used for consumption. Similiar when calculating the disposable income out of the taxable income through accouting the reported federal taxes, this is a step towards the income, which is left in the basket for consumption (disposable income). Again it is not a "pure" disposable income, because cantonal, municipal taxes and taxes from churches are missing.   \\   
+% Quelle zu Abzügen:
+% http://www.bilanz.ch/invest/steuern/netto-oder-reineinkommen
+% Die rechte Seite mit den Steuergrössen könnte ausführlicher beschrieben werden
+% Beispielsweise könnte man zeigen was Nettoeinkommen, Reineinkommen und steuerbares Einkommen sind
+% Allerdings steht uns nur Reineinkommen und steuerbares Einkommen zur Verfügung
+
+The central income according to tax data is the taxable income. It includes all reported incomes (income from employment, income from property and received transfers\footnote{Mean-tested benefits are not taxed and therefore not included in Tax data. Income for low income groups are therefore underestimated.}) minus several deductions. It is therefore neither a pre-transfer income  nor a post-transfer income measure. It's rather something inbetween. As the FTA tax statistitcs include some but not all deductions\footnote{The difference between the real Total income and the taxable income are deductions. This includes: professional expenses, travel expenses, interest on debt, Alimonies, Training costs, two-earner deduction,Party Contributions, Payment into pillar 3a, purchases in the pension fund and sideline deductions} it is possible to calculate a sort of "total income". As some deducations can be interpreted as compulsary expenses similar to taxes the step towards Total income is a step away from the income, which can be used for consumption. Similiar when calculating the disposable income out of the taxable income through accouting the reported federal taxes, this is a step towards the income, which is left in the basket for consumption (disposable income). Again it is not a "pure" disposable income, because cantonal, municipal taxes and taxes from churches are missing.   \\   
+
+% Die Deductions sind noch nicht gänzlich sauber abgebildet. Auf der Bilanz-Seite steht, vom steuerbaren Einkommen kommt man, indem vom Reineinkommen die Sozialabzüge(Kinder- und Fremdbetreung) sowie der Abzug für unterstützungsbedürftige Personen abzogen werden. 
+% Auf den ESTV-Tabellen sind jedoch noch mehr Abzüge abgebildet. Was soll/muss/können wir nun abziehen? Bin verwirrt...
 
 If the goal is to catch the income, which shapes the possibility to consume, equivalence scale are implemented. Equivalence scale followe the idea, that persons living in the same household have the possibility to share costs. To compare the individual economic well-beeing equivalence scales adjust for different household sizes (see OECD 2013,173, Buhmann et al., 1998). Because it is neither possible to calculate the total household income nor the respective householdsize out of the FTA tax data, we put this in this paper outside the brackets. Although knowing, that with doing so we neglect a potential aspect, which is capable of shaping the development of inequality.
   
+% letzter Abschnitt muss noch auf die Brülhart-Daten hinweisen. Damit können wir eine äquivalenzeinkommen betrachten.
+% Auch müsste in diesem Abschnitt auf die Probleme der Haushaltsunterscheidung eingegangen werden (oder ist im Abschnitt Population coverage? Dann müsste obiger Punkt auch da erwähnt werden.)
 
 
-<<<<<<< HEAD
-% an income which is adjusted for the household size is not a real income anymore. It is a measure of indivdual welfare or of the standard of living (BFS:2012)
 
 
-\emph{Defining wealth}
-While the apropiateness of the conceptualization of income is widely discuded, there is no agreed definition of personal wealth yet and the appropriate methods of valuation are not always clear. 
-Wealth can be defined as the marketable value of financial assets plus non-financial assets (housing and land) less debts (Credit Suisse 2011:5).
 
 % Streichen
 =======
@@ -308,5 +302,12 @@ A negative coefficient (e.g. Geneva) means the more zeros there are the smaller 
 What can we conclude from that analysis? First one must notice that aggregate measure like the gini (or others) do not always react in the same way when we cut off one part of the distribution, therefore the measures calculated from tax data is biased. On the other hand, the model coefficient of Switzerland as a whole is not significant suggesting that the cantonal biases cancel out each other. This seems plausible. Most of the "tax optimization" happens within Switzerland so the rich people who moved to Schwyz are now missing at another canton.
 
 We can even see more from the model coefficients. The period dummies indicate how the distribution of incomes has changed: compared to 1995, the subsequent periods have a negative coefficient, i.e. the bias we introduce by omitting the zeros increased, especially from the mid nineties to the mid 2000s. To simplify: cutting off zeros more and more seems to lead to an underestimation of our inequality measure, probably because the skewness in the left part of the distribution increased pointing to an increased pauperization that is masked by omitting the left tail of the income distribution.
+
+
+
+
+% Alter Textbaustein zu Vermögen
+%\emph{Defining wealth}
+%While the apropiateness of the conceptualization of income is widely discuded, there is no agreed definition of personal wealth yet and the appropriate methods of valuation are not always clear. Wealth can be defined as the marketable value of financial assets plus non-financial assets (housing and land) less debts (Credit Suisse 2011:5).
 
 
