@@ -13,7 +13,7 @@ Kuznets / U-Turn, Test der Hypothesen mit den final Daten. Der link zwischen rei
 <<setup_gini_data>>=
 library(foreign)
 library(ggplot2)
-df <- read.dta("../../data/ginis_und_perzentile.dta")
+df <- read.csv("../../data/ginis_und_perzentile_normal.csv",sep="\t")
 df$zeros <- df$null_norm/df$cpop # i only use normal cases here
 @
 
@@ -38,13 +38,13 @@ Estimation using population statistics (1945/46-1993/94) and official tax admini
 
 taxable income with and without zeros
 
-<<with_without_zeros>>=
+<<with_without_zeros,warning=FALSE>>=
 dflong <- melt(df[,c("G_steink","G_steink0","kanton","steuerperiode")], id=c("kanton","steuerperiode"))
 names(dflong)[3]<-"Type"
 names(dflong)[4]<-"Gini"
 levels(dflong$Type)<-c("without zeros","including zeros")
 ggplot(dflong[dflong$kanton=="CH" & dflong$steuerperiode>=1995.5,], aes(x=steuerperiode,y=Gini,colour=Type))+geom_line(size=1)+theme_bw()+xlab("tax period")
-ggplot(dflong[dflong$steuerperiode>=1995.5,], aes(x=steuerperiode,y=Gini,colour=Type))+geom_line()+facet_wrap(~kanton)+theme_bw()+xlab("tax period")+ opts(axis.text.x=theme_text(angle=60))
+ggplot(dflong[dflong$steuerperiode>=1995.5,], aes(x=steuerperiode,y=Gini,colour=Type))+geom_line()+facet_wrap(~kanton)+theme_bw()+xlab("tax period")+theme(axis.text.x = element_text(angle = 60, hjust = 1))
 
 @
 

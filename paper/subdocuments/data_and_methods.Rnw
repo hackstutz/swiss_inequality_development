@@ -23,7 +23,7 @@ This last statment holds for Swizterland too, although the HBS study is strongly
 
 The assessment of income inequality is influenced by the definition of the income itself. Marketincome or disposable income for example differ by substantial meaning and by the expected degree of inequality. Therefore the awarness of the analyzed concept is crucial. Terminology can sligthly differ, while common concepts can be identified (for detailed discussion see: OECD (2013:44), Canberra group (2011:24)). Figure xy shows a stylized framework, which includes a distinction of common income sources \footnote{Income from production of household services for own consumption is excluded because this income is hard to measure and not covered in the FTA tax data} and shows the central steps of redistribution. Within this framework common income definitions are situated. These definitions are contrasted with income concepts, which can be derived out of the FTA Tax data.
 
-\includegraphics[scale=0.5]{"/figure/income_definition.png}
+\includegraphics[width=\maxwidth]{figure/income_definition}
 
 % Quelle zu Abzügen:
 % http://www.bilanz.ch/invest/steuern/netto-oder-reineinkommen
@@ -46,9 +46,9 @@ If the goal is to catch the income, which shapes the possibility to consume, equ
 
 
 % Streichen
-=======
+%=======
 % 
->>>>>>> d21c323... completed subsection "concepts on measuring economic resources" and "defining income"
+%>>>>>>> d21c323... completed subsection "concepts on measuring economic resources" and "defining income"
 
 \emph{Population Coverage} \\
 All Residents? Working Residents? Single Person vs household/family. Households without income \\
@@ -91,8 +91,8 @@ Alvaredo (2010) shows formally, how top incomes shares are related to the gini-c
 
 \textbf{Summary of tax data drawbacks}
 \begin{itemize}
-\item Misreporting of incomes (high earners have an interest in getting tax beneficial "income" see above)
-\item with aggregated data the adjustment for household members is not possible (no equivalization possible). This is a point, which is hardly mentioned in the "top-income" literature, albeit it is a crucial issue in "theorized" concepts of income. To generalize one can say, that the concept of tax units (individuals and couples + no direct information about household members at least not in the aggregated tax tables) is not congruent with the concept of household. This might influence the overall inequality, taking into account the change from traditional household and family structures over the last century. This is an inequality related issue, where relevant studies are missing. What are the assumptions?
+\item Misreporting of incomes (high earners have an interest in getting tax beneficial ``income'' see above)
+\item with aggregated data the adjustment for household members is not possible (no equivalization possible). This is a point, which is hardly mentioned in the ``top-income'' literature, albeit it is a crucial issue in ``theorized'' concepts of income. To generalize one can say, that the concept of tax units (individuals and couples + no direct information about household members at least not in the aggregated tax tables) is not congruent with the concept of household. This might influence the overall inequality, taking into account the change from traditional household and family structures over the last century. This is an inequality related issue, where relevant studies are missing. What are the assumptions?
 \item the tax data income definition summarize labor income, capital income and taxable transfer payments (no means-tested benefits as welfare aid). Distinction between the different income sources is not possible, albeit the mechanisms of changes in the specific distribution can be very different.
 \item Some tax units are not included in the tax tables (see Foellmi and Martinez 2013:11f).(a) only taxed cases are included (partly a problem, for certain periodes we know how many cases are excluded because of low or none income)	- (b) cases tax at source (Quellenbesteuerung). Foreign nationals living in Switzerland but with a yearly or any other temporary resident permit only. In some border-cantons the share of this group is very high (20\%) 
 %Can we ignore this)
@@ -114,7 +114,7 @@ See for other countries: Siminski et al 2003 (Australia), Brewer et al 2008, UK,
 %	•	Capital gains? Should not be included 
 The discussion about problems with reporting income is fairly exhaustive. What about wealth?
 
-It is well recognized that the traditional sources of wealth distribution data are unlikely to provide an accurate picture of wealth ownership in the top-tail of the distribution. Credit Suisse (2011) makes use of the information in the "Rich Lists" published by Forbes Magazine to adjust the wealth distribution pattern in the highest wealth ranges. \\
+It is well recognized that the traditional sources of wealth distribution data are unlikely to provide an accurate picture of wealth ownership in the top-tail of the distribution. Credit Suisse (2011) makes use of the information in the ``Rich Lists'' published by Forbes Magazine to adjust the wealth distribution pattern in the highest wealth ranges. \\
 
 Additonaly the Credit Suisse Reports states (2011:8) that these data my be less subject to response bias, but my be more prone to valuation problems, especially in connection with pension assets and debts.
 
@@ -142,9 +142,9 @@ Additonaly the Credit Suisse Reports states (2011:8) that these data my be less 
 %is never mentioned as a problem, but it seems to me a better way to approach the non-taxed issue, than dell way (20 % of average income)
 
 \textbf{deductions} Del et al. (2007:477):" we can check with statistics for 1971-72 (as well as later years) presented both by size of income before deductions and income after deductions that adding back deductions does not introduce any significant error in our estimates."
-Gorgas and Schaltenegger (2011:5): "..., information on [...] deductions is provided in the tax statistics, thus, we could add the personal deductions to the income data to obtain a consistent series over time". Können wir das auch? Zumindest für gewisse Zeiträume? Das wäre noch gut. \\
+Gorgas and Schaltenegger (2011:5): ``..., information on [...] deductions is provided in the tax statistics, thus, we could add the personal deductions to the income data to obtain a consistent series over time''. Können wir das auch? Zumindest für gewisse Zeiträume? Das wäre noch gut. \\
 
-Studies on income try to focus on the disposable income, which subtracts certain expenditures from the primary income. Deductions reflect somehow compulsory expenditures and thus taxable income can be seen as a sort of pseudo disposable income. On the other hand deductions can affect the distribution. There are recent studies about the correlation of progressivity and deductions in Switzerland, which examines if deductions have a "perverse redistribution" effect by redistributing income from the lower middle class to the upper middle class (vgl. Peters 2011 and Interpellation Barbara Gysel (2009).
+Studies on income try to focus on the disposable income, which subtracts certain expenditures from the primary income. Deductions reflect somehow compulsory expenditures and thus taxable income can be seen as a sort of pseudo disposable income. On the other hand deductions can affect the distribution. There are recent studies about the correlation of progressivity and deductions in Switzerland, which examines if deductions have a ``perverse redistribution'' effect by redistributing income from the lower middle class to the upper middle class (vgl. Peters 2011 and Interpellation Barbara Gysel (2009).
 
 % Income share specific problems
 % Total income denominator Exogenous Approach -> net income reported in the national accounts. Endogenous Approach -> Dell et al. technic-> imputing 20\% of average personal income to non-fillers (which are mainly persons with low or no income). Honestly , is this appropriate? (Everyone did it)
@@ -189,20 +189,20 @@ Studies on income try to focus on the disposable income, which subtracts certain
 %The imputation is not a focus of the paper so we basically follow the most simple approach of Martinez (xxxx). That is estimating the missing taxable income statistics via OLS using information from time trends and cantons. Our imputation model therefore includes canton inequality measures and periods dummies to explain aggregate swiss inequality.
 
 \subsubsection{Estimating the bias}
-For most of the observed range (1941 to 2010) we do not have any information how many tax units fall into the category of having income that is not zero but is too little to qualify for federal taxation (lets call those "zeros" for convenience) . However starting 1995, the FTA provides exactly this information for each canton. This enables us to estimate the bias we introduce for each canton and each period between 1995 and 2010. Consequently we can obtain information whether the bias is stable over time (which makes it possible to safely interpret the changes of inequality over time) and whether the bias is different for each canton. \textcolor{red}{Unterschiede zwischen Kantonen wären gut um zu argumentieren, dass andere Länder auch davon betroffen sind, in etwa sowas wie "je höher der Steuerfreibetrag, umso stärker der Bias". Länder de erst sehr spät besteuern (und über nicht Besteuerte dann auch nicht Buch führen) haben einen krassen Bias. Wir könnten dann empfehlungen geben, ab welchem Perzentil man save interpretieren kann oder so.}
+For most of the observed range (1941 to 2010) we do not have any information how many tax units fall into the category of having income that is not zero but is too little to qualify for federal taxation (lets call those ``zeros'' for convenience) . However starting 1995, the FTA provides exactly this information for each canton. This enables us to estimate the bias we introduce for each canton and each period between 1995 and 2010. Consequently we can obtain information whether the bias is stable over time (which makes it possible to safely interpret the changes of inequality over time) and whether the bias is different for each canton. \textcolor{red}{Unterschiede zwischen Kantonen wären gut um zu argumentieren, dass andere Länder auch davon betroffen sind, in etwa sowas wie ``je höher der Steuerfreibetrag, umso stärker der Bias''. Länder de erst sehr spät besteuern (und über nicht Besteuerte dann auch nicht Buch führen) haben einen krassen Bias. Wir könnten dann empfehlungen geben, ab welchem Perzentil man save interpretieren kann oder so.}
 
-One can take a first look at the descriptives plotting the share of zeros over time seperately for each canton .
+One can take a first look at the descriptives plotting the share of zeros over time seperately for each canton.
 
 <<setup>>=
 library(foreign)
-df <- read.dta("../../data/ginis_und_perzentile.dta")
+df <- read.csv("../../data/ginis_und_perzentile_normal.csv",sep="\t")
 df$zeros <- df$null_norm/df$cpop # i only use normal cases here
 @
 
 <<zero_descriptives>>=
 library(ggplot2)
-ggplot(df[df$steuerperiode>=1995,], aes(x=steuerperiode,y=zeros))+geom_line()+facet_wrap(~kanton)
-ggplot(df[df$steuerperiode>=1995,], aes(x=steuerperiode,y=zeros))+geom_line()+facet_wrap(~kanton)+geom_line(aes(y=G_steink),color="blue")
+ggplot(df[df$steuerperiode>=1995,], aes(x=steuerperiode,y=zeros))+geom_line()+facet_wrap(~kanton)+theme_bw()
+ggplot(df[df$steuerperiode>=1995,], aes(x=steuerperiode,y=zeros))+geom_line()+facet_wrap(~kanton)+geom_line(aes(y=G_steink),color="blue")+theme_bw()
 @
 
 We can see multiple things here:
@@ -210,7 +210,7 @@ We can see multiple things here:
 \begin{enumerate}
 \item There is a small overall upward trend which we assume to be the Federal Administrations inflation adjustments to the tax threshold.
 \item Geneva and Tessin show wild changes but those might be explained by the tax gap ("Bemessungslücke") that people exploited when the cantons changed the tax system. It remains unclear however why we can't see similar patter within other cantons.
-\item There is some variance and we see different patterns over time and cantons. When estimating gini coefficients or the like we must therefore assume that ignoring "the zeros" leads to a bias that is not stable over time.
+\item There is some variance and we see different patterns over time and cantons. When estimating gini coefficients or the like we must therefore assume that ignoring ``the zeros'' leads to a bias that is not stable over time.
 \end{enumerate}
 
 We might try two strategies to moderate the problem:
@@ -220,7 +220,7 @@ We might try two strategies to moderate the problem:
 \item Fit a model to predict the inequality measure (e.g. the gini coefficient) using the share of zeros as a predictor
 \end{enumerate}
 
-By adding the zeros as a seperate group we face several problems. With the exception of Geneva 1995/96 Pareto interpolation of percentiles p20 and above seems viable. Low percentiles however would need to be extrapolated so we might impose unrealistic assuptioms. Even when estimating "safe" measures above p20 (better p50) or a gini coefficient we need to make an assumption about the income structure of that group (a distribution, a mean income or zero-income). To be consistent with the measure of "taxable income" we could assume an income of zero for that group, calculate gini coefficients and compare them with the original (uncorrected/plain) version. To get a rough number we could (cantonwise) check the squared correlation between plain and corrected gini.
+By adding the zeros as a seperate group we face several problems. With the exception of Geneva 1995/96 Pareto interpolation of percentiles p20 and above seems viable. Low percentiles however would need to be extrapolated so we might impose unrealistic assuptioms. Even when estimating ``safe'' measures above p20 (better p50) or a gini coefficient we need to make an assumption about the income structure of that group (a distribution, a mean income or zero-income). To be consistent with the measure of ``taxable income'' we could assume an income of zero for that group, calculate gini coefficients and compare them with the original (uncorrected/plain) version. To get a rough number we could (cantonwise) check the squared correlation between plain and corrected gini.
 
 The second approach however is more robust as we do not impose additional assumptions but instead exercise some curve fitting.
 
@@ -274,14 +274,14 @@ SmoothCoefficientPlot(fit,modelnames=paste0("By cantons: Impact of the share of 
 
 @
 
-The model outputs a test statisic for each canton that tells us whether the variation of the zero-rate over time leads to a significant deviation from the typical "canton gini-level". As the model has a decent fit we are not in great danger of omitted variable bias. Using a joint F-Test we can now test if all canton#zeros interactions are zero. 
+The model outputs a test statisic for each canton that tells us whether the variation of the zero-rate over time leads to a significant deviation from the typical ``canton gini-level''. As the model has a decent fit we are not in great danger of omitted variable bias. Using a joint F-Test we can now test if all canton interactions are zero. 
 
-<<ftest>>=
-library(survey)
-regTermTest(fit,"kanton:zeros")
+<<ftest, echo=FALSE>>=
+library(survey, quietly=TRUE, warn.conflicts = FALSE)
+ftest <- regTermTest(fit,"kanton:zeros")
 @
 
-In our case we can clearly reject the hypothesis that all interactions are zero. This leads to the conclusion  that gini coefficients are biased by the variation of the zero-share which is kind of obvious but at the same time we can use the model to report adjusted gini coefficients. For example one might be interested in how inequality would had developed if the zero-share would have been constant over time. (Note RF: predict all data point using canton, time and the initial OR final zero-share to homogenize the time series)
+In our case we can clearly reject the hypothesis that all interactions are zero ($p=\Sexpr{round(ftest$p,3)}$). This leads to the conclusion  that gini coefficients are biased by the variation of the zero-share which is kind of obvious but at the same time we can use the model to report adjusted gini coefficients. For example one might be interested in how inequality would had developed if the zero-share would have been constant over time. (Note RF: predict all data point using canton, time and the initial OR final zero-share to homogenize the time series)
 Furthermore we can quantify how large the bias is and we can do this seperately for tax periods or seperately for cantons. 
 
 For all cantons:
@@ -299,7 +299,7 @@ A positive coefficient (e.g. Schwyz) can be read as follows: In periods with man
 
 A negative coefficient (e.g. Geneva) means the more zeros there are the smaller the gini measure was compared to other tax periods within that canton (remember this is a fixed-effects model). This is the case we would usually expect: more zeros mask inequality that arises from the bottom.
 
-What can we conclude from that analysis? First one must notice that aggregate measure like the gini (or others) do not always react in the same way when we cut off one part of the distribution, therefore the measures calculated from tax data is biased. On the other hand, the model coefficient of Switzerland as a whole is not significant suggesting that the cantonal biases cancel out each other. This seems plausible. Most of the "tax optimization" happens within Switzerland so the rich people who moved to Schwyz are now missing at another canton.
+What can we conclude from that analysis? First one must notice that aggregate measure like the gini (or others) do not always react in the same way when we cut off one part of the distribution, therefore the measures calculated from tax data is biased. On the other hand, the model coefficient of Switzerland as a whole is not significant suggesting that the cantonal biases cancel out each other. This seems plausible. Most of the ``tax optimization'' happens within Switzerland so the rich people who moved to Schwyz are now missing at another canton.
 
 We can even see more from the model coefficients. The period dummies indicate how the distribution of incomes has changed: compared to 1995, the subsequent periods have a negative coefficient, i.e. the bias we introduce by omitting the zeros increased, especially from the mid nineties to the mid 2000s. To simplify: cutting off zeros more and more seems to lead to an underestimation of our inequality measure, probably because the skewness in the left part of the distribution increased pointing to an increased pauperization that is masked by omitting the left tail of the income distribution.
 
