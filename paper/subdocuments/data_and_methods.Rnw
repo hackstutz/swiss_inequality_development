@@ -2,7 +2,7 @@
 %%% Sub document for data and methods %%%
 %%%-------------------------------------------------%%%
 
-\section{Data, Measurement concepts,and Methods}
+\section{Data, Measurement concepts and Methods}
 
 
 Studies on inequality have to adress several thorny challenges. It starts with answering three crucial questions: First of all one has to define, which concepts should to be looked at. This refers to answering the question about inequality of what. Secondly one has to be clear about the unit of analysis. This refers to answering the question about inequality among whom. Thirdly, one has to choose an appropriate measure of inequality. All this questions are ideally answered considering theory and a given research question. Often it has to be answered in context of a given dataset. Therefore we start this section with a description of the FTA-Tax Data. Based on a review on the literature about the measurement concepts in an ideal world, we discuss  the advantages and shortcomings of tax data compared to other data sources - namely survey data. Along with the despriction we explain the methods and thechnics we use to construct time-series of inequality-measure for income for Switzerland, which we will present in the result sections. By doing this, we demonstrate the suitability of the FTA Tax Data to assess the development of inequality in Switzerland
