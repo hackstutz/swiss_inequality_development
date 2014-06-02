@@ -29,7 +29,7 @@ habe <- habe %.%
 ############################################################## 
 
 # Gini Time Series equivalized disposal income 2000 until 2011 
-# Achtung: Zahlen sind ungewichtet. Keine Äquivalenzskalengewichtung.
+# Achtung: Zahlen sind ungewichtet. 
 
 setwd("P:/WGS/FBS/ISS/Projekte laufend/SNF Ungleichheit/Datengrundlagen/HABE")
 
