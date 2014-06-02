@@ -1,0 +1,84 @@
+ ######################## 
+########################
+# Einkommen und HABE
+ ########################
+ ########################
+
+
+Verwendete Einkommensgrösse im Detail
+(1) Bruttoeinkommen (Renten, Sozialleistungen und monetäre Überweisungen von anderen Haushalten, Einkommen aus Vermögen und Vermietung plus Erwerbseinkommen (Bruttolöhne vor Sozialabzüge (damit gemeint sind Sozialversicherungsbeiträge),)
+(2) verfügbares Einkommen = Bruttoeinkommen - obligatorische Ausgaben
+- Obligatorische Ausgaben (Sozialversicherungsbeiträge, Steuern, Krankenkassenprämien und regelmässige Transferzahlungen
+(3) Primäreinkommen = Bruttoeinkommen – Transferleistungen (Renten, Sozialleistungen und Überweisungen von anderen Haushalten)
+
+Analyseeinheiten sind Haushalte.
+Äquivalenzeinkommen werden ausgehend vom Haushaltseinkommen berechnet. 
+
+
+
+
+ ######################## 
+########################
+# Einkommen, HABE und Steuerdaten
+ ########################
+ ########################
+
+Vergleich zu Einkommen in den Steuerstatistiken
+Bruttoeinkommen (alle Einkünfte wie HABE. Achtung: Sozialversicherungsbeiträge!)
+- Sozialversicherungsbeiträge (AHV, IV, ALV, KV, UVG und weitere) -> nicht ersichtlich in den Steuerstatistiken.
+- Abzüge (Berufsauslagen, Kinderabzüge und weitere) -> Teilweise abgebildet
+= Steuerbares Einkommen
+
+Wichtig: Das steuerbare Einkommen entspricht keinem Einkommen in der HABE. 
+Aus der HABE brauchen wir das Bruttoeinkommen nach Sozialabzügen, damit wir eine Grösse haben, die möglichst mit den Daten aus den Steuerstatistiken vergleichbar ist. 
+Das steuerbare Einkommen muss zudem mittels Bereinigung der Steuerabzüge transformiert werden (Reineinkommen als bereinigte statistische Grösse (nicht alle Abzüge sind bereinigt).
+
+
+Es bleibt zu klären, wie wir damit umgehen, dass wir in den Steuerdaten Steuereinheiten und nicht Haushalte haben.
+> Deswegen ist es nicht möglich, das Haushaltseinkommen abzubilden und auch nicht eine Äquivalenzskalenrechnung vorzunehmen
+> In den Brülhart-Daten hätten wir das.
+
+
+
+
+
+ ######################## 
+########################
+# Relevante Grössen, die wir für das Paper brauchen
+ ########################
+ ########################
+
+
+(1) Eine Gini-Reihe mit dem verfügbaren Äquivalenzeinkommens für den Vergleich mit bestehenden Publikationen
+
+(2) Für zwei Zeitpunkte Masszahlen der Verteilung für die relativ Distribution Analysen. Damit ein Vergleich möglich ist, der sich wirklich nur auf die Datenquelle bezieht
+müssen wir Einkommensgrössen konstruieren, die möglichst identisch sind (Konstanthaltung der definitorischen Unterschiede)
+Es bleibt zu klären: 
+	1) Welche Zeitpunkte? (2000er Jahre, aber Einschränkung wegen Lücke Steuerdaten)
+	2) Welche Einkommensgrössen? (Möglichst identische Grössen vgl. oben)
+	3) Welche Quellen werden verglichen? Brülhart-daten und HABE scheint mir am optimalsten.
+
+
+
+
+ ######################## 
+########################
+# Aufbereitung HABE Daten (1) (GINI-ZEITREIHE)
+ ########################
+ ########################	
+
+#2006 bis 2011
+- Es sind Haushaltseinkommen aufgeführt
+- Haushalte gewichten? Für 2006 bis 2011 sind die berechneten Ginis nicht mit den publizierten Ginis identisch (berechnete Ginis fallen höher aus)
+Es gibt eine Gewichtungsvariable, die allerdings für die 3-Jahres zusammenlegung benötigt wird? (> keine schlauen Resultate)
+- Wie geschieht die Äquivalenzskalen umrechnung? 
+
+# 2000 bis 2005 ehemals EVE
+- Mit Nomenklatur stufe1 sollte eine Differenzierung möglich sein. Gebraucht werden die Daten aggregat0-> stellen bereits eine Verdichtung von Einkommen und Ausgaben dar
+- Einkommen und Ausgaben pro Haushalt sind aufgeführt
+ Zum verfügbaren Einkommen kommt man, wenn innerhalb eines Haushaltes die Ausgaben von den Einkommen subtrahiert werden.
+
+- Gewichtung und Äquivalenzskalenumrechnung?
+
+# Wo sind die Daten für 2000? Ich sehe nur Beschreibungen
+
