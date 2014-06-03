@@ -115,7 +115,7 @@ habe0011$Gini[01]<-gini(habe00$y.sum.ag)
 
 number_ticks <- function(n) {function(limits) pretty(limits, n)}
 ggplot(data=habe0011,aes(x=Year,y=Gini))+
-  scale_y_continuous(limits=c(0.0,0.8),breaks=number_ticks(8))+ 
+  scale_y_continuous(limits=c(0.2,0.5),breaks=number_ticks(4))+ 
   scale_x_continuous(limits=c(2000,2011),breaks=number_ticks(11)) +
          geom_line()+
          geom_point()+
