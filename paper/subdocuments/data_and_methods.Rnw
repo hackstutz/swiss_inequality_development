@@ -9,6 +9,17 @@ Studies on inequality have to adress several thorny challenges. It starts with a
 
 \subsection{Tax statistics in Swizterland}
 
+% Hier sollten kurz die Steuerstatistiken beschrieben werden. Ziel ist es eine Basis f?r die nachfolgende Gegen?berstellung von Soll und Ist zu legen. Gleichzeitig sollen die Daten vorgestellt werden, die wir f?r die sp?teren Analysen verwenden.
+
+%Beschreiben was die Daten beinhalten und wo es Probleme gibt
+\begin{itemize}
+\item  Datengrundlage: 1947/48 bis 1981/1982 Eidg. Wehrsteuer. 1983/1984 bis 2010 direkte Bundessteuer. Zugänglich über estv.admin.ch
+	\item	Special feature Switch from bi-annual taxation to standard annual tax-system (1995/1996 bis 2003)
+	\item	Tabulation by size of income and statistical measures from individual tax records (Brülhart-Daten)
+	\item	Income after deductions-> taxable income (employment income, business income and capital income). Is income definition stable over time? Yes it should. Realized capital gains are excluded from the definition. It includes income from  employment, self-employment, capital income and taxable transfer payments. Plus Eigenmietwert, 
+	\item	Reported on national and cantonal level
+\end{itemize}
+
 
 \subsection{Standards for measuring economic resources and inequality}
 
@@ -31,33 +42,37 @@ The assessment of income inequality is influenced by the definition of the incom
 % Beispielsweise könnte man zeigen was Nettoeinkommen, Reineinkommen und steuerbares Einkommen sind
 % Allerdings steht uns nur Reineinkommen und steuerbares Einkommen zur Verfügung
 
-The central income according to tax data is the taxable income. It includes all reported incomes (income from employment, income from property and received transfers\footnote{Mean-tested benefits are not taxed and therefore not included in Tax data. Income for low income groups are therefore underestimated.}) minus several deductions. It is therefore neither a pre-transfer income  nor a post-transfer income measure. It's rather something inbetween. As the FTA tax statistitcs include some but not all deductions\footnote{The difference between the real Total income and the taxable income are deductions. This includes: professional expenses, travel expenses, interest on debt, Alimonies, Training costs, two-earner deduction,Party Contributions, Payment into pillar 3a, purchases in the pension fund and sideline deductions} it is possible to calculate a sort of "total income". As some deducations can be interpreted as compulsary expenses similar to taxes the step towards Total income is a step away from the income, which can be used for consumption. Similiar when calculating the disposable income out of the taxable income through accouting the reported federal taxes, this is a step towards the income, which is left in the basket for consumption (disposable income). Again it is not a "pure" disposable income, because cantonal, municipal taxes and taxes from churches are missing.   \\   
+The central income according to tax data is the taxable income. It includes all reported incomes (income from employment, income from property and received transfers\footnote{Mean-tested benefits are not taxed and therefore not included in Tax data. Income for low income groups are therefore underestimated.}) minus several deductions. It is therefore neither a pre-transfer income  nor a post-transfer income measure. It's rather something inbetween. As the FTA tax statistitcs include some but not all deductions\footnote{The difference between the real Total income and the taxable income are deductions. This includes: professional expenses, travel expenses, interest on debt, Alimonies, Training costs, two-earner deduction, Party Contributions, Payment into pillar 3a, purchases in the pension fund and sideline deductions} it is possible to calculate a sort of "total income". As some deducations can be interpreted as compulsary expenses similar to taxes the step towards Total income is a step away from the income, which can be used for consumption. Similiar when calculating the disposable income out of the taxable income through accouting the reported federal taxes, this is a step towards the income, which is left in the basket for consumption (disposable income). Again it is not a "pure" disposable income, because cantonal, municipal taxes and taxes from churches, which represent the bulk ot taxes in Switzerland, are missing.   \\   
 
 % Die Deductions sind noch nicht gänzlich sauber abgebildet. Auf der Bilanz-Seite steht, zum steuerbaren Einkommen kommt man, indem vom Reineinkommen die Sozialabzüge(Kinder- und Fremdbetreung) sowie der Abzug für unterstützungsbedürftige Personen abzogen werden. 
 % Auf den ESTV-Tabellen sind jedoch noch mehr Abzüge abgebildet. Was soll/muss/können wir nun abziehen? Bin verwirrt...
 
-If the goal is to catch the income, which shapes the possibility to consume, equivalence scale are implemented. Equivalence scale followe the idea, that persons living in the same household have the possibility to share costs. To compare the individual economic well-beeing equivalence scales adjust for different household sizes (see OECD 2013,173, Buhmann et al., 1998). Because it is neither possible to calculate the total household income nor the respective householdsize out of the FTA tax data, we put this in this paper outside the brackets. Although knowing, that with doing so we neglect a potential aspect, which is capable of shaping the development of inequality.
-  
-% letzter Abschnitt muss noch auf die Brülhart-Daten hinweisen. Damit können wir eine äquivalenzeinkommen betrachten.
-% Auch müsste in diesem Abschnitt auf die Probleme der Haushaltsunterscheidung eingegangen werden (oder ist im Abschnitt Population coverage? Dann müsste obiger Punkt auch da erwähnt werden.)
+
+\emph{statistical units} \\
 
 
+% 1.Abschnitt dar?ber, dass besser Haushalte betrachtet werden anstelle von Individuuen
+
+The agreed standard on the statistical unit, which should be the base of inequality analysis, are households not individuals (OECD 2013:60). Indeed it are the individuals, who receive income, own wealth and experience economic wellbeing, but their possibility to do so, is strongly tied to the concept of household. This comprises all persons under the same housing arrangement. The basic underlying assumption for colection data on households level insted of individual level is, that people in the same household share ressources and therefore pool their incomes (when two or more earners live together) and/or use the household income to provide the essentials of living for every householdmember (also non-earing members, like children). Additionaly, there are economies of scale when people share living space and commodities and they therefore benefit from the sharing. The compare the individual economic well-beeing among individuals living in different households usualy equivalence scales are used (see OECD 2013,173, Buhmann et al., 1998). \\
+
+% 2. Abschnitt zur Gegen?berstellung von Haushalten und Steuereinheiten
+
+In tax data, however, the units are represented according to administrative rules. Tax units therefore neither represent individuals in every case nor true households. Tax units rather represent individuals and couples, but couples, who are married or officially registrered. This doesn't imply, that those couples live together, as it is needed to satisfy the definition of a household. On the other hand, is it quit likely that more than one tax units live in the same household (unmarried/unregistered couples, see M?ller and Schoch (2014:99)). It is therefore not directly possible to elicit households and household inomce out of tax data. This might influence the assessment inequality, taking into account the change from traditional household and family structures over the last century. This is an inequality related issue, where relevant studies are missing.
 
 
+% Allenfalls die Br?lhart-Daten erw?hnen und die m?glichkeit der Haushaltsbildung ?ber Abz?ge. Falls wir auch eine Grafik zur Rolle der Haushaltszusammensetzung machen (ich denke schon)
+% gibt es studien? Zur Bedeutung von ?quivalenzskalen und zur Bedeutung der Differenzierung von Haushalten und Individuuen?
 
-% Streichen
-%=======
-% 
-%>>>>>>> d21c323... completed subsection "concepts on measuring economic resources" and "defining income"
+\emph{Population Coverage}
+ 
+Often inequality is assessed on national level, which implies, that studies try to cover the whole population of the country of interest. This is a special thorny task for surveys working with samples, because nonresponse is a major source of bias (Bethlehem et al., 2011).  Korinek, Mistiaen and Ravallion (2006) show, that the position in the income distribution influence the probability to participate in a survey. Low income and high income households are more likely to refuse survey response, which leads to an overrepresentation of middle income households. This process can be referred to as the "middleclass bias" Diekmann (2009). Missing data in household surveys is therefore not missing at random, which has an impact on the measures of inequality. The magnitude of this bias in Switzerland, however, is unknown. Strategies to handle this kind of bias are discussed in the literature (S?rndal et al. 1992), but require a register for every unit, that is proportional to income. Currently there exists no such register for Switzerland (ecoplan 2014:43). Currently used microdata sets, which are used for official publications concerning inequality in Switerzland (SILC and HABE) are furthermore confronted with a constructed coverage problems, because this surveys rely on phoneregister, which excludes the households not having a registered connection. \\
+%(Problems of collective households, ecoplan 2014:45). Erw?hnen?
 
-\emph{Population Coverage} \\
-All Residents? Working Residents? Single Person vs household/family. Households without income \\
-see for details: OCED Framework for Statistics on the Distribution of Houshold income, consumption and wealth (2013) \\
+The issue of incomplete coverage is far less dramatical with tax data. Essentially every permanent resident in Switzerland, who has completed the age of 18 years (respectivley 20 years prior to 1996) is taxed on a yearly base (or every two years before the change of the tax system). In principle this leads to a full representation of the adult population of Switzerland and a complete coverage of the income distrubtion. This includes a separation of normal cases, which embrace the majority of taxpayers, and the special cases, which cover several unusual situations. Most important high net wealth individuals taxed according to their expenditures.However, special attention has to be paid to tax units with none or very low incomes. Even though they have to hand in a tax return, their income do not show up in the statistics if their income after deductions falls below 15'000 CHF and they are therefore not taxed with direct federal taxes. This is possible for normal and special cases alike. From 1995/1996 until 2010 the number of non-taxed units are reported, but not for the years before.
 
-The income of the household generally plays the major role in the living standards attained by its members, so the way earners and non-earners grouped together in households, has to be incorporated into the analysis. Especially when the the focus of interesst lays in unrevealing the role of demographic factors. 
+% What about the DELL Study, where high share of non-fillers are reported? What are the reasons?
 
-
-\emph{Measuring inequality and concentration} \\
+\emph{Measuring inequality or concentration} \\
 To be able to make qualifying statements about a distribution or to compare different distributions, the concept of inequality turned out to be the most appropriate and thus the most commonly used dimension. Vgl. Allison (1978), Engelhardt (2000), Cowell (2000) oder Hao/Naiman (2010)
 %[Zusammenfassung bestehender Überlegung und Hinleitung zu den Masszahlen, die wir verwenden werden (vermutlich Gini und relative distribution methods) \\
 
@@ -82,12 +97,11 @@ Alvaredo (2010) shows formally, how top incomes shares are related to the gini-c
 
 %Burkhauser et al. (2009) compare inequality statistics form survey data and tax records to consolidate the findings about recent trends in the USA
 
+% 3. Eigenheiten Steuereinheiten
+
 %Warnings about the use of tax data
 %The use of tax data is often regarded by economists with considerable disbelief. These doubts are well justified for at least two reasons. The first is that tax data are collected as part of an administrative process, which is not tailored to the scientists' needs, so that the definition of income, income unit, etc., are not necessarily those that we would have chosen. This causes particular difficulties for comparisons across countries, but also for time-series analysis where there have been substantial changes in the tax system, such as the moves to and from the joint taxation of couples. Secondly, it is obvious that those paying tax have a financial incentive to present their affairs in a way that reduces tax liabilities. There is tax avoidance and tax evasion. The rich, in particular, have a strong incentive to understate their taxable incomes. Those with wealth take steps to ensure that the return comes in the form of asset appreciation, typically taxed at lower rates or not at all. Those with high salaries seek to ensure that part of their remuneration comes in forms, such as fringe benefits or stock-options which receive favorable tax treatment. Both groups may make use of tax havens that allow income to be moved beyond the reach of the national tax net. These shortcomings limit what can be said from tax data, but this does not mean that the data are worthless. Like all economic data, they measure with error the 'true' variable in which we are interested.
 %The data series presented here are fairly homogenous across countries, annual, long-run, and broken down by income source for several cases. Users should be aware also about their limitations. Firstly, the series measure only top income shares and hence are silent on how inequality evolves elsewhere in the distribution [why?]. Secondly, the series are largely concerned with gross incomes before tax. Thirdly, the definition of income and the unit of observation (the individual vs. the family) vary across countries making comparability of levels across countries more difficult. Even within a country, there are breaks in comparability that arise because of changes in tax legislation affecting the definition of income, although most studies try to correct for such changes to create homogenous series. Finally and perhaps most important, the series might be biased because of tax avoidance and tax evasion. For the details, we refer users to the original papers (see also Atkinson, Piketty and Saez, 2011).
-
-%Copied from:
-%Alvaredo, Facundo, Anthony B. Atkinson, Thomas Piketty and Emmanuel Saez, The World Top Incomes Database, http://topincomes.g-mond.parisschoolofeconomics.eu/ , 18/12/2013
 
 \textbf{Summary of tax data drawbacks}
 \begin{itemize}
@@ -118,16 +132,7 @@ It is well recognized that the traditional sources of wealth distribution data a
 
 Additonaly the Credit Suisse Reports states (2011:8) that these data my be less subject to response bias, but my be more prone to valuation problems, especially in connection with pension assets and debts.
 
-\subsection{Tax data published by the Swiss Federal Tax Administration}
 
-%Beschreiben was die Daten beinhalten und wo es Probleme gibt
-\begin{itemize}
-\item	Datengrundlage: 1947/48 bis 1981/1982 Eidg. Wehrsteuer. 1983/1984 bis 2010 direkte Bundessteuer. Zugänglich über estv.admin.ch
-	\item	Special feature Switch from bi-annual taxation to standard annual tax-system (1995/1996 bis 2003)
-	\item	Tabulation by size of income and statistical measures from individual tax records (Brülhart-Daten)
-	\item	Income after deductions-> taxable income (employment income, business income and capital income). Is income definition stable over time? Yes it should. Realized capital gains are excluded from the definition. It includes income from  employment, self-employment, capital income and taxable transfer payments. Plus Eigenmietwert, 
-	\item	Reported on national and cantonal level
-\end{itemize}
 
 \subsection{Ways to tackle FTA-tax data specific problems}
 
@@ -309,5 +314,8 @@ We can even see more from the model coefficients. The period dummies indicate ho
 % Alter Textbaustein zu Vermögen
 %\emph{Defining wealth}
 %While the apropiateness of the conceptualization of income is widely discuded, there is no agreed definition of personal wealth yet and the appropriate methods of valuation are not always clear. Wealth can be defined as the marketable value of financial assets plus non-financial assets (housing and land) less debts (Credit Suisse 2011:5).
+
+
+
 
 

@@ -66,7 +66,7 @@ habe05$y[habe05$NOMENKLATUR_STUFE1_ID=="5"]<-0
 habe05<-summaryBy(y~HAUSHALT_ID,FUN=sum,data=habe05)
 habe05<-merge(habe05,habe05hh)
 habe05$y.sum.ag<-habe05$y.sum/(1+0.5*(habe05$ANZ_PERSONEN-1))
-habe0011$Gini[06]<-gini(habe05$y.sum.ag)
+habe0011$Gini[06]<-gini(habe05$y.sum.ag,habe05$GEWICHT)
 
 habe04<-read.table("P:/WGS/FBS/ISS/Projekte laufend/SNF Ungleichheit/Datengrundlagen/HABE/2003 bis 2005/eintrag_hh_aggregat1_2004_061127pp.txt", header=TRUE)
 habe04hh<-read.table("P:/WGS/FBS/ISS/Projekte laufend/SNF Ungleichheit/Datengrundlagen/HABE/2003 bis 2005/haushalt_2004_061127pp.txt", header=TRUE,sep="\t")
@@ -75,7 +75,7 @@ habe04$y[habe04$NOMENKLATUR_STUFE1_ID=="5"]<-0
 habe04<-summaryBy(y~HAUSHALT_ID,FUN=sum,data=habe04)
 habe04<-merge(habe04,habe04hh)
 habe04$y.sum.ag<-habe04$y.sum/(1+0.5*(habe04$ANZ_PERSONEN-1))
-habe0011$Gini[05]<-gini(habe04$y.sum.ag)
+habe0011$Gini[05]<-gini(habe04$y.sum.ag,habe04$GEWICHT)
 
 habe03<-read.table("P:/WGS/FBS/ISS/Projekte laufend/SNF Ungleichheit/Datengrundlagen/HABE/2003 bis 2005/eintrag_hh_aggregat1_2003_050614pp.txt", header=TRUE)
 habe03hh<-read.table("P:/WGS/FBS/ISS/Projekte laufend/SNF Ungleichheit/Datengrundlagen/HABE/2003 bis 2005/haushalt_2003_050614pp.txt", header=TRUE,sep="\t")
@@ -84,7 +84,7 @@ habe03$y[habe03$NOMENKLATUR_STUFE1_ID=="5"]<-0
 habe03<-summaryBy(y~HAUSHALT_ID,FUN=sum,data=habe03)
 habe03<-merge(habe03,habe03hh)
 habe03$y.sum.ag<-habe03$y.sum/(1+0.5*(habe03$ANZ_PERSONEN-1))
-habe0011$Gini[04]<-gini(habe03$y.sum.ag)
+habe0011$Gini[04]<-gini(habe03$y.sum.ag,habe03$GEWICHT)
 
 habe02<-read.table("P:/WGS/FBS/ISS/Projekte laufend/SNF Ungleichheit/Datengrundlagen/HABE/2000 bis 2002/eintrag_hh_aggregat1_2002_050104pp.txt", header=TRUE)
 habe02hh<-read.table("P:/WGS/FBS/ISS/Projekte laufend/SNF Ungleichheit/Datengrundlagen/HABE/2000 bis 2002/haushalt_2002_050615pp.txt", header=TRUE,sep="\t")
@@ -93,7 +93,7 @@ habe02$y[habe02$NOMENKLATUR_STUFE1_ID=="5"]<-0
 habe02<-summaryBy(y~HAUSHALT_ID,FUN=sum,data=habe02)
 habe02<-merge(habe02,habe02hh)
 habe02$y.sum.ag<-habe02$y.sum/(1+0.5*(habe02$ANZ_PERSONEN-1))
-habe0011$Gini[03]<-gini(habe02$y.sum.ag)
+habe0011$Gini[03]<-gini(habe02$y.sum.ag,habe02$GEWICHT)
 
 habe01<-read.table("P:/WGS/FBS/ISS/Projekte laufend/SNF Ungleichheit/Datengrundlagen/HABE/2000 bis 2002/eintrag_hh_aggregat1_2001_30_07_03.txt", header=TRUE)
 habe01hh<-read.table("P:/WGS/FBS/ISS/Projekte laufend/SNF Ungleichheit/Datengrundlagen/HABE/2000 bis 2002/haushalt_2001_02_04_03.txt", header=TRUE,sep="\t")
@@ -102,7 +102,7 @@ habe01$y[habe01$NOMENKLATUR_STUFE1_ID=="5"]<-0
 habe01<-summaryBy(y~HAUSHALT_ID,FUN=sum,data=habe01)
 habe01<-merge(habe01,habe01hh)
 habe01$y.sum.ag<-habe01$y.sum/(1+0.5*(habe01$ANZ_PERSONEN-1))
-habe0011$Gini[02]<-gini(habe01$y.sum.ag)
+habe0011$Gini[02]<-gini(habe01$y.sum.ag,habe01$GEWICHT)
 
 habe00<-read.table("P:/WGS/FBS/ISS/Projekte laufend/SNF Ungleichheit/Datengrundlagen/HABE/2000 bis 2002/EINTRAG_HH_AGGREGAT1.txt", header=TRUE)
 habe00hh<-read.table("P:/WGS/FBS/ISS/Projekte laufend/SNF Ungleichheit/Datengrundlagen/HABE/2000 bis 2002/HAUSHALT_2000.txt", header=TRUE,sep="\t")
@@ -111,12 +111,13 @@ habe00$y[habe00$NOMENKLATUR_STUFE1_ID=="5"]<-0
 habe00<-summaryBy(y~HAUSHALT_ID,FUN=sum,data=habe00)
 habe00<-merge(habe00,habe00hh)
 habe00$y.sum.ag<-habe00$y.sum/(1+0.5*(habe00$ANZ_PERSONEN-1))
-habe0011$Gini[01]<-gini(habe00$y.sum.ag)
+habe0011$Gini[01]<-gini(habe00$y.sum.ag,habe00$GEWICHT)
 
 number_ticks <- function(n) {function(limits) pretty(limits, n)}
 ggplot(data=habe0011,aes(x=Year,y=Gini))+
   scale_y_continuous(limits=c(0.2,0.5),breaks=number_ticks(4))+ 
   scale_x_continuous(limits=c(2000,2011),breaks=number_ticks(11)) +
+  ylab("Gini mit Gewichten für 2000 bis 2005")+
          geom_line()+
          geom_point()+
          theme_bw()
