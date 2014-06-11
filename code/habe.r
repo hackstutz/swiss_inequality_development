@@ -49,6 +49,11 @@ habe0011$Gini[12]<-by(habe0911$VerfuegbaresEinkommen08gew,habe0911$Jahr08,gini)[
 habe0011$Gini[11]<-by(habe0911$VerfuegbaresEinkommen08gew,habe0911$Jahr08,gini)[2]
 habe0011$Gini[10]<-by(habe0911$VerfuegbaresEinkommen08gew,habe0911$Jahr08,gini)[1]
 
+##
+# Exkurs: Replikation offizieler Werte zum verfügbaren Einkommen
+
+weighted.mean(habe0911$VerfuegbaresEinkommen08,habe0911$Gewicht10_091011)
+
 # 2006 bis 2008
 habe0608<-read.table("P:/WGS/FBS/ISS/Projekte laufend/SNF Ungleichheit/Datengrundlagen/HABE/2006 bis 2008/HABE060708_Standard_130124UOe.txt", header=TRUE)
 habe0608$AnzErw<-habe0608$AnzahlPersonen98-habe0608$AnzahlKinder05
@@ -58,9 +63,6 @@ habe0011$Gini[09]<-by(habe0608$VerfuegbaresEinkommen08gew,habe0608$Jahr08,gini)[
 habe0011$Gini[08]<-by(habe0608$VerfuegbaresEinkommen08gew,habe0608$Jahr08,gini)[2]
 habe0011$Gini[07]<-by(habe0608$VerfuegbaresEinkommen08gew,habe0608$Jahr08,gini)[1]
 
-####
-# Achtung! Die konstruktion des verfügbaren Einkommens stimmt nicht!!!!!!!!!!!!
-####
 
 
 # 2001 bis 2005
@@ -73,30 +75,56 @@ habe05<-merge(habe05,habe05hh)
 habe05$y.sum.ag<-habe05$y.sum/(1+0.5*(habe05$ANZ_PERSONEN-1))
 habe0011$Gini[06]<-gini(habe05$y.sum.ag,habe05$GEWICHT)
 
-#
+##
+# Exkurs: Replikation offizieler Werte zum verfügbaren Einkommen
 habe05long<-reshape(habe05,direction="wide",idvar="HAUSHALT_ID",timevar="NOMENKLATUR_STUFE1_ID",v.names="SUMME_BETRAG_CHF")
 habe05long[is.na(habe05long)]<-0
 habe05long<-merge(habe05long,habe05hh)
-head(habe05long)
-#
+habe05long$bruttoeinkommen<-(habe05long$SUMME_BETRAG_CHF.1+habe05long$SUMME_BETRAG_CHF.2+habe05long$SUMME_BETRAG_CHF.3)
+weighted.mean(habe05long$bruttoeinkommen,habe05long$GEWICHT)
+# Brutoeinkommen stimmt
 
 # Transferausgaben auf Agg_1 sind zu umfassend
 # obligatorische Abzüge lassen sich auf Agg_4 abbilden
 # Nur obligatorische Abzüge werden vom Primäreinkommen abgezogen
 # Obligatorische Abzüge sind
 # Sozialversicherungsbeiträge (128)
-# Steuern (205) 
-# Krankenkassenprämien (198)
-# regelmässige Transferzahlungen an andere Privathaushalte (210) > nicht 100% sicher ob Legate und Schenkungen auch in diese Kategorien fallen
-# Liegenschaftssteuern (vermutlich in 205)
+# Steuern (136) 
+# Krankenkassenprämien (129)
+# regelmässige Transferzahlungen an andere Privathaushalte (141) > nicht 100% sicher ob Legate und Schenkungen auch in diese Kategorien fallen
+# Liegenschaftssteuern (vermutlich in 136)
+
+habe05ag4<-read.table("P:/WGS/FBS/ISS/Projekte laufend/SNF Ungleichheit/Datengrundlagen/HABE/2003 bis 2005/eintrag_hh_aggregat4_2005_070601pp.txt", header=TRUE)
+habe05ag4long<-reshape(habe05ag4,direction="wide",idvar="HAUSHALT_ID",timevar="NOMENKLATUR_STUFE4_ID",v.names="SUMME_BETRAG_CHF")
+habe05ag4long[is.na(habe05ag4long)]<-0
+habe05ag4long$ausgaben<-(habe05ag4long$SUMME_BETRAG_CHF.128+habe05ag4long$SUMME_BETRAG_CHF.136+habe05ag4long$SUMME_BETRAG_CHF.129+habe05ag4long$SUMME_BETRAG_CHF.141)
+habe05ag4long<-merge(habe05ag4long,habe05hh)
+weighted.mean(habe04ag4long$ausgaben,habe05ag4long$GEWICHT)
+# passt nicht
 
 
 # obligatorische Abzüge lassen sich auf Agg_5 abbilden
-# Sozialversicherungsbeiträge (128)
-# Steuern (205) 
-# Krankenkassenprämien (198)
+# Sozialversicherungsbeiträge (821,822,823,824,825)
+# Steuern (843,844,845,847) 
+# Krankenkassenprämien (829)
 # regelmässige Transferzahlungen an andere Privathaushalte (866,867) > nicht 100% sicher ob Legate und Schenkungen auch in diese Kategorien fallen
-# Liegenschaftssteuern (848)
+# Liegenschaftssteuern (848) (allenfalls auch 849> Zweitwohnsitze)
+
+# Vergleich mit Detailtabelle Ausgaben 2009-2011
+# >Liegenschaftssteuern sind nicht aufgeführt.
+# Krankenkassen: Prämien für die Unfallversicherung (ohne Berufsunfälle)> nicht auffindbar
+# Terminologie bei Kategorie Transferausgaben an andere Haushalte ist anders > schwierig zu überprüfen, ob das selbe abgebildet ist
+
+habe05ag5<-read.table("P:/WGS/FBS/ISS/Projekte laufend/SNF Ungleichheit/Datengrundlagen/HABE/2003 bis 2005/eintrag_hh_aggregat5_2005_070601pp.txt", header=TRUE)
+habe05ag5long<-reshape(habe05ag5,direction="wide",idvar="HAUSHALT_ID",timevar="NOMENKLATUR_STUFE5_ID",v.names="SUMME_BETRAG_CHF")
+habe05ag5long[is.na(habe05ag5long)]<-0
+habe05ag5long$ausgaben<-(habe05ag5long$SUMME_BETRAG_CHF.821+habe05ag5long$SUMME_BETRAG_CHF.822+habe05ag5long$SUMME_BETRAG_CHF.823+habe05ag5long$SUMME_BETRAG_CHF.824+habe05ag5long$SUMME_BETRAG_CHF.825+
+                         habe05ag5long$SUMME_BETRAG_CHF.843+habe05ag5long$SUMME_BETRAG_CHF.844+habe05ag5long$SUMME_BETRAG_CHF.845+habe05ag5long$SUMME_BETRAG_CHF.847+
+                         habe05ag5long$SUMME_BETRAG_CHF.829+habe05ag5long$SUMME_BETRAG_CHF.866+habe05ag5long$SUMME_BETRAG_CHF.867)
+habe05ag5long<-merge(habe05ag5long,habe05hh)
+weighted.mean(habe05ag5long$ausgaben,habe05ag4long$GEWICHT)
+
+# Fortsetzung mit 2004
 
 habe04<-read.table("P:/WGS/FBS/ISS/Projekte laufend/SNF Ungleichheit/Datengrundlagen/HABE/2003 bis 2005/eintrag_hh_aggregat1_2004_061127pp.txt", header=TRUE)
 habe04hh<-read.table("P:/WGS/FBS/ISS/Projekte laufend/SNF Ungleichheit/Datengrundlagen/HABE/2003 bis 2005/haushalt_2004_061127pp.txt", header=TRUE,sep="\t")
@@ -137,24 +165,47 @@ habe0011$Gini[02]<-gini(habe01$y.sum.ag,habe01$GEWICHT)
 # 2000
 ##
 # Achtung: Andere Codierung
-# Nur obligatorische Abzüge werden vom Primäreinkommen abgezogen
+# Nur obligatorische Abzüge werden vom Bruttoeinkommen abgezogen
+# Operationalisierung mit Aggregat4
 # Obligatorische Abzüge sind
 # Sozialversicherungsbeiträge (197)
 # Steuern (205) 
 # Krankenkassenprämien (198)
 # regelmässige Transferzahlungen an andere Privathaushalte (210) > nicht 100% sicher ob Legate und Schenkungen auch in diese Kategorien fallen
 # Liegenschaftssteuern (vermutlich in 205)
+# Vermutlich ist Aggregat4 zu grob (bspw. umfasst Krankenkassenprämien das Total und nicht nur die Grundversicherung)
 
+habe00hh<-read.table("P:/WGS/FBS/ISS/Projekte laufend/SNF Ungleichheit/Datengrundlagen/HABE/2000 bis 2002/HAUSHALT_2000.txt", header=TRUE,sep="\t")
 habe00<-read.table("P:/WGS/FBS/ISS/Projekte laufend/SNF Ungleichheit/Datengrundlagen/HABE/2000 bis 2002/EINTRAG_HH_AGGREGAT4.txt", header=TRUE)
 habe00$y<-ifelse(habe00$B_AUSGABE==0, habe00$SUMME_BETRAG_CHF, ifelse(habe00$NOMENKLATUR_STUFE4_ID%in%c(197,205,198,210),habe00$SUMME_BETRAG_CHF*(-1),0))
+
+## Operationalisierung mit Aggregat5
+# Obligatorische Abzüge sind
+# Sozialversicherungsbeiträge (821,822,823,824,825)
+# Steuern (843,844,845,847) 
+# Krankenkassenprämien (829)
+# regelmässige Transferzahlungen an andere Privathaushalte (866,867) > nicht 100% sicher ob Legate und Schenkungen auch in diese Kategorien fallen
+# Liegenschaftssteuern (848) (allenfalls auch 849> Zweitwohnsitze)
+
 habe00hh<-read.table("P:/WGS/FBS/ISS/Projekte laufend/SNF Ungleichheit/Datengrundlagen/HABE/2000 bis 2002/HAUSHALT_2000.txt", header=TRUE,sep="\t")
-habe00<-summaryBy(y~HAUSHALT_ID,FUN=sum,data=habe00)
-habe00<-merge(habe00,habe00hh)
+habe00<-read.table("P:/WGS/FBS/ISS/Projekte laufend/SNF Ungleichheit/Datengrundlagen/HABE/2000 bis 2002/EINTRAG_HH_AGGREGAT5.txt", header=TRUE)
+habe00long<-reshape(habe00,direction="wide",idvar="HAUSHALT_ID",timevar="NOMENKLATUR_STUFE5_ID",v.names="SUMME_BETRAG_CHF")
+habe00$bruttoeinkommen<-ifelse(habe00$B_AUSGABE==0, habe00$SUMME_BETRAG_CHF,0)
+habe00long<-summaryBy(bruttoeinkommen~HAUSHALT_ID,FUN=sum,data=habe00)
+# Test Bruttoeinkommen
+habe00long<-merge(habe00long,habe00hh)
+weighted.mean(habe00long$bruttoeinkommen.sum,habe00long$GEWICHT)
+# zu hoch
+# Test Ausgaben
+habe00long[is.na(habe00long)]<-0
+habe00long$ausgaben<-(habe00long$SUMME_BETRAG_CHF.821+habe00long$SUMME_BETRAG_CHF.822+habe00long$SUMME_BETRAG_CHF.823+habe00long$SUMME_BETRAG_CHF.824+habe00long$SUMME_BETRAG_CHF.825+
+                           habe00long$SUMME_BETRAG_CHF.843+habe00long$SUMME_BETRAG_CHF.844+habe00long$SUMME_BETRAG_CHF.845+habe00long$SUMME_BETRAG_CHF.847+
+                           habe00long$SUMME_BETRAG_CHF.829+habe00long$SUMME_BETRAG_CHF.866+habe00long$SUMME_BETRAG_CHF.867)
+weighted.mean(habe00long$ausgaben,habe00long$GEWICHT)
+
+#Äquivalenzskala (nicht korrigiert)
 habe00$y.sum.ag<-habe00$y.sum/(1+0.5*(habe00$ANZ_PERSONEN-1))
 habe0011$Gini[01]<-gini(habe00$y.sum.ag,habe00$GEWICHT)
-
-# Wir haben zuviel Einnahmen und zuwenig Ausgaben
-
 habe00<-read.table("P:/WGS/FBS/ISS/Projekte laufend/SNF Ungleichheit/Datengrundlagen/HABE/2000 bis 2002/EINTRAG_HH_AGGREGAT1.txt", header=TRUE)
 habe00$y<-ifelse(habe00$B_AUSGABE==0,habe00$SUMME_BETRAG_CHF,0)
 habe00<-summaryBy(y~HAUSHALT_ID,FUN=sum,data=habe00)

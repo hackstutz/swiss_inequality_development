@@ -8,7 +8,7 @@
 Verwendete Einkommensgrösse im Detail
 (1) Bruttoeinkommen (Renten, Sozialleistungen und monetäre Überweisungen von anderen Haushalten, Einkommen aus Vermögen und Vermietung plus Erwerbseinkommen (Bruttolöhne vor Sozialabzüge (damit gemeint sind Sozialversicherungsbeiträge),)
 (2) verfügbares Einkommen = Bruttoeinkommen - obligatorische Ausgaben
-- Obligatorische Ausgaben (Sozialversicherungsbeiträge, Steuern, Krankenkassenprämien und regelmässige Transferzahlungen
+- Obligatorische Ausgaben (Sozialversicherungsbeiträge, Steuern, Krankenkassenprämien und regelmässige Transferzahlungen)
 (3) Primäreinkommen = Bruttoeinkommen – Transferleistungen (Renten, Sozialleistungen und Überweisungen von anderen Haushalten)
 
 Analyseeinheiten sind Haushalte.
