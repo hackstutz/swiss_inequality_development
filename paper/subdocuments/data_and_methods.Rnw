@@ -81,6 +81,7 @@ Often inequality is assessed on national level, which implies, that studies try 
 The issue of incomplete coverage is far less dramatical with tax data. Essentially every permanent resident in Switzerland, who has completed the age of 18 years (respectively 20 years prior to 1996) is taxed on a yearly base (or every two years before the change of the tax system). In principle this leads to a full representation of the adult population of Switzerland and a complete coverage of the income distribution. This includes a separation of normal cases, which embrace the majority of taxpayers, and the special cases, which cover several unusual situations. Most important high net wealth individuals taxed according to their expenditures.However, special attention has to be paid to tax units with none or very low incomes. Even though they have to hand in a tax return, their income does not show up in the statistics if their income after deductions falls below 15'000 CHF and they are therefore not taxed with direct federal taxes. This is possible for normal and special cases alike. From 1995/1996 until 2010 the number of non-taxed units are reported, but not for the years before.
 
 % What about the DELL Study, where high share of non-fillers are reported? What are the reasons?
+% Bisher nirgends erwähnt ist die Kritik an Steuerdaten bezüglich tax avoidance and tax evasion. 
 
 \emph{Intertemporal comparison}
 
@@ -88,14 +89,11 @@ One advantage of tax data over survey data is their observation period. While th
 
 
 \emph{Measuring inequality or concentration} \\
-To be able to make qualifying statements about a distribution or to compare different distributions, the concept of inequality turned out to be the most appropriate and thus the most commonly used dimension. See \citet{Allison 1978 FEHLT}, \citet{engelhardt_modelle_2000}, \citet{cowell_chapter_2000} and \citet{hao_assessing_2010}.
+To be able to make qualifying statements about a distribution or to compare different distributions, the concept of inequality turned out to be the most appropriate and thus the most commonly used dimension. See \citet{Allison 1978 FEHLT}, \citet{engelhardt_modelle_2000}, \citet{cowell_chapter_2000} and \citet{hao_assessing_2010}. The Gini coefficient is mainly used for international comparison. However, other measures are often reported along because the Gini coefficient is more sensitive to changes in the middle of the distribution than to changes in the tails \citep[37]{OECD, 2008 FEHLT}. Newer branches of inequality studies emphasize the need for broader measures of inequality, which allow better analyses about the change of inequality and namely statements about the area of change (downgrading/upgrading) \citep{Alderson and Doran 2013 FEHLT}.
 %[Zusammenfassung bestehender Überlegung und Hinleitung zu den Masszahlen, die wir verwenden werden (vermutlich Gini und relative distribution methods) \\
 
-neuere Indikatoren; Polaritätsindex: relative distribution methods in the Social Sciences \citep{handcock_relative_1999} \\
 
-The Gini coefficient is mainly used for international comparison. However, other measures are often reported along because the Gini coefficient is more sensitive to changes in the middle of the distribution than to changes in the tails \citep[37]{OECD, 2008 FEHLT}. Newer branches of inequality studies emphasize the need for broader measures of inequality, which allow better analyses about the change of inequality and namely statements about the area of change (downgrading/upgrading) \citep{Alderson and Doran 2013 FEHLT}. \\
-
-\citet{Alvaredo (2010) FEHLT} shows formally, how top incomes shares are related to the Gini-coefficient. Following his argument, it is crucial to consider top incomes. \citet{leigh_how_2007} also analyzed the relationship between the Gini (and further inequality measures) and top income shares in a panel of 13 countries (Switzerland is part of the study). 
+%\citet{Alvaredo (2010) FEHLT} shows formally, how top incomes shares are related to the Gini-coefficient. Following his argument, it is crucial to consider top incomes. \citet{leigh_how_2007} also analyzed the relationship between the Gini (and further inequality measures) and top income shares in a panel of 13 countries (Switzerland is part of the study). 
 %[He also discusses tax data studies in general-> have a closer look] \\
 %[We definitely have to argue, why it isn’t sufficient to report top income shares, because if it is, there is no need to have another study about Switzerland (national level>Martinez, cantonal level> gorgas and Schaltenegger)]
 
@@ -109,6 +107,7 @@ The Gini coefficient is mainly used for international comparison. However, other
 %- Coverage of the population of interesst
 %- Implementation of common concepts of economic ressources
 %- contingency for intertemporal comparision
+%- flexibel applications of appropriate inequality measures
 
 \begin{table}[h]
 \begin{tabular}{lcccc}
@@ -122,9 +121,12 @@ Equivalisation?                    & no        & yes       & ?         &
 \end{tabular}
 \end{table}
 
+% Die Punkte kurz beschreiben.
+
+
+
 %Burkhauser et al. (2009) compare inequality statistics form survey data and tax records to consolidate the findings about recent trends in the USA
 
-% 3. Eigenheiten Steuereinheiten
 
 %Warnings about the use of tax data
 %The use of tax data is often regarded by economists with considerable disbelief. These doubts are well justified for at least two reasons. The first is that tax data are collected as part of an administrative process, which is not tailored to the scientists' needs, so that the definition of income, income unit, etc., are not necessarily those that we would have chosen. This causes particular difficulties for comparisons across countries, but also for time-series analysis where there have been substantial changes in the tax system, such as the moves to and from the joint taxation of couples. Secondly, it is obvious that those paying tax have a financial incentive to present their affairs in a way that reduces tax liabilities. There is tax avoidance and tax evasion. The rich, in particular, have a strong incentive to understate their taxable incomes. Those with wealth take steps to ensure that the return comes in the form of asset appreciation, typically taxed at lower rates or not at all. Those with high salaries seek to ensure that part of their remuneration comes in forms, such as fringe benefits or stock-options which receive favorable tax treatment. Both groups may make use of tax havens that allow income to be moved beyond the reach of the national tax net. These shortcomings limit what can be said from tax data, but this does not mean that the data are worthless. Like all economic data, they measure with error the 'true' variable in which we are interested.
@@ -150,18 +152,18 @@ Equivalisation?                    & no        & yes       & ?         &
 
 \citet{atkinson_top_2009} estimate that CPS survey data fail to capture about half of the overall increase in inequality measured by the Gini coefficient, a result confirmed by \citet{Alvaredo (2010) FEHLT}. \\
 
+% Könnte man in der Introduction platzieren.
+
 See for other countries: \citealt{Siminski et al 2003 FEHLT} (Australia), \citealt{Brewer et al 2008 FEHLT}, UK, \citealt{Burkhauser et al. 2009 FEHLT}, US)
 %	•	What about the special cases? Foelmi and Martinez argue, that it is crucial to include the special cases because they include the high net wealth individuals taxed according to their expenditures. Exclusion leads to an underestimation of inequality
 %	•	Capital gains? Should not be included 
-The discussion about problems with reporting income is fairly exhaustive. What about wealth?
 
-It is well recognized that the traditional sources of wealth distribution data are unlikely to provide an accurate picture of wealth ownership in the top-tail of the distribution. \citet{credit_suisse_global_2011} makes use of the information in the ``Rich Lists'' published by Forbes Magazine to adjust the wealth distribution pattern in the highest wealth ranges. \\
-
-Additionally the Credit Suisse Reports states that these data my be less subject to response bias, but my be more prone to valuation problems, especially in connection with pension assets and debts \citep[8]{credit_suisse_global_2011}.
 
 
 
 \subsection{Ways to tackle FTA-tax data specific problems}
+
+% Diese Abschnitt muss ersetzt werden mit der von uns gewählten Vorgehensweise
 
 \textbf{Incomplete coverage of the population (left censored data.)} What can be done about the not-taxed? \citet{dell_income_2007} impute for non-fillers the 20 percentage of the annual average income. This flattens the distribution on the left side, which is not a problem if you are interested in the top income shares, but it would surly affect overall measures of inequality. Furthermore the authors calculate the proportion of non-fillers by estimating the total of tax units out of the population records. \\
 
@@ -342,7 +344,11 @@ We can even see more from the model coefficients. The period dummies indicate ho
 %\emph{Defining wealth}
 %While the apropiateness of the conceptualization of income is widely discuded, there is no agreed definition of personal wealth yet and the appropriate methods of valuation are not always clear. Wealth can be defined as the marketable value of financial assets plus non-financial assets (housing and land) less debts (Credit Suisse 2011:5).
 
+%The discussion about problems with reporting income is fairly exhaustive. What about wealth?
 
+%It is well recognized that the traditional sources of wealth distribution data are unlikely to provide an accurate picture of wealth ownership in the top-tail of the distribution. \citet{credit_suisse_global_2011} makes use of the information in the ``Rich Lists'' published by Forbes Magazine to adjust the wealth distribution pattern in the highest wealth ranges. \\
+
+%Additionally the Credit Suisse Reports states that these data my be less subject to response bias, but my be more prone to valuation problems, especially in connection with pension assets and debts \citep[8]{credit_suisse_global_2011}.
 
 
 
