@@ -189,14 +189,14 @@ habe00$y<-ifelse(habe00$B_AUSGABE==0, habe00$SUMME_BETRAG_CHF, ifelse(habe00$NOM
 
 habe00hh<-read.table("P:/WGS/FBS/ISS/Projekte laufend/SNF Ungleichheit/Datengrundlagen/HABE/2000 bis 2002/HAUSHALT_2000.txt", header=TRUE,sep="\t")
 habe00<-read.table("P:/WGS/FBS/ISS/Projekte laufend/SNF Ungleichheit/Datengrundlagen/HABE/2000 bis 2002/EINTRAG_HH_AGGREGAT5.txt", header=TRUE)
-habe00long<-reshape(habe00,direction="wide",idvar="HAUSHALT_ID",timevar="NOMENKLATUR_STUFE5_ID",v.names="SUMME_BETRAG_CHF")
-habe00$bruttoeinkommen<-ifelse(habe00$B_AUSGABE==0, habe00$SUMME_BETRAG_CHF,0)
+habe00$bruttoeinkommen<-ifelse(habe00$B_AUSGABE==0,ifelse(habe00$NOMENKLATUR_STUFE5_ID%in%c(50,51,52,63,64,65,66,67,68,69,70),0,habe00$SUMME_BETRAG_CHF),0)                     
 habe00long<-summaryBy(bruttoeinkommen~HAUSHALT_ID,FUN=sum,data=habe00)
 # Test Bruttoeinkommen
 habe00long<-merge(habe00long,habe00hh)
 weighted.mean(habe00long$bruttoeinkommen.sum,habe00long$GEWICHT)
 # zu hoch
 # Test Ausgaben
+habe00long<-reshape(habe00,direction="wide",idvar="HAUSHALT_ID",timevar="NOMENKLATUR_STUFE5_ID",v.names="SUMME_BETRAG_CHF")
 habe00long[is.na(habe00long)]<-0
 habe00long$ausgaben<-(habe00long$SUMME_BETRAG_CHF.821+habe00long$SUMME_BETRAG_CHF.822+habe00long$SUMME_BETRAG_CHF.823+habe00long$SUMME_BETRAG_CHF.824+habe00long$SUMME_BETRAG_CHF.825+
                            habe00long$SUMME_BETRAG_CHF.843+habe00long$SUMME_BETRAG_CHF.844+habe00long$SUMME_BETRAG_CHF.845+habe00long$SUMME_BETRAG_CHF.847+
