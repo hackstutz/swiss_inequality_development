@@ -4,7 +4,6 @@
 
 \section{Data, Measurement concepts and Methods}
 
-
 Studies on inequality have to address several thorny challenges. It starts with answering three crucial questions: First of all one has to define, which concepts should to be looked at. This refers to answering the question about inequality of what. Secondly one has to be clear about the unit of analysis. This refers to answering the question about inequality among whom. Thirdly, one has to choose an appropriate measure of inequality. All these questions are ideally answered considering theory and a given research question. Often it has to be answered in context of a given dataset. Therefore we start this section with a description of the FTA-Tax Data. Based on a review on the literature about the measurement concepts in an ideal world, we discuss the advantages and shortcomings of tax data compared to other data sources - namely survey data. We describe and explain methods and techniques needed to construct time-series of income inequality measures for Switzerland. We will present these time-series in the result section and evaluate the use of the FTA Tax Data to assess the development of inequality in Switzerland
 
 \subsection{Tax statistics in Switzerland}
@@ -13,12 +12,24 @@ Our data comes from the Swiss Federal Tax Administration (FTA). Federal taxes ar
 
 The FTA provides two income measures: taxable income and net income. Net income here is an administrative term and means taxable income plus social deductions (children and supported persons) but not including other deductions like donations or health-care costs. Both measures are designed for taxation purposes which might limit the suitability to measure inequality as we will discuss later.
 
-% Bei den Nullern erw�hnen, ab wann Angaben zur Zahl der Nuller vorliegen und ab wann nicht
+% Bei den Nullern erw?hnen, ab wann Angaben zur Zahl der Nuller vorliegen und ab wann nicht
 % Im Internet hat es Publikationen ab 1947/48
 % Es gibt auch Tabellen auf Gemeindeebene
-% Die Statitstischen Kennzahlen von Br�lhart erw�hnen?
-% Erw�hnen in welcher Form die Informationen publiziert sind. Tabulation by size of income. Not on individual or household level
+% Die Statitstischen Kennzahlen von Br?lhart erw?hnen?
+% Erw?hnen in welcher Form die Informationen publiziert sind. Tabulation by size of income. Not on individual or household level
 
+% http://www.estv.admin.ch/dokumentation/00075/00076/00701/index.html?lang=de
+% Kantone und Gemeinden: 2010 bis 1947/1948
+% Klassierte Tabellen für Abzüge, Einkommen (Steuerbares Einkommen und Reineinkommen) und Steuererträge
+% Normalfälle und Sonderfälle
+
+% Statistsiche Kennzahlen
+% Mit Belastung durch die direkte Bundessteuer: 1973/1974 bis 2010
+% Mit und ohne Belastung durch die direkte Bundessteuer: 1995/1996 bis 2010
+% steuerbares Einkommen/Reineinkommen
+% Jeweils Normal und Sonderfälle
+% Individual-Daten (nicht klassierte daten)
+% äquivalenzeinkommen
 
 \subsection{Standards for measuring economic resources and inequality}
 
@@ -46,11 +57,11 @@ The assessment of income inequality is influenced by the definition of the incom
 % Beispielsweise könnte man zeigen was Nettoeinkommen, Reineinkommen und steuerbares Einkommen sind
 % Allerdings steht uns nur Reineinkommen und steuerbares Einkommen zur Verfügung
 
-% ACHTUNG: Wir m�ssen innerhalb des Papers einheitlich bleiben. In der Grafik steht jetzt "Total income" oben steht "Net income"
+% ACHTUNG: Wir m?ssen innerhalb des Papers einheitlich bleiben. In der Grafik steht jetzt "Total income" oben steht "Net income"
 
-% Man k�nnte es auch konzeptionell auf kantonale Steuerdaten erweitern. Besser w�re es, dies einfach im Ausblick zu erw�hnen
+% Man k?nnte es auch konzeptionell auf kantonale Steuerdaten erweitern. Besser w?re es, dies einfach im Ausblick zu erw?hnen
 
-The central income according to tax data is the taxable income. It includes all reported incomes (income from employment, income from property and received transfers\footnote{Mean-tested benefits are not taxed and therefore not included in Tax data. Income for low income groups are therefore underestimated. Piketty and Saez (2001) note that non-taxable social security benefits grew as a share of personal income in the US but find that these changes had nonly a trivial impact on top income shares. Neither reported  are realized capital gains}) minus several deductions. It is therefore neither a pre-transfer income  nor a post-transfer income measure. It's rather something in between. As the FTA tax statistics include some but not all deductions\footnote{The difference between the real Total income and the taxable income are deductions. This includes: professional expenses, travel expenses, interest on debt, Alimonies, Training costs, two-earner deduction, Party Contributions, Payment into pillar 3a, purchases in the pension fund and sideline deductions} it is possible to calculate a sort of "total income". As some deductions can be interpreted as compulsory expenses similar to taxes the step towards Total income is a step away from the income, which can be used for consumption. Similar when calculating the disposable income out of the taxable income through accounting the reported federal taxes, this is a step towards the income, which is left in the basket for consumption (disposable income). Again it is not a "pure" disposable income, because cantonal, municipal taxes and taxes from churches, which represent the bulk of taxes in Switzerland, are missing.   \\   
+The central income reported through tax statistics is the taxable income. It includes all reported incomes (income from employment, income from property and received transfers\footnote{Realized capital gains are not taxed and Mean-tested benefits are not taxed and therefore not included in Tax data. Income for low income groups are therefore underestimated. However, Piketty and Saez (2001) note that non-taxable social security benefits grew as a share of personal income in the US but find that these changes had nonly a trivial impact on top income shares.}) minus several deductions. It is therefore neither a pre-transfer income  nor a post-transfer income measure. It's rather something in between. As the FTA tax statistics include some but not all deductions\footnote{The difference between the real Total income and the taxable income are deductions. This includes: professional expenses, travel expenses, interest on debt, Alimonies, Training costs, two-earner deduction, Party Contributions, Payment into pillar 3a, purchases in the pension fund and sideline deductions} it is possible to calculate a sort of "total income". As some deductions can be interpreted as compulsory expenses similar to taxes the step towards Total income is a step away from the income, which can be used for consumption. Similar when calculating the disposable income out of the taxable income through accounting the reported federal taxes, this is a step towards the income, which is left in the basket for consumption (disposable income). Again it is not a "pure" disposable income, because cantonal, municipal taxes and taxes from churches, which represent the bulk of taxes in Switzerland, are missing.   \\   
 
 % Die Deductions sind noch nicht gänzlich sauber abgebildet. Auf der Bilanz-Seite steht, zum steuerbaren Einkommen kommt man, indem vom Reineinkommen die Sozialabzüge(Kinder- und Fremdbetreung) sowie der Abzug für unterstützungsbedürftige Personen abzogen werden. 
 % Auf den ESTV-Tabellen sind jedoch noch mehr Abzüge abgebildet. Was soll/muss/können wir nun abziehen? Bin verwirrt...
@@ -58,12 +69,7 @@ The central income according to tax data is the taxable income. It includes all 
 
 \emph{statistical units} \\
 
-
-% 1.Abschnitt dar?ber, dass besser Haushalte betrachtet werden anstelle von Individuuen
-
 The agreed standard on the statistical unit, which should be the base of inequality analysis, are households not individuals \citep[60]{oecd_oecd_2013 UNSICHER}. Indeed it are the individuals, who receive income, own wealth and experience economic wellbeing, but their possibility to do so, is strongly tied to the concept of household. This comprises all persons under the same housing arrangement. The basic underlying assumption for collection data on households level instead of individual level is, that people in the same household share resources and therefore pool their incomes (when two or more earners live together) and/or use the household income to provide the essentials of living for every household member (also non-earing members, like children). Additionally, there are economies of scale when people share living space and commodities and they therefore benefit from the sharing. The compare the individual economic well-being among individuals living in different households usually equivalence scales are used (see \citealt[173]{oecd_oecd_2013 UNSICHER}, \citealt{Buhmann et al., 1998 FEHLT}). \\
-
-% 2. Abschnitt zur Gegen?berstellung von Haushalten und Steuereinheiten
 
 In tax data, however, the units are represented according to administrative rules. Tax units therefore neither represent individuals in every case nor true households. Tax units rather represent individuals and couples, but couples, who are married or officially registered. This doesn't imply, that those couples live together, as it is needed to satisfy the definition of a household. On the other hand, is it quit likely that more than one tax units live in the same household (unmarried/unregistered couples, see \citet[99]{muller_vermogenslage_2014}). It is therefore not directly possible to elicit households and household income out of tax data. This might influence the assessment inequality, taking into account the change from traditional household and family structures over the last century. This is an inequality related issue, where relevant studies are missing.
 
@@ -71,48 +77,32 @@ In tax data, however, the units are represented according to administrative rule
 % Allenfalls die Br?lhart-Daten erw?hnen und die m?glichkeit der Haushaltsbildung ?ber Abz?ge. Falls wir auch eine Grafik zur Rolle der Haushaltszusammensetzung machen (ich denke schon)
 % gibt es studien? Zur Bedeutung von ?quivalenzskalen und zur Bedeutung der Differenzierung von Haushalten und Individuuen?
 
+\emph{Measuring inequality or concentration} \\
+To be able to make qualifying statements about a distribution or to compare different distributions, the concept of inequality turned out to be the most appropriate and thus the most commonly used dimension. The Gini coefficient is the most known measure and mainly used for international comparison. As it is derived from the lorenz-curve, the quantified amount of inequality can unpretentiously be described in a formal and visual way. Therefore the Gini coefficient is easely interpretable. Furthermore it has several desired statistical properties \citet{engelhardt_modelle_2000}. (1) principle of population: the assessment of inequality is independent of the population size (2) Bresciani-Turroni: the measure is sensitive for changes of income shares, but not for absolute changes (e.g. doubling of all income) (3) weak principle of transfers (pigou-dalton): transfers from richer households lead to a reduction of inequality. However, several drawbacks are reported in the literatur. The most important point is, that the underlying distributional form of the measured inequality is unknown and it is therefore not possibel to see if the measure is driven be a few rich or many poor individuals. This can also be problematic for comparision between countries or over time. In extreme cases two totally different distrubtions share the same gini-coefficient.\\
+
+The recent wave of tax-data studies do not report Gini-coefficents. Rather top income shares are informed on, which are calculated not only with taxdata, but togehter with external sources to produce the population and personal income control totals. This procedure ensures, that the inequality measure is not biased because of non-fillers, who doesn't appear in tax statistics.  Leight (2002:594f) compares top income shares with other inequality measures and ask, if they are a useful measure of inequality in a society. He tries to answer this question empiricaly by comparing measures of inequality based on top income shares with measures of household or familiy inequality. He finds a strong positive relationship, but concludes (P.600): top income shares are far from perfect as a measure of distribution of income across society. Top income shares hence inform not completely on how inequality evolves elsewhere in the distribution. Furthermore, top income shares only weakly satisfy the Pigou-Dalton transfer principle (in contrast to the Gini-Coefficent see above). A transfer from rich to poor will indeed never increase the top income shares, but if the transfer is between invidviduals, who are either both within the top group or both outsie the top group, then the share measure will remain unchanged. \\
+
+Newer branches of inequality studies emphasize the need for broader measures of inequality, which allow better analyses about the change of inequality and namely statements about the area of change (downgrading/upgrading). The polarityindex is developed by \citep{Handock and Morris 1999} allows for this. Recenently this index was applied in the work of \citep{Alderson, Beckfield and Nielsen 2005 FEHLT} and \citep{Alderson and Doran 2013 FEHLT}. This approach is rooted in relative distribution methods. It includes a precise comparison of the shape of two distributions (groups, over time). The main advantage lies herin, that this approche allows to characterize the change, in the sense that it is possible to say, if a polarization occured (reduction of middle class), which equals an increase of inequality and if this change is driven by a change in the upper or lower part of the distribution.  \\
+ 
+The literature mentions several other metrics with desired properties, but we will not discuss them further (see for example \citet{cowell_chapter_2000} and \citet{hao_assessing_2010}).
+
+% Allenfalls auch auf Quintilvergleiche eingehen und Atkinsonmass 
+
+
 \emph{Population Coverage}
+% beim letzten Punkt geht es um Steuerhinterziehung. Fällt das auch noch unter Population coverage?
  
 Often inequality is assessed on national level, which implies, that studies try to cover the whole population of the country of interest. This is a special thorny task for surveys working with samples, because nonresponse is a major source of bias \citep{bethlehem_handbook_2011}.  \citep{korinek_survey_2006} show, that the position in the income distribution influence the probability to participate in a survey. Low income and high income households are more likely to refuse survey response, which leads to an overrepresentation of middle income households. This process can be referred to as the "middleclass bias" \citep{diekmann_empirische_2009}. Missing data in household surveys is therefore not missing at random, which has an impact on the measures of inequality. The magnitude of this bias in Switzerland, however, is unknown. Strategies to handle this kind of bias are discussed in the literature \citep{S?rndal et al. 1992 FEHLT}, but require a register for every unit, that is proportional to income. Currently there exists no such register for Switzerland \citep{ecoplan 2014:43 FEHLT}. Currently used micro datasets, which are used for official publications concerning inequality in Switzerland (SILC and HABE) are furthermore confronted with a constructed coverage problem, because these surveys rely on the phone register, which excludes the households not having a registered connection. \\
 %(Problems of collective households, ecoplan 2014:45). Erw?hnen?
 
-The issue of incomplete coverage is far less dramatical with tax data. Essentially every permanent resident in Switzerland, who has completed the age of 18 years (respectively 20 years prior to 1996) is taxed on a yearly base (or every two years before the change of the tax system). In principle this leads to a full representation of the adult population of Switzerland and a complete coverage of the income distribution. This includes a separation of normal cases, which embrace the majority of taxpayers, and the special cases, which cover several unusual situations. Most important high net wealth individuals taxed according to their expenditures.However, special attention has to be paid to tax units with none or very low incomes. Even though they have to hand in a tax return, their income does not show up in the statistics if their income after deductions falls below 15'000 CHF and they are therefore not taxed with direct federal taxes. This is possible for normal and special cases alike. From 1995/1996 until 2010 the number of non-taxed units are reported, but not for the years before.
+The issue of incomplete coverage is less dramatical with tax data. Essentially every permanent resident in Switzerland, who has completed the age of 18 years (respectively 20 years prior to 1996) is taxed on a yearly base (or every two years before the change of the tax system). Essentially this leads to a full representation of the adult population of Switzerland and a complete coverage of the income distribution. This includes a separation of normal cases, which embrace the majority of taxpayers, and the special cases, which cover Foreign nationals living in Switzerland but with a yearly or any other temporary resident permit only. Most important this includes high net wealth individuals taxed according to their expenditures. Special attention has to be paid to tax units with none or very low incomes. Even though they have to hand in a tax return, their income does not show up in the statistics if their income after deductions falls below 15'000 CHF and they are therefore not taxed with direct federal taxes. This is possible for normal and special cases alike. From 1995/1996 until 2010 the number of non-taxed units are reported, but not for the years before. Dell et al. (2007) try to estimate the fraction of non-taxed by comparing the reported numbers of tax units to census reports about the number of adult population. Following his etimations this fraction drops from 94\% in 1993/1994 to 63\% back in 1945/46. \\
 
-% What about the DELL Study, where high share of non-fillers are reported? What are the reasons?
-% Bisher nirgends erwähnt ist die Kritik an Steuerdaten bezüglich tax avoidance and tax evasion. 
-
-
-
-% Etwas zu den Problemen von Taxevasion sagen. Wissen wir da was zur Schweiz. 
-% Tax evasion can be a problem, that biases the assessment of inequality. Alvaredo and Saez (2006) regard estimates of Spanish top incomes prior to 1981 as unreliable due to widespread tax evasion
+An other critical issue is the problem of tax evasion, which definitely can bias the assessment of inequality. Alvaredo and Saez (2006) for example regard estimates of Spanish top incomes prior to 1981 as unreliable due to widespread tax evasion. Evasion can occured, when individuals try not to fill tax returns or by misreporting of incomes. In Switzerland non-fillers show up in the tax-statistics either way, as long as they are registered. This person get an imputed income form an older tax return and infomration given by employers. Only non registered non-fillers are not in the records. Therefore non-fillers are a minor problem. Not neglectable is the circumstance, that individuals misreport incomes. \citet{feld_tax_2006} examine the role of tax evasion in Switzerland by calculating the difference of the national accounts measures of primary income and the income reported to the tax authorities. Building on a time series of Pommerehne and Weck-Hannemann (1996) Feld and Frey (2002) and Frey and Feld (2002) extend the series. They can show, that the average level of income tax evasion from 1965 to 1995 varies between 13\% and 35\%. They suggest, that evasion is heavily driven by capital income tax evasion. \\
 
 
 \emph{Intertemporal comparison}
 
 One advantage of tax data over survey data is their observation period. While the FTA data we use range back to 1945, the earliest period of survey data is 2000 (HABE data). To be fair, survey data might cover the late periods (2011 and 2012) which are not covered by tax data. The striking feature of the long FTA time series is its consistency. Both population coverage and income measures are consistent for the complete observation period. This can not be said for survey data as these are based on samples and therefore require an ideal sampling design or reweighting to be representative and comparable over time. We will see how well sampling and weighting is done in the results section.
-
-
-\emph{Measuring inequality or concentration} \\
-To be able to make qualifying statements about a distribution or to compare different distributions, the concept of inequality turned out to be the most appropriate and thus the most commonly used dimension. The Gini coefficient is the most known measure and mainly used for international comparison. As it is derived from the lorenz-curve, the quantified amount of inequality can unpretentiously be described in a formal and visual way. Therefore the Gini coefficient is easely interpretable. Furthermore it has several desired statistical properties \citet{engelhardt_modelle_2000}. (1) principle of population: the assessment of inequality is independent of the population size (2) Bresciani-Turroni: the measure is sensitive for changes of income shares, but not for absolute changes (e.g. doubling of all income) (3) weak principle of transfers (pigou-dalton): transfers from richer households lead to a reduction of inequality. However, several drawbacks are reported in the literatur. The most important point is, that the underlying distributional form of the measured inequality is unknown and it is therefore not possibel to see if the measure is driven be a few rich or many poor individuals. This can also be problematic for comparision between countries or over time. In extreme cases two totally different distrubtions share the same gini-coefficient.\\
-
-The recent wave of tax-data studies do not report Gini-coefficents. Rather top income shares are informed on, which are calculated not only with taxdata, but togehter with external sources to produce the population and personal income control totals. This procedure ensures, that the inequality measure is not biased because of non-fillers, who doesn't appear in tax statistics.  Leight (2002:594f) compares top income shares with other inequality measures and ask, if they are a useful measure of inequality in a society. He tries to answer this question empiricaly by comparing measures of inequality based on top income shares with measures of household or familiy inequality. He finds a strong positive relationship, but concludes (P.600): top income shares are far from perfect as a measure of distribution of income across society. Furthermore, top income shares only weakly satisfy the Pigou-Dalton transfer principle (in contrast to the Gini-Coefficent see above). A transfer from rich to poor will indeed never increase the top income shares, but if the transfer is between invidviduals, who are either both within the top group or both outsie the top group, then the share measure will remain unchanged. \\
-
-
- Newer branches of inequality studies emphasize the need for broader measures of inequality, which allow better analyses about the change of inequality and namely statements about the area of change (downgrading/upgrading). The polarityindex is developed by \citep{Handock and Morris 1999} allows for this. Recenently this index was applied in the work of \citep{Alderson, Beckfield and Nielsen 2005 FEHLT} and \citep{Alderson and Doran 2013 FEHLT}. This approach is rooted in relative distribution methods. It includes a precise comparison of the shape of two distributions (groups, over time). The main advantage lies herin, that this approche allows to characterize the change, in the sense that it is possible to say, if a polarization occured (reduction of middle class), which equals an increase of inequality and if this change is driven by a change in the upper or lower part of the distribution.  \\
- 
-The literature mentions several other metrics with desired properties, but we will not discuss them further (see for example \citet{cowell_chapter_2000} and \citet{hao_assessing_2010}).
-
-In context with tax statistics 
-%[Zusammenfassung bestehender Überlegung und Hinleitung zu den Masszahlen, die wir verwenden werden (vermutlich Gini und relative distribution methods) \\
-% Allenfalls etwas zur Beschaffenheit der Daten und den sich daraus ergebeneden M�glichkeiten des Einsatzes von Masszahlen sagen. (falls m�glich)> da k�nnte auch explizit auf Top-income measures eingegangen werden
-
-% Allenfalls auch auf Quintilvergleiche eingehen und Atkinsonmass
-
-
-
-%\citet{Alvaredo (2010) FEHLT} shows formally, how top incomes shares are related to the Gini-coefficient. Following his argument, it is crucial to consider top incomes. \citet{leigh_how_2007} also analyzed the relationship between the Gini (and further inequality measures) and top income shares in a panel of 13 countries (Switzerland is part of the study). 
-%[He also discusses tax data studies in general-> have a closer look] \\
-%[We definitely have to argue, why it isn’t sufficient to report top income shares, because if it is, there is no need to have another study about Switzerland (national level>Martinez, cantonal level> gorgas and Schaltenegger)]
 
 \subsection{Comparison of tax data and other data sources - advantages and shortcomings}
 
@@ -123,7 +113,7 @@ In context with tax statistics
 %- Suitability of cross country comparison
 %- Coverage of the population of interesst
 %- Implementation of common concepts of economic ressources
-%- contingency for intertemporal comparision
+%- intertemporal comparision
 %- flexibel applications of appropriate inequality measures
 
 \begin{table}[h]
@@ -139,51 +129,74 @@ Equivalisation?                    & no        & yes       & ?         &
 \end{table}
 
 % Braucht es alle drei Survey-Befragungen
+% ich würde nicht dichotomisieren, sondern ordinal bewerten (tief, mittel, hoch)
 
 % Die Punkte kurz beschreiben.
 % Zusammenfassung
 
 
+% Gedankenstütze
+%\textbf{Problems with household income surveys}
+%\begin{itemize}
+%\item Sample data (bias)
+%\item comparability between countries and over time (depends on income definition)
+%\item short time series
+%\end{itemize}
+
+
 %Burkhauser et al. (2009) compare inequality statistics form survey data and tax records to consolidate the findings about recent trends in the USA
+%Studies on problems with survey data See for other countries: \citealt{Siminski et al 2003 FEHLT} (Australia), \citealt{Brewer et al 2008 FEHLT}, UK, \citealt{Burkhauser et al. 2009 FEHLT}, US)
 
 
 %Warnings about the use of tax data
 %The use of tax data is often regarded by economists with considerable disbelief. These doubts are well justified for at least two reasons. The first is that tax data are collected as part of an administrative process, which is not tailored to the scientists' needs, so that the definition of income, income unit, etc., are not necessarily those that we would have chosen. This causes particular difficulties for comparisons across countries, but also for time-series analysis where there have been substantial changes in the tax system, such as the moves to and from the joint taxation of couples. Secondly, it is obvious that those paying tax have a financial incentive to present their affairs in a way that reduces tax liabilities. There is tax avoidance and tax evasion. The rich, in particular, have a strong incentive to understate their taxable incomes. Those with wealth take steps to ensure that the return comes in the form of asset appreciation, typically taxed at lower rates or not at all. Those with high salaries seek to ensure that part of their remuneration comes in forms, such as fringe benefits or stock-options which receive favorable tax treatment. Both groups may make use of tax havens that allow income to be moved beyond the reach of the national tax net. These shortcomings limit what can be said from tax data, but this does not mean that the data are worthless. Like all economic data, they measure with error the 'true' variable in which we are interested.
 %The data series presented here are fairly homogenous across countries, annual, long-run, and broken down by income source for several cases. Users should be aware also about their limitations. Firstly, the series measure only top income shares and hence are silent on how inequality evolves elsewhere in the distribution [why?]. Secondly, the series are largely concerned with gross incomes before tax. Thirdly, the definition of income and the unit of observation (the individual vs. the family) vary across countries making comparability of levels across countries more difficult. Even within a country, there are breaks in comparability that arise because of changes in tax legislation affecting the definition of income, although most studies try to correct for such changes to create homogenous series. Finally and perhaps most important, the series might be biased because of tax avoidance and tax evasion. For the details, we refer users to the original papers (see also Atkinson, Piketty and Saez, 2011).
 
-\textbf{Summary of tax data drawbacks}
-\begin{itemize}
-\item Misreporting of incomes (high earners have an interest in getting tax beneficial ``income'' see above)
-\item with aggregated data the adjustment for household members is not possible (no equivalization possible). This is a point, which is hardly mentioned in the ``top-income'' literature, albeit it is a crucial issue in ``theorized'' concepts of income. To generalize one can say, that the concept of tax units (individuals and couples + no direct information about household members at least not in the aggregated tax tables) is not congruent with the concept of household. This might influence the overall inequality, taking into account the change from traditional household and family structures over the last century. This is an inequality related issue, where relevant studies are missing. What are the assumptions?
-\item the tax data income definition summarize labor income, capital income and taxable transfer payments (no means-tested benefits as welfare aid). Distinction between the different income sources is not possible, albeit the mechanisms of changes in the specific distribution can be very different.
-\item Some tax units are not included in the tax tables (see \citealt[11f]{foellmi_volatile_2013}).(a) only taxed cases are included (partly a problem, for certain periods we know how many cases are excluded because of low or none income)	- (b) cases tax at source (Quellenbesteuerung). Foreign nationals living in Switzerland but with a yearly or any other temporary resident permit only. In some border-cantons the share of this group is very high (20\%) 
-%Can we ignore this)
-(c) staff of international organizations based in Switzerland	- (d) non-fillers show up in the tables as long as they are registered. This persons get an imputed income (older tax tax return and information given by employers. Not registered non-	fillers are not in the records.
-- (e) tax evasion. \citet{feld_tax_2006 UNSICHER weil vorher 2007 stand} report about tax evasion in Switzerland, it should be somewhat above 20 percent on average. With the (strong) assumption that the pattern of tax evasion over time is stable, this is a minor problem for inequality measures over time.
-\end{itemize}
-
-\textbf{Problems with household income surveys}
-\begin{itemize}
-\item Sample data (bias)
-\item comparability between countries and over time (depends on income definition)
-\item short time series
-\end{itemize}
-
-\citet{atkinson_top_2009} estimate that CPS survey data fail to capture about half of the overall increase in inequality measured by the Gini coefficient, a result confirmed by \citet{Alvaredo (2010) FEHLT}. \\
-
-% Könnte man in der Introduction platzieren.
-
-See for other countries: \citealt{Siminski et al 2003 FEHLT} (Australia), \citealt{Brewer et al 2008 FEHLT}, UK, \citealt{Burkhauser et al. 2009 FEHLT}, US)
-%	•	What about the special cases? Foelmi and Martinez argue, that it is crucial to include the special cases because they include the high net wealth individuals taxed according to their expenditures. Exclusion leads to an underestimation of inequality
-%	•	Capital gains? Should not be included 
 
 
-
-
-\subsection{Ways to tackle FTA-tax data specific problems}
+\subsection{Outline of applied methods}
 
 % Diese Abschnitt muss ersetzt werden mit der von uns gewählten Vorgehensweise
 
+In the last section we described the advantages and drawback of taxdata discussing five aspects, which we regard as crucial concering the assessment of inequality. To get a feeling of the importance of these aspects, we exploit the FTA-tax data as far as possible and perform several insightful calculations adressing four of the five mentioned aspects. No further investigation is possible regarding aspect (1) concepts on measuring economic ressource. This is a point which cannot be further addresses with FTA tax data. But for the other four thematic areas, we can provide deeper insight. In general our main strategy is to apply different possible concepts within one conceptional area (income, units, measurement, population coverage) while holding other conceptual differences constant. With this strategy we want to show, the sensitiveness the assessement of inequality is especially if one looks at time trens.  In this section we  describe which methods we use to produce the results in the next section.
+
+%%%
+% Was soll hier beschrieben werden und was direkt bei den Tabellen?
+%%% Gar nicht so einfach....
+
+%%% Nach Lehrbuch müssten die methodischen Schritte hier beschrieben werden.
+
+
+% Defining income
+% Beschreiben, dass sich aus den publizierten Einkommensgrössen und den Steuerbeträgen unterschiedliche 
+% Einkommen berechnen lassen
+% Es steht der Vorwurf im Raum, die unteren Einkommen seien falsch abgebildet, weil die Sozialhilfe nicht versteuert ist
+
+%%
+% statistical units
+% Beschreiben, dass zwar keine Haushaltseinkommen gebildet werden können und Skaleneffekte nicht abgebildet sind, dass eine Annäherung jedoch möglich ist
+% Definition der äquivalenzskala bei Brülhart (korrespondiert nicht mit OECD Definitionen, aus pragmatischen Gründen)
+
+
+%%
+% Measuring inequality
+% Beschreiben, wie sich aus gruppierten Steuerstatistiken der Gini-Koeffizient berechnen lässt
+% Beschreiben wie wir relative distribution technics einsetzen und den Polaritätsindex berechnen
+
+%%
+% Population coverage
+% Analysen zu den Nullern aufzeigen> ist eine Hauptkritik an der Nutzung von Steuerdaten
+% Die Bedeutung von Normal- und Sonderfällen
+% Den Vergleich mit der HABE beschreiben, welche Einkommensgrösse nutzen wir aus der HABE um diese möglichst mit den Steuerdaten vergleichbar zu machen? Wir brauchen das Bruttoeinkommen nach Abzug der Sozialversicherungsbeiträge, dies lässt sich mit dem Reineinkommen vergleichen
+
+
+%%
+% Intertemporal comparison
+% Ziel eine möglichst lange Zeitreihe abzubilden. 
+% Technik der Lückenfüllung von Ben beschreiben> dies kurz anderen Techniken gegenüberstellen.
+% Konfidenzintervalle für die Perioden mit vielen fehlenden Werte?
+
+% eine / oder zwei Zeitreihen (eine lange und eine, die möglichst nahe an der richtigen Konzeptionalisierung ist: post direct taxed income, normal+sonderfälle) zusammen mit den bereits existierenden Reihen (HABE,LIS,SILC) ploten
 
 
 
@@ -196,7 +209,7 @@ See for other countries: \citealt{Siminski et al 2003 FEHLT} (Australia), \citea
 
 \textbf{Missing of mean-tested benefits as part of the income} -> imputation with recommendation for minimum level for basic needs defined by the SKOS.\\
 %is never mentioned as a problem, but it seems to me a better way to approach the non-taxed issue, than dell way (20 % of average income)
-% Beim Imputieren m�sste man auch die Zahl der freiwilligen Nichtbeziehenden ber�cksichtigen.
+% Beim Imputieren m?sste man auch die Zahl der freiwilligen Nichtbeziehenden ber?cksichtigen.
 
 \textbf{deductions} \citet[477]{dell_income_2007}:" we can check with statistics for 1971-72 (as well as later years) presented both by size of income before deductions and income after deductions that adding back deductions does not introduce any significant error in our estimates."
 \citet[5]{schaltegger_evolution_2011 UNSICHER}: ``..., information on [...] deductions is provided in the tax statistics, thus, we could add the personal deductions to the income data to obtain a consistent series over time''. Können wir das auch? Zumindest für gewisse Zeiträume? Das wäre noch gut. \\
