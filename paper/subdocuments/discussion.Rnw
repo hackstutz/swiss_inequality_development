@@ -13,3 +13,6 @@
 %Main findings for Switzerland (1) Our data suggests that income inequality overall slightly increased in Switzerland and we might distinguish three episodes: 1. Substantial increase in times of economic growth 1950 to 1974 ending with the oil crisis 2. Ups and downs from 1970 to 2000 3. Relatively steep increase in inequality in the early 2000s
 %(2) Despite the recent increase, overall income inequality in Switzerland is not very high in international comparison. With respect to inequality in wealth, however, Switzerland takes a leading position in the world.
 %(3) While the overall Swiss inequality remained pretty stable over decades, inequality between cantons underwent a bizarre development.
+
+% Mögliche Einstiegsfloskel
+% This article highlights the main disparities between taxdata based assessment of inequality opossed to given standard concepts of inequality as it is mainly applied with household-surveys. We reflected all important concerns based on the case of Switzerland.
