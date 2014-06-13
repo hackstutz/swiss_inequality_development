@@ -1,11 +1,232 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{32}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
 
-\bibitem{nielsen_kuznets_1997}
-François Nielsen and Arthur~S. Alderson.
-\newblock The kuznets curve and the great u-turn: Income inequality in {U.S.}
-  counties, 1970 to 1990.
-\newblock 62(1):12--33.
-\newblock {ArticleType:} research-article / Full publication date: Feb., 1997 /
-  Copyright © 1997 American Sociological Association.
+\bibitem[Gornick and ~(2013)]{gornick_income_2013}
+Janet~C Gornick and Markus ~, Jäntti.
+\newblock \emph{Income inequality: economic disparities and the middle class in
+  affluent countries}.
+\newblock Stanford University Press, Stanford, 2013.
+\newblock ISBN 9780804778244 0804778248.
+
+\bibitem[Wilkinson and Pickett(2009)]{wilkinson_income_2009}
+Richard~G. Wilkinson and Kate~E. Pickett.
+\newblock Income inequality and social dysfunction.
+\newblock \emph{Annual Review of Sociology}, 35:\penalty0 493–511, 2009.
+\newblock URL
+  \url{http://www.annualreviews.org/doi/pdf/10.1146/annurev-soc-070308-115926}.
+
+\bibitem[{World Economic Forum}(2013)]{world_economic_forum_global_2013}
+{World Economic Forum}.
+\newblock Global risks 2013. eighth edition.
+\newblock Technical report, World Economic Forum., Geneva, 2013.
+
+\bibitem[{{OECD}}(2011)]{oecd_divided_2011}
+{{OECD}}.
+\newblock Divided we stand. why inequality keeps rising.
+\newblock Technical report, {OECD} Publishing, 2011.
+
+\bibitem[Salverda et~al.(2014)Salverda, Nolan, Checchi, Marx, {McKnight}, and
+  Toth]{salverda_changing_2014}
+Wiemer Salverda, Brian Nolan, Daniele Checchi, Ive Marx, Abigail {McKnight},
+  and Istvan~Gyorgy Toth.
+\newblock \emph{Changing Inequalities in Rich Countries: Analytical and
+  Comparative Perspectives}.
+\newblock Oxford University Press, Oxford, 2014.
+\newblock ISBN 0199687439.
+
+\bibitem[Kuznets(1955)]{kuznets_economic_1955}
+Simon Kuznets.
+\newblock Economic growth and income inequality.
+\newblock \emph{The American Economic Review}, 45\penalty0 (1):\penalty0
+  1–28, 1955.
+
+\bibitem[Piketty(2001)]{piketty_les_2001}
+Thomas Piketty.
+\newblock \emph{Les hauts revenus en France au {XXe} siècle: inégalités
+  et redistributions : 1901-1998}.
+\newblock Grasset, Paris, 2001.
+\newblock ISBN 2246616514 9782246616511.
+
+\bibitem[Piketty(2003)]{piketty_income_2003}
+Thomas Piketty.
+\newblock Income inequality in france, 1901-1998.
+\newblock \emph{Journal of Political Economy}, 111\penalty0 (5):\penalty0
+  1004--1042, 2003.
+\newblock URL
+  \url{http://ideas.repec.org/a/ucp/jpolec/v111y2003i5p1004-1042.html}.
+
+\bibitem[Piketty and Saez(2003)]{piketty_income_2003-1}
+Thomas Piketty and Emmanuel Saez.
+\newblock Income inequality in the united states, 1913–1998.
+\newblock \emph{The Quarterly Journal of Economics}, 118\penalty0 (1):\penalty0
+  1–41, 2003.
+\newblock URL \url{http://qje.oxfordjournals.org/content/118/1/1.short}.
+
+\bibitem[Atkinson and Piketty(2007)]{atkinson_top_2007}
+A.~B Atkinson and Thomas Piketty.
+\newblock \emph{Top incomes over the twentieth century a contrast between
+  continental European and English-speaking countries}.
+\newblock Oxford University Press, Oxford; New York, 2007.
+\newblock ISBN 0191536865 9780191536861 9780199286881 0199286884.
+
+\bibitem[Atkinson and Piketty(2010)]{atkinson_top_2010}
+A.~B Atkinson and Thomas Piketty.
+\newblock \emph{Top incomes: a global perspective}.
+\newblock Oxford University Press, Oxford, 2010.
+\newblock ISBN 9780199286898 0199286892.
+
+\bibitem[Grabka and Kuhn(2012)]{grabka_evolution_2012}
+Markus Grabka and Ursina Kuhn.
+\newblock The evolution of income inequality in germany and switzerland since
+  the turn of the millennium.
+\newblock 2012.
+\newblock URL \url{http://papers.ssrn.com/sol3/papers.cfm?abstract_id=2131220}.
+
+\bibitem[Nolan et~al.(2014)Nolan, Salverda, Checchi, Marx, {McKnight}, and
+  Toth]{nolan_changing_2014}
+Brian Nolan, Wiemer Salverda, Daniele Checchi, Ive Marx, Abigail {McKnight},
+  and Istvan~Gyorgy Toth.
+\newblock \emph{Changing Inequalities and Societal Impacts in Rich Countries:
+  Thirty Countries' Experiences}.
+\newblock Oxford University Press, Oxford, 2014.
+\newblock ISBN 0199687420.
+
+\bibitem[Dell et~al.(2007)Dell, Piketty, and Saez]{dell_income_2007}
+F.~Dell, Thomas Piketty, and E.~Saez.
+\newblock Income and wealth concentration in switzerland over the 20th century.
+\newblock In \emph{Top Incomes Over the Twentieth Century: A Contrast Between
+  Continental European and English-Speaking Countries}, pages 472--500. Oxford
+  University Press, Oxford, May 2007.
+\newblock ISBN 9780191608728.
+
+\bibitem[Foellmi and Martínez(2013)]{foellmi_volatile_2013}
+Reto Foellmi and Isabel Martínez.
+\newblock Volatile top income shares in switzerland?
+\newblock St. Gallen, 2013.
+\newblock URL
+  \url{http://www2.unine.ch/files/content/sites/irene/files/shared/documents/SSES/Martinez.pdf}.
+
+\bibitem[Jeitziner and Peters(2007)]{jeitziner_regionale_2007}
+Bruno Jeitziner and Rudi Peters.
+\newblock Regionale einkommens-und vermögensverteilung in der schweiz: Was
+  sagen die steuerdaten.
+\newblock \emph{Die Volkswirtschaft}, 12, 2007.
+
+\bibitem[Jeitziner and Peters(2009)]{jeitziner_regionale_2009}
+Bruno Jeitziner and Rudi Peters.
+\newblock Regionale einkommens-und vermögensverteilung in der schweiz.
+  untersuchung der steuerdaten 2003 und der entwicklung seit 1995/1996.
+\newblock \emph{Bern: Eidgenössische Steuerverwaltung {ESTV.} Available at:
+  http://www. estv. admin. ch/bundessteuer/dokumentation/00882/00888/index.
+  html}, 2009.
+
+\bibitem[Bauer and T.(1994)]{bauer_verteilung_1994}
+T.~Bauer and Spycher T.
+\newblock \emph{Verteilung und Besteuerung des Reichtums im Kanton Zürich:
+  Eine Analyse der Steuerstatistiken 1945-1991}.
+\newblock Büro Bass, Bern, 1994.
+
+\bibitem[Modetta and Müller(2012)]{modetta_einkommensungleichheit_2012}
+Caterina Modetta and Bettina Müller.
+\newblock Einkommensungleichheit und staatliche umverteilung.
+\newblock \emph{Bundesamt für Statistik, Neuchâtel}, 2012.
+
+\bibitem[Atkinson et~al.(2009)Atkinson, Piketty, and Saez]{atkinson_top_2009}
+Anthony~B. Atkinson, Thomas Piketty, and Emmanuel Saez.
+\newblock Top incomes in the long run of history.
+\newblock Technical report, National Bureau of Economic Research, 2009.
+\newblock URL \url{http://www.nber.org/papers/w15408}.
+
+\bibitem[{{SNA}}(2008)]{sna_system_2008}
+{{SNA}}.
+\newblock \emph{System of national accounts 2008}.
+\newblock {UN}, New York, 2008.
+\newblock URL
+  \url{http://books.google.ch/books?hl=de&lr=&id=gQWmAdwdI8gC&oi=fnd&pg=PA1&dq=System+of+National+Accounts+2008&ots=qwGKDJUo-y&sig=xQ2tLN6Lm81QnkpHTRszi_NbP1w}.
+
+\bibitem[{United Nations}(2011)]{united_nations_canberra_2011}
+{United Nations}.
+\newblock \emph{Canberra Group. Handbook on Household Income Statistics}.
+\newblock United Nations, Geneva, 2011.
+
+\bibitem[{{UNECE}} and {{EUROSTAT}}(2006)]{unece_conference_2006}
+{{UNECE}} and {{EUROSTAT}}.
+\newblock Conference of european statisticians recommendations for the 2010
+  censuses of population and housing.
+\newblock Technical report, United Nations, New York and Geneva, 2006.
+\newblock URL
+  \url{http://www.unece.org/fileadmin/DAM/stats/publications/CES_2010_Census_Recommendations_English.pdf}.
+
+\bibitem[Müller and Schoch(2014)]{muller_vermogenslage_2014}
+André Müller and Tobias Schoch.
+\newblock Vermögenslage der privaten haushalte.
+\newblock Technical report, Bundesamt für Statistik ({BFS)}, Neuchatel, 2014.
+
+\bibitem[Engelhardt(2000)]{engelhardt_modelle_2000}
+Henriette Engelhardt.
+\newblock Modelle zur messung und erklärung personeller
+  einkommensverteilungen.
+\newblock In Prof Dr~Ulrich Mueller, Prof Dr~Bernhard Nauck, and Prof
+  Dr~Andreas Diekmann, editors, \emph{Handbuch der Demographie 2}, pages
+  1066--1091. Springer Berlin Heidelberg, January 2000.
+\newblock ISBN 978-3-642-63022-4, 978-3-642-57098-8.
+\newblock URL
+  \url{http://link.springer.com/chapter/10.1007/978-3-642-57098-8_9}.
+
+\bibitem[Cowell(2000)]{cowell_chapter_2000}
+F.~A. Cowell.
+\newblock Chapter 2 measurement of inequality.
+\newblock In {Anthony B. Atkinson and François Bourguignon}, editor,
+  \emph{Handbook of Income Distribution}, volume Volume 1, pages 87--166.
+  Elsevier, 2000.
+\newblock ISBN 1574-0056.
+\newblock URL
+  \url{http://www.sciencedirect.com/science/article/pii/S1574005600800056}.
+
+\bibitem[Hao and Naiman(2010)]{hao_assessing_2010}
+Lingxin Hao and Daniel~Q. Naiman.
+\newblock \emph{Assessing Inequality}.
+\newblock {SAGE}, California, New Delhi, London, Singapore, May 2010.
+\newblock ISBN 9781412926294.
+
+\bibitem[Bethlehem et~al.(2011)Bethlehem, Cobben, and
+  Schouten]{bethlehem_handbook_2011}
+Jelke Bethlehem, Fannie Cobben, and Barry Schouten.
+\newblock \emph{Handbook of Nonresponse in Household Surveys}.
+\newblock Wiley, March 2011.
+\newblock ISBN 9780470542798.
+
+\bibitem[Korinek et~al.(2006)Korinek, Mistiaen, and
+  Ravallion]{korinek_survey_2006}
+Anton Korinek, Johan~A. Mistiaen, and Martin Ravallion.
+\newblock Survey nonresponse and the distribution of income.
+\newblock \emph{The Journal of Economic Inequality}, 4\penalty0 (1):\penalty0
+  33--55, April 2006.
+\newblock ISSN 1569-1721, 1573-8701.
+\newblock \doi{10.1007/s10888-005-1089-4}.
+\newblock URL \url{http://link.springer.com/article/10.1007/s10888-005-1089-4}.
+
+\bibitem[Diekmann(2009)]{diekmann_empirische_2009}
+Andreas Diekmann.
+\newblock \emph{Empirische Sozialforschung: Grundlagen, Methoden, Anwendungen}.
+\newblock Rowohlt-Taschenbuch-Verl., Reinbek bei Hamburg, 2009.
+\newblock ISBN 9783499556784 3499556782.
+
+\bibitem[Feld and Frey(2006)]{feld_tax_2006}
+Lars~P. Feld and Bruno~S. Frey.
+\newblock Tax evasion in switzerland: The roles of deterrence and tax morale.
+\newblock In \emph{Working paper series: Institute for Empirical Research in
+  Economics}, volume 284, pages 123--153. Zürich, 2006.
+
+\bibitem[Peters(2011)]{peters_steuerabzuge:_2011}
+Rudi Peters.
+\newblock Steuerabzüge: Wer profitiert?
+\newblock Technical report, Eidgenössische Steuerverwaltung, Bern, 2011.
+\newblock URL
+  \url{http://zürichwww.mieterverband.ch/fileadmin/alle/Dokumente/Statistik_Studien/Steuerabz%C3%BCge_Zug.pdf}.
 
 \end{thebibliography}
