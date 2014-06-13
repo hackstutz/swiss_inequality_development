@@ -170,18 +170,22 @@ In the last section we described the advantages and drawback of taxdata discussi
 %%% Gar nicht so einfach....
 
 %%% Nach Lehrbuch müssten die methodischen Schritte hier beschrieben werden.
+% Man könnte zu den Zeitreihen jeweils die Varianz ausweisen-> dass würde helfen die Reihe zu beurteilen. Man sieht dann: aha, die Reihe ist im Vergleich zur anderen höher/tiefer. Ob die Reihen stärkeren Schwankungen unterliegen könnte einfach aus der Varianz gelesen werden
 
 
 % Defining income
 % Beschreiben, dass sich aus den publizierten Einkommensgrössen und den Steuerbeträgen unterschiedliche 
 % Einkommen berechnen lassen
-% Es steht der Vorwurf im Raum, die unteren Einkommen seien falsch abgebildet, weil die Sozialhilfe nicht versteuert ist
+% Es steht der Vorwurf im Raum, die unteren Einkommen seien mit Steuerstatistiken schlecht abgebildet, weil bedarfsabhängige Leistungen nicht versteuert sind
+
+% Es müsste eine Reihe zum gesetzliche Grundbedarf vorliegen. Wüsste ich jetzt grad nicht von wo...
 
 %%
 % statistical units
 % Beschreiben, dass zwar keine Haushaltseinkommen gebildet werden können und Skaleneffekte nicht abgebildet sind, dass eine Annäherung jedoch möglich ist
 % Definition der äquivalenzskala bei Brülhart (korrespondiert nicht mit OECD Definitionen, aus pragmatischen Gründen)
 
+df <- read.csv("../../data/ginis_und_perzentile_normal.csv",sep="\t")
 
 %%
 % Measuring inequality
@@ -193,6 +197,8 @@ In the last section we described the advantages and drawback of taxdata discussi
 % Analysen zu den Nullern > ist eine Hauptkritik an der Nutzung von Steuerdaten
 % Die Bedeutung von Normal- und Sonderfällen
 % Den Vergleich mit der HABE beschreiben, welche Einkommensgrösse nutzen wir aus der HABE um diese möglichst mit den Steuerdaten vergleichbar zu machen? Wir brauchen das Bruttoeinkommen nach Abzug der Sozialversicherungsbeiträge, dies lässt sich mit dem Reineinkommen vergleichen
+
+
 
 
 %%
