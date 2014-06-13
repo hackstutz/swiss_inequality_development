@@ -4,11 +4,17 @@
 
 \section{Results}
 
-\textcolor{red}{Gesamtschweizer Grafik (mit imputierten Daten) einmal eine Linie mit Bias, einmal ohne
-Kantonsweise Grafiken
-Kuznets / U-Turn, Test der Hypothesen mit den final Daten. Der link zwischen rein deskriptiv  und Theorie plus Modell ist aktuell noch ein krasser Drahtseilakt...}
+% Brauchen wir glaubs nicht mehr
+%\textcolor{red}{Gesamtschweizer Grafik (mit imputierten Daten) einmal eine Linie mit Bias, einmal ohne
+%Kantonsweise Grafiken
+%Kuznets / U-Turn, Test der Hypothesen mit den final Daten. Der link zwischen rein deskriptiv  und Theorie plus Modell ist aktuell noch ein krasser Drahtseilakt...}
 
-\subsection{Gini coefficients for taxable income, income before deductions and taxable income after tax}
+% Der Übersicht halber habe ich hier die Titel hier analog zum "Struktur-Issue" auf git gesetzt
+
+\subsection{Defining income}
+
+
+\emph{Gini coefficients for taxable income, income before deductions and taxable income after tax}
 
 <<setup_gini_data>>=
 library(foreign)
@@ -29,12 +35,21 @@ ggplot(dflong[dflong$kanton=="CH",], aes(x=steuerperiode,y=Gini,colour=Type))+ge
 ggplot(dflong, aes(x=steuerperiode,y=Gini,colour=Type))+geom_line()+facet_wrap(~kanton)+theme_bw()+xlab("tax period")
 @
 
-\subsection{Zero share}
 
-Estimation using population statistics (1945/46-1993/94) and official tax administration statistics (1995/96 and later) 
+\emph{Gini coefficients considering mean-tested benefits}
 
+\subsection{Measuring inequality}
 
-\subsection{Income measures with and without zeros}
+% Zero-shares (alter Textbaustein)
+%Estimation using population statistics (1945/46-1993/94) and official tax administration statistics (1995/96 and later) 
+% Das allenfalls in der Methodensection machen?
+% Vergleich mit der Dell-Reihe zu Non-fillers
+% Überschneidungen gib es leider nicht 
+% Interessant wäre es auch, zu sehen ob es Brüche in den Zeitreihen der Zahl der Steuerpflichtigen und jener ohne Besteuerung gibt.
+
+\subsection{Population coverage}
+
+\emph{Income measures with and without zeros}
 
 taxable income with and without zeros
 
@@ -50,19 +65,12 @@ ggplot(dflong[dflong$steuerperiode>=1995.5,], aes(x=steuerperiode,y=Gini,colour=
 
 Including zeros leads to significantly higher gini coefficients. However we must keep in mind, that these might be artifically high values as we assume zero income for everyone in the zero group. We can conclude more from the graphic: the ratio between both measures seems to be quite constant although for aggregate Switzerland but there are minor deviations for multiple cantons as well as strong deviations for the cantons Geneva and Tessin. However the problems seem not to result from a shift in the zero-share over time but they are specific for the time-period when the tax system changed. 
 
-%Switzerland (income and wealth)
-%- graph with gini over time> identify periods of change
-%- closer look at interesting periods with relative distribution methods-> is change because of down- or upgrading?
-%Cantonal level (income and wealth)
-%- different development on regional level 
-%Switzerland in international comparison
-%- Comparison with other data sources- LIS (inequality in Switzerland is decreasing, which is quite special, because the common pattern in western countries shows an increase in inequality
+\emph{normal and special cases}
 
-%- Comparison with other countries (similar data)
+\emph{comparison of tax-data and survey data distribution}
 
 
-% Es scheinen mir aktuell etwas viele Ergebnisse zu sein und ich frage mich, ob wir Ergebnisse auf der Kantonsebene ausklammern sollen. Wenn wir drei Ergebniss haben (1) Unterscheidung von unterschiedlichen Perioden der Ungleichheitsentwicklung (2) Beurteilung dieser Perioden hinsichtlich dem Bereich der Veränderungen (Arme, Reiceh) und Entwicklung der Vermögensungleichheit, dann haben wir bereits viel. Falls wir spezifische Erkenntnisse nur aus dem Kantonsvergleich bekommen (Bias durch Nuller o.ä.), dann sollten wir trotzdem damit arbeiten.
+\subsection{Interremporal comparison}
 
-%rf: genau. kantone unterstreichen die probleme mit dem 0er bias und die probleme mit "imputing the gap". mehr muss erstmal nicht sein.
 
 
