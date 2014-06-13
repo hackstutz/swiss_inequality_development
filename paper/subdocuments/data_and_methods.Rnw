@@ -192,6 +192,16 @@ df <- read.csv("../../data/ginis_und_perzentile_normal.csv",sep="\t")
 % Beschreiben, wie sich aus gruppierten Steuerstatistiken der Gini-Koeffizient berechnen lässt
 % Beschreiben wie wir relative distribution technics einsetzen und den Polaritätsindex berechnen
 
+% Calculate the gini
+% Ein bisschen erklären, wie aus gruppierten Tabellen der Gini-Koeffizient berechnet wird.
+
+% Polaritätsindex
+% Alderson and Doran (2013:56) beschreiben zwei mögliche Indizies Median relative polarization index (MRP) eingeführt von (Morris, Bernhardt und Handcock 1994:217), der in den lower relative polarization index(LRP) und den upper relative polarization index (URP) zerlegt werden kann (ebd.209)
+% (1. Schritt) Probability density functions
+% (2. Schritt) Overall relative density function -> Achtung diese Dichtefunktion bildet sowohl die  Lokationsverschiebung als auch durch Verschiebung der Form ab. Eigentlich interessiert aber, der shape shift
+% Deshalb wird die Verteilung um die Lokationsverschiebung bereinigt und nur der shape-shift angeschaut. Ausgewiesen werden (MRP)-> hat polarisierung stattgefunden: LRP und URP-> ist polarisierung eher auf eine Zunahme armer (LRP) zurückzuführen oder auf eine Zunahme von Reichen? (URP)
+
+
 %%
 % Population coverage
 % Analysen zu den Nullern > ist eine Hauptkritik an der Nutzung von Steuerdaten
