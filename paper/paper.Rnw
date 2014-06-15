@@ -117,7 +117,7 @@
 %%% Include introduction %%%
 %%%-------------------------------------------------%%%
 
-<<subdoc_content_introduction, child='subdocuments/introduction.Rnw', eval=T>>=
+<<subdoc_content_introduction, child='subdocuments/introduction.Rnw', eval=F>>=
 @
 
 %%%-------------------------------------------------%%%
