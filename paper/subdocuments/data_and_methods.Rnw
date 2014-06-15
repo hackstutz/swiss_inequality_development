@@ -104,6 +104,8 @@ The issue of incomplete coverage is less dramatical with tax data. Essentially e
 An other critical issue with tax data is the problem of tax evasion, which definitely can bias the assessment of inequality. Alvaredo and Saez (2006) for example regard estimates of Spanish top incomes prior to 1981 as unreliable due to widespread tax evasion. Evasion can occured, when individuals try not to fill tax returns or by misreporting of incomes. In Switzerland non-fillers show up in the tax-statistics either way, as long as they are registered. This person get an imputed income form an older tax return and infomration given by employers. Only non registered non-fillers are not in the records. Therefore non-fillers are a minor problem. Not neglectable is the circumstance, that individuals misreport incomes. \citet{feld_tax_2006} examine the role of tax evasion in Switzerland by calculating the difference of the national accounts measures of primary income and the income reported to the tax authorities. They can show, that the average level of income tax evasion from 1965 to 1995 varies between 13\% and 35\%. They suggest, that evasion is heavily driven by capital income tax evasion. \\
 
 
+
+
 \emph{Intertemporal comparison}
 
 One advantage of tax data over survey data is their observation period. While the FTA data we use range back to 1945, the earliest period of survey data is 2000 (HABE data). To be fair, survey data might cover the late periods (2011 and 2012) which are not covered by tax data. The striking feature of the long FTA time series is its consistency. Both population coverage and income measures are consistent for the complete observation period. This can not be said for survey data as these are based on samples and therefore require an ideal sampling design or reweighting to be representative and comparable over time. We will see how well sampling and weighting is done in the results section.
@@ -184,8 +186,6 @@ In the last section we described the advantages and drawback of taxdata discussi
 % statistical units
 % Beschreiben, dass zwar keine Haushaltseinkommen gebildet werden können und Skaleneffekte nicht abgebildet sind, dass eine Annäherung jedoch möglich ist
 % Definition der äquivalenzskala bei Brülhart (korrespondiert nicht mit OECD Definitionen, aus pragmatischen Gründen)
-
-df <- read.csv("../../data/ginis_und_perzentile_normal.csv",sep="\t")
 
 %%
 % Measuring inequality

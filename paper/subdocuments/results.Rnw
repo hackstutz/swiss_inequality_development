@@ -49,6 +49,121 @@ ggplot(dflong, aes(x=steuerperiode,y=Gini,colour=Type))+geom_line()+facet_wrap(~
 
 \subsection{Population coverage}
 
+\emph{Normal versus special cases}
+
+The FTA stopped to publicly report data for special cases after tax period 1993/94. 
+For more recent periods however we can compare data from the 
+BRUELHARTPROJEKT (wie nennen wir das?) to the FTA normal cases, as these data are 
+identical but the BRÜLHART data include special cases. 
+We will have a look at both, the 1993/94 period as the last period where both 
+numbers were reported as well as 2009 where we compare data from the same source 
+but using differnt data sheets.
+
+
+%ABBILDUNGEN ZUM VERGLEICH NORMAL-/SONDERFÄLLE
+<<specialcases9394, echo=FALSE,warning=FALSE,fig.cap=''>>=
+library(dplyr, quietly=TRUE, warn.conflicts = FALSE)
+library(ggplot2)
+#library(reldist)
+normal <- read.csv("../../data/ginis_und_perzentile_normal.csv",sep="\t")
+normal <- normal %.% select(-G_reink, -G_taxed, -ppop0, -G_steink0)
+pooled <- read.csv("../../data/ginis_und_perzentile_beides.csv",sep="\t")
+#special <- read.csv("data/ginis_und_perzentile_sonder.csv",sep="\t")
+normal$case <- "normal case"
+#special$case <- "special case"
+pooled$case <- "pooled, normal and special cases"
+d<-rbind(normal,pooled)
+d<-d %.% 
+  filter(kanton=="CH",steuerperiode==1993.5)
+
+start <- which(names(d)=="p1")
+end <- which(names(d)=="p99")
+percentile <- c(1,5,10,20,25,30,40,50,60,70,75,80,90,95,99)
+normal <- data.frame(t(d[1,start:end]),percentile,case="normal")
+pooled <- data.frame(t(d[2,start:end]),percentile,case="pooled")
+names(normal)[1]=c("inc")
+names(pooled)[1]=c("inc")
+percentiles <- rbind(normal,pooled)  
+ggplot(percentiles, aes(x=percentile,y=inc,group=case,colour=case))+
+	geom_line()+theme_bw()+
+	scale_colour_grey()+
+	xlab("Percentile")+ylab("taxable income")+
+	ggtitle("Taxable incomes of normal and special cases 1993/94")+
+  theme(legend.justification=c(0,1),legend.position=c(0, 1))
+
+
+#plot relative distribution
+rel <- data.frame(pooled$inc,normal$inc,pooled$percentile)
+rel$change <- rel$pooled.inc/rel$normal.inc
+ggplot(rel, aes(x=pooled.percentile,y=change))+
+	geom_line()+theme_bw()+
+	scale_colour_grey()+
+	geom_line(linetype="dashed",aes(y=1),size=2)+
+	xlab("Percentile")+ylab("taxable income")+
+	ggtitle("Taxable incomes of normal versus special cases 1993/94")
+
+#steuerpflichtige estv / stpf bruelhart
+#1- (2762419 / 3268548)
+@
+
+<<specialcases09, echo=FALSE,warning=FALSE,fig.cap=''>>=
+library(foreign)
+library(ggplot2)
+#library(reldist)
+normal <- filter(read.csv("../../data/ginis_und_perzentile_normal.csv",sep="\t"),kanton=="CH",steuerperiode==2009)
+start <- which(names(normal)=="p1")
+end <- which(names(normal)=="p99")
+percentile <- c(1,5,10,20,25,30,40,50,60,70,75,80,90,95,99)
+normal <- data.frame(t(normal[1,start:end]),percentile)
+names(normal)[1]=c("inc")
+
+#bruelhart data
+pooled <- filter(read.dta("../../data/data_Schweiz.dta"), Veranlagungsperiode==2009, Einheit=="Total")
+start <- which(names(pooled)=="p1")
+p95 <- which(names(pooled)=="p95")
+end <- which(names(pooled)=="p99")
+pooled <- data.frame(t(pooled[1,c(start:p95,end)]),percentile)
+names(pooled)[1]=c("inc")
+pooled$inc<-pooled$inc/1000 #adjust scale
+normal$case <- "normal case"
+pooled$case <- "pooled, normal and special cases"
+percentiles <- rbind(normal,pooled)
+ggplot(percentiles, aes(x=percentile,y=inc,group=case,colour=case))+
+	geom_line()+theme_bw()+
+	scale_colour_grey()+
+	xlab("Percentile")+ylab("taxable income")+
+	ggtitle("Taxable incomes of normal and special cases 2009")+
+  theme(legend.justification=c(0,1),legend.position=c(0, 1))
+
+
+#plot relative distribution
+rel <- data.frame(pooled$inc,normal$inc,pooled$percentile)
+rel$change <- rel$pooled.inc/rel$normal.inc
+ggplot(rel, aes(x=pooled.percentile,y=change))+
+	geom_line()+theme_bw()+
+	geom_line(linetype="dashed",aes(y=1),size=2)+
+	scale_colour_grey()+
+	xlab("Percentile")+ylab("taxable income")+
+	ggtitle("Taxable incomes of normal versus special cases 2009")
+
+#steuerpflichtige estv / stpf bruelhart
+#1- (3422210 / 3689063)
+@
+
+
+As we can see from figure~\ref{fig:specialcases93942} and \ref{fig:specialcases092}, special cases differ strongly 
+from normal cases within the low and top percentiles. Within the tax period 1993/94 the fifth percentile of 
+normal cases is 15.8\% higher than the fifth percentile of the combines data while the 95\% percentile of 
+normal cases is even 0.7\% lower if one leaves out special cases. This indicates special cases are very 
+differnt from normal cases as the share of special cases is only 15.5\%.\footnote{1993/94 there were 2.76 
+million tax units defined as being normal cases compared to 0.51 million special cases.}
+In 2009 the situation has the same pattern. The fifth percentile of normal cases has 11\% higher taxable 
+income compared to data where special cases are included. The five percent top incomes are 4.9\% higher 
+within all cases compared to normal cases only. The share of special cases however decreased 
+to 7.2\%.\footnote{2009: 3.42 million normal cases, 0.27 million special cases}
+
+
+
 \emph{Income measures with and without zeros}
 
 taxable income with and without zeros
