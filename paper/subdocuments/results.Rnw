@@ -49,7 +49,7 @@ ggplot(dflong, aes(x=steuerperiode,y=Gini,colour=Type))+geom_line()+facet_wrap(~
 
 \subsection{Population coverage}
 
-\emph{Normal versus special cases}
+\subsubsection{Normal versus special cases}
 
 The FTA stopped to publicly report data for special cases after tax period 1993/94. 
 For more recent periods however we can compare data from the 
@@ -61,7 +61,7 @@ but using differnt data sheets.
 
 
 %ABBILDUNGEN ZUM VERGLEICH NORMAL-/SONDERFÄLLE
-<<specialcases9394, echo=FALSE,warning=FALSE,fig.cap=''>>=
+<<specialcases9394, echo=FALSE,warning=FALSE>>=
 library(dplyr, quietly=TRUE, warn.conflicts = FALSE)
 library(ggplot2)
 #library(reldist)
@@ -106,7 +106,7 @@ ggplot(rel, aes(x=pooled.percentile,y=change))+
 #1- (2762419 / 3268548)
 @
 
-<<specialcases09, echo=FALSE,warning=FALSE,fig.cap=''>>=
+<<specialcases09, echo=FALSE,warning=FALSE>>=
 library(foreign)
 library(ggplot2)
 #library(reldist)
@@ -155,7 +155,7 @@ As we can see from figure~\ref{fig:specialcases93942} and \ref{fig:specialcases0
 from normal cases within the low and top percentiles. Within the tax period 1993/94 the fifth percentile of 
 normal cases is 15.8\% higher than the fifth percentile of the combines data while the 95\% percentile of 
 normal cases is even 0.7\% lower if one leaves out special cases. This indicates special cases are very 
-differnt from normal cases as the share of special cases is only 15.5\%.\footnote{1993/94 there were 2.76 
+different from normal cases as the share of special cases is only 15.5\%.\footnote{1993/94 there were 2.76 
 million tax units defined as being normal cases compared to 0.51 million special cases.}
 In 2009 the situation has the same pattern. The fifth percentile of normal cases has 11\% higher taxable 
 income compared to data where special cases are included. The five percent top incomes are 4.9\% higher 
@@ -178,14 +178,14 @@ ggplot(dflong[dflong$steuerperiode>=1995.5,], aes(x=steuerperiode,y=Gini,colour=
 
 @
 
-Including zeros leads to significantly higher gini coefficients. However we must keep in mind, that these might be artifically high values as we assume zero income for everyone in the zero group. We can conclude more from the graphic: the ratio between both measures seems to be quite constant although for aggregate Switzerland but there are minor deviations for multiple cantons as well as strong deviations for the cantons Geneva and Tessin. However the problems seem not to result from a shift in the zero-share over time but they are specific for the time-period when the tax system changed. 
+Including zeros leads to significantly higher gini coefficients. However we must keep in mind, that these might be artificially high values as we assume zero income for everyone in the zero group. We can conclude more from the graphic: the ratio between both measures seems to be quite constant although for aggregate Switzerland but there are minor deviations for multiple cantons as well as strong deviations for the cantons Geneva and Ticino. However the problems seem not to result from a shift in the zero-share over time but they are specific for the time-period when the tax system changed. 
 
 \emph{normal and special cases}
 
 \emph{comparison of tax-data and survey data distribution}
 
 
-\subsection{Interremporal comparison}
+\subsection{Intertemporal comparison}
 
 
 
