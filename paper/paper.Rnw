@@ -124,8 +124,8 @@
 %%% How did inequality change over time %%%
 %%%-------------------------------------------------%%%
 
-%<<subdoc_content_introduction, child='subdocuments/change.Rnw', eval=T>>=
-%@
+<<subdoc_content_introduction, child='subdocuments/change.Rnw', eval=T>>=
+@
 
 % Section from an older version. Currently disabled.
 
