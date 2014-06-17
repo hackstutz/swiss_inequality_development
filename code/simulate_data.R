@@ -5,6 +5,10 @@
 ## date:        June2014
 
 
+library(dplyr, quietly=TRUE, warn.conflicts = FALSE)
+library(ggplot2)
+library(reldist)
+
 ##
 # Prepare FTA-data for 2010 (out of Rudis code) Normal cases
 normal <- read.csv("data/ginis_und_perzentile_normal.csv",sep="\t")
@@ -14,7 +18,7 @@ normal<-normal %.%
 start <- which(names(normal)=="p1")
 end <- which(names(normal)=="p95")
 percentile <- c(1,5,10,20,25,30,40,50,60,70,75,80,90,95)
-normal <- data.frame(t(d[1,start:end]),percentile,anz_pflichtige=89817)
+normal <- data.frame(t(normal[1,start:end]),percentile,anz_pflichtige=89817)
 names(normal)[1]=c("inc")
 
 
@@ -67,7 +71,7 @@ habe10$inc_habe<-habe10$inc_habe*13/1000 # transform from monthly income to inco
 
 ##
 # Apply Relative Distribution Methods
-library(reldist)
+
 
 
 ##
