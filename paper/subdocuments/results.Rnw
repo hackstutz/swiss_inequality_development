@@ -36,6 +36,8 @@ ggplot(dflong, aes(x=steuerperiode,y=Gini,colour=Type))+geom_line()+facet_wrap(~
 @
 
 
+% Nicht eher nur CH-Plot?
+
 \emph{Gini coefficients considering mean-tested benefits}
 
 \subsection{Measuring inequality}
@@ -68,7 +70,7 @@ library(ggplot2)
 normal <- read.csv("../../data/ginis_und_perzentile_normal.csv",sep="\t")
 normal <- normal %.% select(-G_reink, -G_taxed, -ppop0, -G_steink0)
 pooled <- read.csv("../../data/ginis_und_perzentile_beides.csv",sep="\t")
-#special <- read.csv("data/ginis_und_perzentile_sonder.csv",sep="\t")
+#special <- read.csv("data/ginis_und_perzentile_sonder.csv",segep="\t")
 normal$case <- "normal case"
 #special$case <- "special case"
 pooled$case <- "pooled, normal and special cases"
@@ -98,7 +100,7 @@ rel$change <- rel$pooled.inc/rel$normal.inc
 ggplot(rel, aes(x=pooled.percentile,y=change))+
 	geom_line()+theme_bw()+
 	scale_colour_grey()+
-	geom_line(linetype="dashed",aes(y=1),size=2)+
+	geom_line(linetype="dashed",aes(y=1),size=1)+
 	xlab("Percentile")+ylab("taxable income")+
 	ggtitle("Taxable incomes of normal versus special cases 1993/94")
 
@@ -179,8 +181,6 @@ ggplot(dflong[dflong$steuerperiode>=1995.5,], aes(x=steuerperiode,y=Gini,colour=
 @
 
 Including zeros leads to significantly higher gini coefficients. However we must keep in mind, that these might be artificially high values as we assume zero income for everyone in the zero group. We can conclude more from the graphic: the ratio between both measures seems to be quite constant although for aggregate Switzerland but there are minor deviations for multiple cantons as well as strong deviations for the cantons Geneva and Ticino. However the problems seem not to result from a shift in the zero-share over time but they are specific for the time-period when the tax system changed. 
-
-\emph{normal and special cases}
 
 \emph{comparison of tax-data and survey data distribution}
 
