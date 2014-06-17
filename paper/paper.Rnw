@@ -40,7 +40,9 @@
 \usepackage{paralist} % Used for the compactitem environment which makes bullet points with less space between them
 
 \usepackage{color} % used to mark parts that need to be edited
-\usepackage{natbib} %to use citealt citet citep
+\usepackage[comma,authoryear]{natbib} %to use citealt citet citep
+%\usepackage{biblatex} %to make use of the date field in .bib-files instead of year-field.
+%\usepackage{url}
 \usepackage{abstract} % Allows abstract customization
 \renewcommand{\abstractnamefont}{\normalfont\bfseries} % Set the "Abstract" text to bold
 \renewcommand{\abstracttextfont}{\normalfont\small\itshape} % Set the abstract itself to small italic text
@@ -117,7 +119,7 @@
 %%% Include introduction %%%
 %%%-------------------------------------------------%%%
 
-<<subdoc_content_introduction, child='subdocuments/introduction.Rnw', eval=F>>=
+<<subdoc_content_introduction, child='subdocuments/introduction.Rnw', eval=T>>=
 @
 
 %%%-------------------------------------------------%%%
