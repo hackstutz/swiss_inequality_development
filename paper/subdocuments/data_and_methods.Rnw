@@ -103,7 +103,15 @@ Another critical issue with tax data is the problem of tax evasion, which defini
 
 \emph{Intertemporal comparison}
 
-One advantage of tax data over survey data is their observation period. While the FTA data we use range back to 1945, the earliest period of survey data is 2000 (HABE data). To be fair, survey data might cover the late periods (2011 and 2012) which are not covered by tax data. The striking feature of the long FTA time series is its consistency. Both population coverage and income measures are consistent for the complete observation period. This can not be said for survey data as these are based on samples and therefore require an ideal sampling design or reweighting to be representative and comparable over time. We will see how well sampling and weighting is done in the results section.
+
+\emph{Summary}
+
+To define a standard of measuring economic resources and related inequality we discussed different dimensions of demands the data needs to meet. To sum up, ideally we want to measure \emph{disposable income} for \emph{all} swiss \emph{households} yearly for an extended period of time. Tax data has one weakness when it comes to the ideal income measure as we need to work with ``taxable income'' which is designed to serve taxation purposes. However, both concepts -- what needs to be taxed and what can be spent -- are related as both address a distinction between necessary and voluntary expenses. By subtracting taxes from taxable income we are confident to satisfyingly come close the theoretically ideal income measure of disposable income. The second most important drawback with tax data is that it does not adequately address households. There are few situations in which the tax unit equals the household, that is for individuals living alone, with married partner and/or deductible children and nobody else. This ``classic'' household setup however became less common in the last decades so we need to assume statements about household inequality based on taxed data became more and more biased. The swiss law seems to be slightly outdated in this context.
+Finally however, another advantage of tax data (over survey data) is indeed the observation period. While the FTA data we use range back to 1945, the earliest period of survey data is 2000 (HBS data). The striking feature of the long FTA time series is its consistency. Both population coverage and income measures are rather consistent for the complete observation period\footnote{Limitations might however exist due to tax evasion and major changes in the tax system, e.g. 1945.}. This can not be said for survey data as these are based on samples and therefore require an ideal sampling design or reweighting to be representative and comparable over time. We will see how well sampling and weighting is done in the results section.
+
+%RF: damit haben wir WER, WANN, WAS, wollen wir noch ein WOMIT/WAS DARSTELLEN -> methodik -> reldist ?
+
+
 
 \subsection{Comparison of tax data and other data sources - advantages and shortcomings}
 
@@ -120,13 +128,16 @@ One advantage of tax data over survey data is their observation period. While th
 
 \begin{table}[h]
 \begin{tabular}{lcccc}
-                                   & FTA       & HABE      & EU-SILC   & LIS       \\
-Range                              & 1945-2010 & 2000-2011 & 2007-2012 & 1982-2004 \\
-Cross country comparison possible? & no        & no        & yes       & yes       \\
-Top incomes covered?               & yes       & no        & no        & no        \\
-Low incomes covered?               & no        & yes       & yes       & yes       \\
-Concepts of economic ressources?   & no        & yes       & ?         & ?         \\
-Equivalisation?                    & no        & yes       & ?         &          
+                                   & FTA       & Survey data\\
+Statistical unit                   & individuals/couples  & households\\                                   
+Concepts of economic ressources?   & limited   & yes (for recent periods)\\
+Equivalisation?                    & limited   & yes\\
+Top incomes covered?               & yes       & no\\
+Low incomes covered?               & no        & yes\\
+Range                              & 1945-2010 & 1982-2011\\
+Comparison over time possible? 	   & yes       & limited\\
+Cross country comparison possible? & limited   & limited
+        
 \end{tabular}
 \end{table}
 
