@@ -128,13 +128,16 @@ Finally however, another advantage of tax data (over survey data) is indeed the 
 
 \begin{table}[h]
 \begin{tabular}{lcccc}
-                                   & FTA       & HABE      & EU-SILC   & LIS       \\
-Range                              & 1945-2010 & 2000-2011 & 2007-2012 & 1982-2004 \\
-Cross country comparison possible? & no        & no        & yes       & yes       \\
-Top incomes covered?               & yes       & no        & no        & no        \\
-Low incomes covered?               & no        & yes       & yes       & yes       \\
-Concepts of economic ressources?   & no        & yes       & ?         & ?         \\
-Equivalisation?                    & no        & yes       & ?         &          
+                                   & FTA       & Survey data\\
+Statistical unit                   & individuals/couples  & households\\                                   
+Concepts of economic ressources?   & limited   & yes (for recent periods)\\
+Equivalisation?                    & limited   & yes\\
+Top incomes covered?               & yes       & no\\
+Low incomes covered?               & no        & yes\\
+Range                              & 1945-2010 & 1982-2011\\
+Comparison over time possible? 	   & yes       & limited\\
+Cross country comparison possible? & limited   & limited
+        
 \end{tabular}
 \end{table}
 
