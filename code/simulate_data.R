@@ -8,6 +8,7 @@
 library(dplyr, quietly=TRUE, warn.conflicts = FALSE)
 library(ggplot2)
 library(reldist)
+library(foreign)
 
 #######################
 #     2010            #
@@ -56,9 +57,6 @@ hist(normal.ind$inc)
 
 
 ##
-# Interpolate CDF
-
-##
 # Prepare HABE Data - 2010
 # ATTENTION: not weighted and with disposable income
 #habe0911<-read.table("P:/WGS/FBS/ISS/Projekte laufend/SNF Ungleichheit/Datengrundlagen/HABE/2009 bis 2011/HABE091011_Standard_130717UOe.txt", header=TRUE)
@@ -75,7 +73,7 @@ habe10<-habe0911 %.%
   filter(Jahr08==2010)
 habe10<-data.frame(habe10$Bruttoeinkommen08)
 names(habe10)<-"inc_habe"
-habe10$inc_habe<-habe10$inc_habe*13/1000 # transform from monthly income to income per year
+habe10$inc_habe<-habe10$inc_habe*12/1000 # transform from monthly income to income per year
 
 ##
 # Apply Relative Distribution Methods
@@ -95,11 +93,11 @@ plot(x = (density1$x), y = density1$y, type = "l",
      xlab = "Einkommen", ylab = "density",
      axes = FALSE,
      xlim = c(-70, 900),
-     ylim=c(0,1.626e-02))
+     ylim=c(0,1.559e-02))
 title(main="FTA vs HBS income distribution",cex=0.6)
 axis(side = 1)
 axis(side = 2)
-fig1legend <- list(x=c(400,400),y=c(1.626e-02,1.626e-02))
+fig1legend <- list(x=c(400,400),y=c(1.559e-02,1.559e-02))
 legend(fig1legend,lty=1:2,cex=0.5, bty="n",
        legend=c("HBS","FTA"))
 density2 <- density(normal.ind$inc)
@@ -121,7 +119,7 @@ title(main="Relative CDF",cex=0.6)
 fig2b <- reldist(y=normal.ind$inc,yo=habe10$inc_habe,
                  ci=FALSE,smooth=0.4,
                  yolabs=seq(-1,3,by=0.5),
-                 ylim=c(0,2.5),cex=0.8,
+                 ylim=c(0,5),cex=0.8,
                  ylab="Relative Density",
                  xlab="Proportion of HBS Distribution")
 title(main="Relative PDF",cex=0.6)
@@ -133,28 +131,28 @@ par(mfrow=c(1,3))
 g10 <- reldist(y=normal.ind$inc, yo=habe10$inc_habe,
                smooth=0.4, ci=FALSE,
                yolabs=seq(-1,3,by=0.5),
-               ylim=c(0.5,3.0),
+               ylim=c(0.5,5.0),
                bar=TRUE, quiet=FALSE,
                xlab="Proportion of HBS Distribution")
-title(main=paste("Overall realtive density",cex=0.6)
+title(main=paste("Overall realtive density"))
 abline(h=1,lty=2)
 g1A <- reldist(y=normal.ind$inc, yo=habe10$inc_habe,
                show="effect",
                bar=TRUE, quiet=FALSE,
-               ylim=c(0.5,3.0), ylab="",
+               ylim=c(0.5,5.0), ylab="",
                smooth=0.4, ci=FALSE,
                yolabs=seq(-1,3,by=0.5),
                xlab="Proportion of HBS Distribution")
-title(main=paste("Effect of Median shift",cex=0.6)
+title(main=paste("Effect of Median shift"))
 abline(h=1,lty=2)
 gA0 <- reldist(y=normal.ind$inc, yo=habe10$inc_habe,
                smooth=0.4, ci=FALSE,
                show="residual",
                bar=TRUE, quiet=FALSE,
-               ylim=c(0.5,3.0), ylab="",
+               ylim=c(0.5,5.0), ylab="",
                yolabs=seq(-1,3,by=0.5),
-               xlab="Effect of different shape")
-title(main=paste("Overall realtive density",cex=0.6)
+               xlab="Proportion of HBS Distribution")
+title(main=paste("Effect of different shape"))
 abline(h=1,lty=2)
 par(mfrow=c(1,1))
 
@@ -230,8 +228,8 @@ normal.ind<-data.frame(s)
 names(normal.ind)[1]=c("inc")
 summary(normal.ind)
 hist(normal.ind$inc)
-normal.ind$inc<-normal.ind$inc*7 # Rescale income 
-hist(normal.ind$inc)
+#normal.ind$inc<-normal.ind$inc*7 # Rescale income 
+#hist(normal.ind$inc)
 
 ##
 # Prepare HABE Data - 2005
@@ -389,8 +387,76 @@ title(main=paste("Overall realtive density",cex=0.6)
 
 
                   
-statad <- read.dta("data/steuerdaten20140522_stata12.dta")    
-statad<-statad %.% 
+
+
+#####
+# Comparing HBS-data to FTA-data, we see that FTA-Data has a hugh middle-class bias
+# We think it's because we compare tax units to households
+# To find out about that, we try to focus the comparision on a) singles and b) married to see
+
+# Get Brülhartdata for 2010
+estv2010 <- read.csv("data/estv_normal_sonder_mitNuller_stE_2010.csv",sep=";")
+
+# Select percentiles and all cases(total)
+
+estv2010.total<-estv2010[c(18:38),c(1,4)]
+
+##
+# Simulate individual data points
+# Percentile-Plot (descriptive  purpose)
+# cumulative probabilites
+cum.p<-c(1,5,10,20,25,30,40,50,60,70,75,80,90,95,96,97,98,99,99.5,99.9,99.99)/100
+# probabilities
+prob<-c(cum.p[1],diff(cum.p), .01)
+# extreme values beyond x (to sample)
+#freq<-max(normal$anz_pflichtige)
+freq<-3000
+init<-0
+fin<-(abs(max(estv2010.total$Total,na.rm=TRUE))+5)
+# generate the sequence to take pairs from
+ival<-c(init,estv2010.total$Total,fin)
+len<-10000 # sequence of each pair
+s<-sapply(2:length(ival),function(i){
+  seq(ival[i-1],ival[i],length.out=len)
+})
+s<-sample(s,freq,prob=rep(prob, each=len),replace=T)
+estv2010.total.ind<-data.frame(s)
+names(estv2010.total.ind)[1]=c("inc")
+summary(estv2010.total.ind)
+hist(estv2010.total.ind$inc)
+estv2010.total.ind$inc<-estv2010.total.ind$inc/1000
+
+#normal.ind$inc<-normal.ind$inc*7 # Rescale income 
+#hist(normal.ind$inc)
+
+density1 <- density(habe10$inc_habe)
+plot(x = (density1$x), y = density1$y, type = "l",
+     xlab = "Einkommen", ylab = "density",
+     axes = FALSE,
+     xlim = c(-70, 4600),
+     ylim=c(0,0.0108218))
+title(main="FTA vs HBS income distribution",cex=0.6)
+axis(side = 1)
+axis(side = 2)
+fig1legend <- list(x=c(400,400),y=c(0.0108218,0.0108218))
+legend(fig1legend,lty=1:2,cex=0.5, bty="n",
+       legend=c("HBS","FTA"))
+density2 <- density(estv2010.total.ind$inc)
+lines(x = (density2$x), y = density2$y, type = "l",lty=2)
+
+
+
+# Select maried
+
+# Select unmaried
+
+normal <- read.csv("data/ginis_und_perzentile_normal.csv",sep="\t")
+normal <- normal %.% select(-G_reink, -G_taxed, -ppop0, -G_steink0)
+normal<-normal %.% 
   filter(kanton=="CH",steuerperiode==2010)
-                  
+start <- which(names(normal)=="p1")
+end <- which(names(normal)=="p95")
+percentile <- c(1,5,10,20,25,30,40,50,60,70,75,80,90,95)
+normal <- data.frame(t(normal[1,start:end]),percentile,anz_pflichtige=89817)
+names(normal)[1]=c("inc")
                   

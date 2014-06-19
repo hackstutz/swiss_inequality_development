@@ -12,3 +12,7 @@ Stata merge of all FTA .xls files
 
 # swissGini
 Swiss Gini Coefficients for a few years (SILC, LIS and HABE)
+
+
+# data_Schweiz
+Brülhart-Data
