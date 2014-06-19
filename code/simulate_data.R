@@ -42,36 +42,40 @@ init<-0
 fin<-(abs(max(normal$inc,na.rm=TRUE))+5)
 # generate the sequence to take pairs from
 ival<-c(init,normal$inc,fin)
-len<-100 # sequence of each pair
+len<-10000 # sequence of each pair
 s<-sapply(2:length(ival),function(i){
-  seq(ival[i-1],ival[1],length.out=len)
+  seq(ival[i-1],ival[i],length.out=len)
 })
 s<-sample(s,freq,prob=rep(prob, each=len),replace=T)
 normal.ind<-data.frame(s)
 names(normal.ind)[1]=c("inc")
 summary(normal.ind)
 hist(normal.ind$inc)
-normal.ind$inc<-normal.ind$inc*7 # Rescale income 
-hist(normal.ind$inc)
+#normal.ind$inc<-normal.ind$inc*7 # Rescale income 
+#hist(normal.ind$inc)
+
+
+##
+# Interpolate CDF
 
 ##
 # Prepare HABE Data - 2010
 # ATTENTION: not weighted and with disposable income
+#habe0911<-read.table("P:/WGS/FBS/ISS/Projekte laufend/SNF Ungleichheit/Datengrundlagen/HABE/2009 bis 2011/HABE091011_Standard_130717UOe.txt", header=TRUE)
+#habe10<-habe0911 %.% 
+ # filter(Jahr08==2010)
+#habe10<-data.frame(habe10$VerfuegbaresEinkommen08)
+#names(habe10)<-"inc_habe"
+#habe10$inc_habe[habe10$inc_habe<0]<-0 # One values is -20'000
+#habe10$inc_habe<-habe10$inc_habe*13/1000 # transform from monthly income to income per year
+
+# Alternative mit Bruttoeinkommen
 habe0911<-read.table("P:/WGS/FBS/ISS/Projekte laufend/SNF Ungleichheit/Datengrundlagen/HABE/2009 bis 2011/HABE091011_Standard_130717UOe.txt", header=TRUE)
 habe10<-habe0911 %.% 
   filter(Jahr08==2010)
-habe10<-data.frame(habe10$VerfuegbaresEinkommen08)
+habe10<-data.frame(habe10$Bruttoeinkommen08)
 names(habe10)<-"inc_habe"
-habe10$inc_habe[habe10$inc_habe<0]<-0 # One values is -20'000
 habe10$inc_habe<-habe10$inc_habe*13/1000 # transform from monthly income to income per year
-
-# Alternative mit Bruttoeinkommen
-#habe0911<-read.table("P:/WGS/FBS/ISS/Projekte laufend/SNF Ungleichheit/Datengrundlagen/HABE/2009 bis 2011/HABE091011_Standard_130717UOe.txt", header=TRUE)
-#habe10<-habe0911 %.% 
-#  filter(Jahr08==2010)
-#habe10<-data.frame(habe10$Bruttoeinkommen08)
-#names(habe10)<-"inc_habe"
-#habe10$inc_habe<-habe10$inc_habe*13/1000 # transform from monthly income to income per year
 
 ##
 # Apply Relative Distribution Methods
@@ -91,11 +95,11 @@ plot(x = (density1$x), y = density1$y, type = "l",
      xlab = "Einkommen", ylab = "density",
      axes = FALSE,
      xlim = c(-70, 900),
-     ylim=c(0,8.652e-03))
+     ylim=c(0,1.626e-02))
 title(main="FTA vs HBS income distribution",cex=0.6)
 axis(side = 1)
 axis(side = 2)
-fig1legend <- list(x=c(400,400),y=c(8.652e-03,8.652e-03))
+fig1legend <- list(x=c(400,400),y=c(1.626e-02,1.626e-02))
 legend(fig1legend,lty=1:2,cex=0.5, bty="n",
        legend=c("HBS","FTA"))
 density2 <- density(normal.ind$inc)
@@ -219,7 +223,7 @@ fin<-(abs(max(normal$inc,na.rm=TRUE))+5)
 ival<-c(init,normal$inc,fin)
 len<-100 # sequence of each pair
 s<-sapply(2:length(ival),function(i){
-  seq(ival[i-1],ival[1],length.out=len)
+  seq(ival[i-1],ival[i],length.out=len)
 })
 s<-sample(s,freq,prob=rep(prob, each=len),replace=T)
 normal.ind<-data.frame(s)
@@ -384,3 +388,9 @@ title(main=paste("Overall realtive density",cex=0.6)
 
 
 
+                  
+statad <- read.dta("data/steuerdaten20140522_stata12.dta")    
+statad<-statad %.% 
+  filter(kanton=="CH",steuerperiode==2010)
+                  
+                  

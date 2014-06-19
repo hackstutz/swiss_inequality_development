@@ -123,20 +123,13 @@
 @
 
 %%%-------------------------------------------------%%%
-%%% How did inequality change over time %%%
-%%%-------------------------------------------------%%%
-
-<<subdoc_content_introduction, child='subdocuments/change.Rnw', eval=T>>=
-@
-
-% Section from an older version. Currently disabled.
-
-
-%%%-------------------------------------------------%%%
 %%% Include data and methods %%%
 %%%-------------------------------------------------%%%
 
-<<subdoc_data_and_methods, child='subdocuments/data_and_methods.Rnw', eval=T>>=
+<<subdoc_data_and_methods, child='subdocuments/data.Rnw', eval=T>>=
+@
+
+<<subdoc_data_and_methods, child='subdocuments/methods.Rnw', eval=T>>=
 @
 
 %%%-------------------------------------------------%%%
