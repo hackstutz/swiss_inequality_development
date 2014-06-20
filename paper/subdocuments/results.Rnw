@@ -41,12 +41,33 @@ ggplot(dflong[dflong$kanton=="CH",], aes(x=steuerperiode,y=Gini,shape=Type))+
 #ggplot(dflong, aes(x=steuerperiode,y=Gini,colour=Type))+geom_line()+facet_wrap(~kanton)+theme_bw()+xlab("tax period")
 @
 
+\subsection{Statistical units}
+
+<<setup_data>>=
+bd <- read.csv("../../data/data_Schweiz.csv", header=TRUE,sep=";")
+bd.long<-reshape(bd,
+varying = c("gini_reink","gini_reinka"),
+v.names = "Gini",
+timevar = "inc_def",
+times = c("Gini net income","Gini equivaliced net income"),
+direction ="long")
+@
 
 
+<<With and without equivalence scale>>=
+library(ggplot2)
+ggplot(db[db$Einheit=="Total",], aes(x=Veranlagungsperiode,y=Gini,shape=Type))+
+  scale_y_continuous(limits=c(0.18,0.4))+
+  scale_x_continuous(limits=c(1982,2012),breaks=number_ticks(10)) +
+  geom_point(aes(shape=Type),size=3)+
+  geom_line(data=dflong[dflong$kanton=="CH",],aes(linetype=Type))+
+  theme_bw()+
+  xlab("tax period")
 
+@
 
+\subsection{Measuring inequality}
 
-% Nicht eher nur CH-Plot?
 
 \emph{Gini coefficients considering mean-tested benefits}
 

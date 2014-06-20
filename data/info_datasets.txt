@@ -15,4 +15,10 @@ Swiss Gini Coefficients for a few years (SILC, LIS and HABE)
 
 
 # data_Schweiz
-Brülhart-Data
+Brülhart-Data (ergänzt mit Zahlen für 2010)
+- no information from 1994-2002
+
+
+# data_Schweiz_mitNull.csv
+Brülhart-data (ergänzt mit Zahlen für 2010)
+- no information from 1994-2002
