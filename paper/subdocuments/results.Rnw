@@ -276,6 +276,10 @@ estv2010.total.ind$inc<-estv2010.total.ind$inc/1000
 
 # HABE - 2010 all cases 
 
+#####################################################
+#         ACHTUNG: Bisher ohne Gewichte!            #
+#####################################################
+
 habe0911<-read.table("P:/WGS/FBS/ISS/Projekte laufend/SNF Ungleichheit/Datengrundlagen/HABE/2009 bis 2011/HABE091011_Standard_130717UOe.txt", header=TRUE)
 habe10<-habe0911 %.% 
   filter(Jahr08==2010)
