@@ -31,14 +31,26 @@ dflong <- melt(df[,c("G_steink","G_reink","G_taxed","kanton","steuerperiode")], 
 names(dflong)[3]<-"Type"
 names(dflong)[4]<-"Gini"
 levels(dflong$Type)<-c("taxable income","income before deductions","taxable income after tax")
-ggplot(dflong[dflong$kanton=="CH",], aes(x=steuerperiode,y=Gini,colour=Type))+geom_line(size=1)+theme_bw()+xlab("tax period")
-ggplot(dflong, aes(x=steuerperiode,y=Gini,colour=Type))+geom_line()+facet_wrap(~kanton)+theme_bw()+xlab("tax period")
+ggplot(dflong[dflong$kanton=="CH",], aes(x=steuerperiode,y=Gini,shape=Type))+
+  scale_y_continuous(limits=c(0.18,0.4))+
+  scale_x_continuous(limits=c(1982,2012),breaks=number_ticks(10)) +
+  geom_point(aes(shape=Type),size=3)+
+  geom_line(data=dflong[dflong$kanton=="CH",],aes(linetype=Type))+
+  theme_bw()+
+  xlab("tax period")
+#ggplot(dflong, aes(x=steuerperiode,y=Gini,colour=Type))+geom_line()+facet_wrap(~kanton)+theme_bw()+xlab("tax period")
 @
+
+
+
+
 
 
 % Nicht eher nur CH-Plot?
 
 \emph{Gini coefficients considering mean-tested benefits}
+
+% Wollen wir das ?berhaupt machen?
 
 \subsection{Measuring inequality}
 
@@ -68,7 +80,7 @@ library(dplyr, quietly=TRUE, warn.conflicts = FALSE)
 library(ggplot2)
 #library(reldist)
 normal <- read.csv("../../data/ginis_und_perzentile_normal.csv",sep="\t")
-normal <- normal %.% select(-G_reink, -G_taxed, -ppop0, -G_steink0)
+#normal <- normal %.% select(-G_reink, -G_taxed, -ppop0, -G_steink0)
 pooled <- read.csv("../../data/ginis_und_perzentile_beides.csv",sep="\t")
 #special <- read.csv("data/ginis_und_perzentile_sonder.csv",segep="\t")
 normal$case <- "normal case"
