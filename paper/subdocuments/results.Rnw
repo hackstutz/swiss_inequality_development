@@ -44,7 +44,7 @@ ggplot(dflong[dflong$kanton=="CH",], aes(x=steuerperiode,y=Gini,shape=Type))+
 
 \subsection{Statistical units}
 
-<<setup_data>>=
+<<setup_data_Brühlhart with and without taxed>>=
 library(dplyr, quietly=TRUE, warn.conflicts = FALSE)
 # Ohne Nuller
 bd <- read.csv("../../data/data_Schweiz.csv", header=TRUE,sep=";")
@@ -78,6 +78,10 @@ bdlong<-rbind(bd.0.long,bd.long)
 @
 
 
+% Achtung: Das kann doch nicht stimmen, dass wir hier eine Reihe ab 1993 vorliegen haben.
+% Die ESTV-Zahlen beginnen ab 1995/1996... Ist das jetzt eine Periode, wo man noch Gesamtschweizerische Reihen rekonstruieren kann?
+
+
 <<With and without equivalence scale>>=
 library(ggplot2)
 number_ticks <- function(n) {function(limits) pretty(limits, n)}
@@ -92,6 +96,126 @@ ggplot(bdlong, aes(x=Jahr,y=Gini,shape=inc_def))+
 
 \subsection{Measuring inequality}
 
+% Es stellt sich die Frage für welchen Zeitraum der Vergleich gemacht wird.
+% Ich schlage vor, der Vergleich wird mit den Brülhartdaten gemacht und der Vergleich soll von 2003 bis 2010 reichen
+
+<<setup_data_Brülhart_2003>>=
+library(dplyr, quietly=TRUE, warn.conflicts = FALSE)
+library(foreign)
+# Ohne Nuller
+bd.0 <- read.csv("../../data/data_Schweiz_mitNull.csv", header=TRUE,sep=";")
+#Veranlagungsperiode -> Jahre
+bd.0$Jahr <- as.numeric(substr(bd.0$Veranlagungsperiode,1,4))
+bd.0$Jahr[nchar(as.character(bd.0$Veranlagungsperiode))>4] <- bd.0$Jahr[nchar(as.character(bd.0$Veranlagungsperiode))>4] - 2
+bd.2003<-bd.0 %.% 
+  filter(Jahr==2003,Einheit=="Total")
+start <- which(names(bd.2003)=="p1")
+end <- which(names(bd.2003)=="p99_99")
+percentile <- c(1,5,10,20,25,30,40,50,60,70,75,80,90,95,96,97,98,99,99.5,99.9,99.99)
+bd.2003<- data.frame(t(bd.2003[1,start:end]),percentile)
+names(bd.2003)[1]=c("inc")
+cum.p<-c(1,5,10,20,25,30,40,50,60,70,75,80,90,95,96,97,98,99,99.5,99.9,99.99)/100
+prob<-c(cum.p[1],diff(cum.p), .01)
+freq<-3000
+init<-0 
+bd.2003$inc<-as.numeric(as.character(bd.2003$inc))
+fin<-(abs(max(bd.2003$inc,na.rm=TRUE))+5)
+ival<-c(init,bd.2003$inc,fin)
+len<-10000
+s<-sapply(2:length(ival),function(i){
+  seq(ival[i-1],ival[i],length.out=len)
+})
+s<-sample(s,freq,prob=rep(prob, each=len),replace=T)
+bd.2003.ind<-data.frame(s)
+names(bd.2003.ind)[1]=c("inc")
+bd.2003.ind$inc<-bd.2003.ind$inc/1000
+@
+
+<<setup_data_Brülhart_2010>>=
+library(dplyr, quietly=TRUE, warn.conflicts = FALSE)
+library(foreign)
+# Ohne Nuller
+bd.0 <- read.csv("../../data/data_Schweiz_mitNull.csv", header=TRUE,sep=";")
+#Veranlagungsperiode -> Jahre
+bd.0$Jahr <- as.numeric(substr(bd.0$Veranlagungsperiode,1,4))
+bd.0$Jahr[nchar(as.character(bd.0$Veranlagungsperiode))>4] <- bd.0$Jahr[nchar(as.character(bd.0$Veranlagungsperiode))>4] - 2
+bd.2010<-bd.0 %.% 
+  filter(Jahr==2010,Einheit=="Total")
+start <- which(names(bd.2010)=="p1")
+end <- which(names(bd.2010)=="p99_99")
+percentile <- c(1,5,10,20,25,30,40,50,60,70,75,80,90,95,96,97,98,99,99.5,99.9,99.99)
+bd.2010<- data.frame(t(bd.2010[1,start:end]),percentile)
+names(bd.2010)[1]=c("inc")
+cum.p<-c(1,5,10,20,25,30,40,50,60,70,75,80,90,95,96,97,98,99,99.5,99.9,99.99)/100
+prob<-c(cum.p[1],diff(cum.p), .01)
+freq<-3000
+init<-0 
+bd.2010$inc<-as.numeric(as.character(bd.2010$inc))
+fin<-(abs(max(bd.2010$inc,na.rm=TRUE))+5)
+ival<-c(init,bd.2010$inc,fin)
+len<-10000
+s<-sapply(2:length(ival),function(i){
+  seq(ival[i-1],ival[i],length.out=len)
+})
+s<-sample(s,freq,prob=rep(prob, each=len),replace=T)
+bd.2010.ind<-data.frame(s)
+names(bd.2010.ind)[1]=c("inc")
+bd.2010.ind$inc<-bd.2010.ind$inc/1000
+@
+
+<<Comparing 2002 to 2010>>=
+library(reldist)
+
+# Probability Density Function
+
+density1 <- density(bd.2003.ind$inc)
+plot(x = (density1$x), y = density1$y, type = "l",
+     xlab = "taxable income", ylab = "density",
+     axes = FALSE,
+     xlim = c(-50, 5000),
+     ylim=c(0,0.0116031))
+title(main="2003 vs 2010",cex=0.6)
+axis(side = 1)
+axis(side = 2)
+fig1legend <- list(x=c(1200,1200),y=c(0.0116031,0.0116031))
+legend(fig1legend,lty=1:2,cex=0.5, bty="n",
+       legend=c("2003","2010"))
+density2 <- density(bd.2010.ind$inc)
+lines(x = (density2$x), y = density2$y, type = "l",lty=2)
+
+# Relative Distribution
+
+par(mfrow=c(1,3))
+g10 <- reldist(y=bd.2010.ind$inc, yo=bd.2003.ind$inc,
+               smooth=0.4, ci=FALSE,
+               yolabs=seq(-1,3,by=0.5),
+               ylim=c(0.5,5.0),
+               bar=TRUE, quiet=FALSE,
+               xlab="Proportion of 2002 Distribution")
+title(main=paste("Overall realtive density"))
+abline(h=1,lty=2)
+g1A <- reldist(y=bd.2010.ind$inc, yo=bd.2003.ind$inc,
+               show="effect",
+               bar=TRUE, quiet=FALSE,
+               ylim=c(0.5,5.0), ylab="",
+               smooth=0.4, ci=FALSE,
+               yolabs=seq(-1,3,by=0.5),
+               xlab="Proportion of 2002 Distribution")
+title(main=paste("Effect of Median shift"))
+abline(h=1,lty=2)
+gA0 <- reldist(y=bd.2010.ind$inc, yo=bd.2003.ind$inc,
+               smooth=0.4, ci=FALSE,
+               show="residual",
+               bar=TRUE, quiet=FALSE,
+               ylim=c(0.5,5.0), ylab="",
+               yolabs=seq(-1,3,by=0.5),
+               xlab="Proportion of 2002 Distribution")
+title(main=paste("Effect of different shape"))
+abline(h=1,lty=2)
+par(mfrow=c(1,1))
+@
+
+% Report Polarization index
 
 \emph{Gini coefficients considering mean-tested benefits}
 
@@ -209,6 +333,7 @@ ggplot(rel, aes(x=pooled.percentile,y=change))+
 #1- (3422210 / 3689063)
 @
 
+% Auf neuste Zahlen anpassen
 
 As we can see from figure~\ref{fig:specialcases93942} and \ref{fig:specialcases092}, special cases differ strongly 
 from normal cases within the low and top percentiles. Within the tax period 1993/94 the fifth percentile of 
@@ -234,7 +359,6 @@ names(dflong)[4]<-"Gini"
 levels(dflong$Type)<-c("without zeros","including zeros")
 ggplot(dflong[dflong$kanton=="CH" & dflong$steuerperiode>=1995.5,], aes(x=steuerperiode,y=Gini,colour=Type))+geom_line(size=1)+theme_bw()+xlab("tax period")
 ggplot(dflong[dflong$steuerperiode>=1995.5,], aes(x=steuerperiode,y=Gini,colour=Type))+geom_line()+facet_wrap(~kanton)+theme_bw()+xlab("tax period")+theme(axis.text.x = element_text(angle = 60, hjust = 1))
-
 @
 
 Including zeros leads to significantly higher gini coefficients. However we must keep in mind, that these might be artificially high values as we assume zero income for everyone in the zero group. We can conclude more from the graphic: the ratio between both measures seems to be quite constant although for aggregate Switzerland but there are minor deviations for multiple cantons as well as strong deviations for the cantons Geneva and Ticino. However the problems seem not to result from a shift in the zero-share over time but they are specific for the time-period when the tax system changed. 
