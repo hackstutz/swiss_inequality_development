@@ -192,7 +192,7 @@ g10 <- reldist(y=bd.2010.ind$inc, yo=bd.2003.ind$inc,
                ylim=c(0.5,5.0),
                bar=TRUE, quiet=FALSE,
                xlab="Proportion of 2002 Distribution")
-title(main=paste("Overall realtive density"))
+title(main=paste("Overall relative density"))
 abline(h=1,lty=2)
 g1A <- reldist(y=bd.2010.ind$inc, yo=bd.2003.ind$inc,
                show="effect",
@@ -235,13 +235,10 @@ par(mfrow=c(1,1))
 \subsubsection{Normal versus special cases}
 
 The FTA stopped to publicly report data for special cases after tax period 1993/94. 
-For more recent periods however we can compare data from the 
-BRUELHARTPROJEKT (wie nennen wir das?) to the FTA normal cases, as these data are 
-identical but the BRÜLHART data include special cases. 
+For more recent periods however we can compare already calculated percentiles provided by the FTA which are based on both special and normal cases to normal cases alone.
 We will have a look at both, the 1993/94 period as the last period where both 
-numbers were reported as well as 2009 where we compare data from the same source 
-but using differnt data sheets.
-
+numbers were reported as well as 2010 where we compare data from the same source (FTA)
+but based on different reporting (aggregated data vs. percentiles).
 
 %ABBILDUNGEN ZUM VERGLEICH NORMAL-/SONDERFÄLLE
 <<specialcases9394, echo=FALSE,warning=FALSE>>=
@@ -249,6 +246,7 @@ library(dplyr, quietly=TRUE, warn.conflicts = FALSE)
 library(ggplot2)
 #library(reldist)
 normal <- read.csv("../../data/ginis_und_perzentile_normal.csv",sep="\t")
+normal <- select(normal, -G_reink,-G_taxed,-ppop0,-G_steink0)
 #normal <- normal %.% select(-G_reink, -G_taxed, -ppop0, -G_steink0)
 pooled <- read.csv("../../data/ginis_und_perzentile_beides.csv",sep="\t")
 #special <- read.csv("data/ginis_und_perzentile_sonder.csv",segep="\t")
@@ -287,13 +285,82 @@ ggplot(rel, aes(x=pooled.percentile,y=change))+
 
 #steuerpflichtige estv / stpf bruelhart
 #1- (2762419 / 3268548)
+
+
+# imputing pseudo-individual data to use reldist
+# we cut at the 5th and 95th percentile because it is unclear what values to use to extrapolate
+ival<-na.omit(normal$inc[-1])
+perval<-normal$percentile[-1]
+normal_i<-unlist(sapply(2:length(ival),function(i){
+  len=(perval[i]-perval[i-1])*100
+  seq(ival[i-1],ival[i],length.out=len)
+}))
+
+ival<-na.omit(pooled$inc)
+perval<-pooled$percentile[-1]
+pooled_i<-unlist(sapply(2:length(ival),function(i){
+  len=(perval[i]-perval[i-1])*100
+  seq(ival[i-1],ival[i],length.out=len)
+}))
+
+
+# Probability Density Function
+
+density1 <- density(normal_i)
+plot(x = (density1$x), y = density1$y, type = "l",
+     xlab = "taxable income", ylab = "density"
+     #axes = FALSE,
+     #xlim = c(-50, 200),
+     #ylim=c(0,0.0116031)
+     )
+title(main="normal cases vs pooled, normal and special cases 1993/94",cex=0.6)
+axis(side = 1)
+axis(side = 2)
+fig1legend <- list(x=c(100,100),y=c(0.0116031,0.0116031))
+legend(fig1legend,lty=1:2,cex=0.5, bty="n",
+       legend=c("normal cases","pooled, normal and special cases"))
+density2 <- density(pooled_i)
+lines(x = (density2$x), y = density2$y, type = "l",lty=2)
+
+# Relative Distribution
+
+par(mfrow=c(1,3))
+reldist(y=pooled_i, yo=normal_i,
+               smooth=0.4, ci=FALSE,
+               yolabs=seq(-1,3,by=0.5),
+               ylim=c(0.5,5.0),
+               bar=TRUE, quiet=FALSE,
+               xlab="Proportion of Normal-Case-Distribution")
+title(main=paste("Overall relative density 1993/94"))
+abline(h=1,lty=2)
+reldist(y=pooled_i, yo=normal_i,
+               show="effect",
+               bar=TRUE, quiet=FALSE,
+               ylim=c(0.5,5.0), ylab="",
+               smooth=0.4, ci=FALSE,
+               yolabs=seq(-1,3,by=0.5),
+               xlab="Proportion of Normal-Case-Distribution")
+title(main=paste("Effect of Median shift"))
+abline(h=1,lty=2)
+reldist(y=pooled_i, yo=normal_i,
+               smooth=0.4, ci=FALSE,
+               show="residual",
+               bar=TRUE, quiet=FALSE,
+               ylim=c(0.5,5.0), ylab="",
+               yolabs=seq(-1,3,by=0.5),
+               xlab="Proportion of Normal-Case-Distribution")
+title(main=paste("Effect of different shape"))
+abline(h=1,lty=2)
+par(mfrow=c(1,1))
 @
 
-<<specialcases09, echo=FALSE,warning=FALSE>>=
+1993/94 including special cases changes the distribution slightly at both ends. Special cases have a slightly lower median income and therefore are more frequent in the lower percentiles and less frequent in the upper percentiles. In addition there is an effect of shape: the distribution of special cases is more skewed so that lower percentiles show lower incomes and higher percentiles show higher incomes compared to just normal cases.
+
+<<specialcases10, echo=FALSE,warning=FALSE>>=
 library(foreign)
 library(ggplot2)
 #library(reldist)
-normal <- filter(read.csv("../../data/ginis_und_perzentile_normal.csv",sep="\t"),kanton=="CH",steuerperiode==2009)
+normal <- filter(read.csv("../../data/ginis_und_perzentile_normal.csv",sep="\t"),kanton=="CH",steuerperiode==2010)
 start <- which(names(normal)=="p1")
 end <- which(names(normal)=="p99")
 percentile <- c(1,5,10,20,25,30,40,50,60,70,75,80,90,95,99)
@@ -301,7 +368,7 @@ normal <- data.frame(t(normal[1,start:end]),percentile)
 names(normal)[1]=c("inc")
 
 #bruelhart data
-pooled <- filter(read.dta("../../data/data_Schweiz.dta"), Veranlagungsperiode==2009, Einheit=="Total")
+pooled <- filter(read.csv("../../data/data_Schweiz.csv",sep=";"), Veranlagungsperiode==2010, Einheit=="Total")
 start <- which(names(pooled)=="p1")
 p95 <- which(names(pooled)=="p95")
 end <- which(names(pooled)=="p99")
@@ -315,7 +382,7 @@ ggplot(percentiles, aes(x=percentile,y=inc,group=case,colour=case))+
 	geom_line()+theme_bw()+
 	scale_colour_grey()+
 	xlab("Percentile")+ylab("taxable income")+
-	ggtitle("Taxable incomes of normal and special cases 2009")+
+	ggtitle("Taxable incomes of normal and special cases 2010")+
   theme(legend.justification=c(0,1),legend.position=c(0, 1))
 
 
@@ -327,24 +394,94 @@ ggplot(rel, aes(x=pooled.percentile,y=change))+
 	geom_line(linetype="dashed",aes(y=1),size=2)+
 	scale_colour_grey()+
 	xlab("Percentile")+ylab("taxable income")+
-	ggtitle("Taxable incomes of normal versus special cases 2009")
+	ggtitle("Taxable incomes of normal versus special cases 2010")
 
 #steuerpflichtige estv / stpf bruelhart
 #1- (3422210 / 3689063)
+
+# imputing pseudo-individual data to use reldist
+# we cut at the 95th percentile because it is unclear what values to use to extrapolate
+ival<-na.omit(c(0,normal$inc))
+perval<-c(0,normal$percentile)
+normal_i<-unlist(sapply(2:length(ival),function(i){
+  len=(perval[i]-perval[i-1])*100
+  seq(ival[i-1],ival[i],length.out=len)
+}))
+
+#nur bis 95
+ival<-na.omit(c(0,pooled$inc[-15]))
+perval<-c(0,pooled$percentile)
+pooled_i<-unlist(sapply(2:length(ival),function(i){
+  len=(perval[i]-perval[i-1])*100
+  seq(ival[i-1],ival[i],length.out=len)
+}))
+
+
+# Probability Density Function
+
+density1 <- density(normal_i)
+plot(x = (density1$x), y = density1$y, type = "l",
+     xlab = "taxable income", ylab = "density"
+     #axes = FALSE,
+     #xlim = c(-50, 200),
+     #ylim=c(0,0.0116031)
+     )
+title(main="normal cases vs pooled, normal and special cases 2010",cex=0.6)
+axis(side = 1)
+axis(side = 2)
+fig1legend <- list(x=c(120,120),y=c(0.0116031,0.0116031))
+legend(fig1legend,lty=1:2,cex=0.5, bty="n",
+       legend=c("normal cases","pooled, normal and special cases"))
+density2 <- density(pooled_i)
+lines(x = (density2$x), y = density2$y, type = "l",lty=2)
+
+# Relative Distribution
+
+par(mfrow=c(1,3))
+reldist(y=pooled_i, yo=normal_i,
+               smooth=0.4, ci=FALSE,
+               yolabs=seq(-1,3,by=0.5),
+               ylim=c(0.5,5.0),
+               bar=TRUE, quiet=FALSE,
+               xlab="Proportion of Normal-Case-Distribution")
+title(main=paste("Overall relative density 2010"))
+abline(h=1,lty=2)
+reldist(y=pooled_i, yo=normal_i,
+               show="effect",
+               bar=TRUE, quiet=FALSE,
+               ylim=c(0.5,5.0), ylab="",
+               smooth=0.4, ci=FALSE,
+               yolabs=seq(-1,3,by=0.5),
+               xlab="Proportion of Normal-Case-Distribution")
+title(main=paste("Effect of Median shift"))
+abline(h=1,lty=2)
+reldist(y=pooled_i, yo=normal_i,
+               smooth=0.4, ci=FALSE,
+               show="residual",
+               bar=TRUE, quiet=FALSE,
+               ylim=c(0.5,5.0), ylab="",
+               yolabs=seq(-1,3,by=0.5),
+               xlab="Proportion of Normal-Case-Distribution")
+title(main=paste("Effect of different shape"))
+abline(h=1,lty=2)
+par(mfrow=c(1,1))
 @
+
+2010 the picture is similar but more apparent: There is a small effect of median shift lowering incomes in the lowest percentiles. The effect of shape however contributes most.
+
 
 % Auf neuste Zahlen anpassen
 
-As we can see from figure~\ref{fig:specialcases93942} and \ref{fig:specialcases092}, special cases differ strongly 
-from normal cases within the low and top percentiles. Within the tax period 1993/94 the fifth percentile of 
-normal cases is 15.8\% higher than the fifth percentile of the combines data while the 95\% percentile of 
-normal cases is even 0.7\% lower if one leaves out special cases. This indicates special cases are very 
-different from normal cases as the share of special cases is only 15.5\%.\footnote{1993/94 there were 2.76 
-million tax units defined as being normal cases compared to 0.51 million special cases.}
-In 2009 the situation has the same pattern. The fifth percentile of normal cases has 11\% higher taxable 
-income compared to data where special cases are included. The five percent top incomes are 4.9\% higher 
-within all cases compared to normal cases only. The share of special cases however decreased 
-to 7.2\%.\footnote{2009: 3.42 million normal cases, 0.27 million special cases}
+%As we can see from figure~\ref{fig:specialcases93942} and \ref{fig:specialcases092}, special cases differ strongly 
+%from normal cases within the low and top percentiles. Within the tax period 1993/94 the fifth percentile of 
+%normal cases is 15.8\% higher than the fifth percentile of the combines data while the 95\% percentile of 
+%normal cases is even 0.7\% lower if one leaves out special cases. This indicates special cases are very 
+%different from normal cases as the share of special cases is only 15.5\%.\footnote{1993/94 there were 2.76 
+%million tax units defined as being normal cases compared to 0.51 million special cases.}
+%In 2009 the situation has the same pattern. The fifth percentile of normal cases has 11\% higher taxable 
+%income compared to data where special cases are included. The five percent top incomes are 4.9\% higher 
+%within all cases compared to normal cases only. The share of special cases however decreased 
+%to 7.2\%.\footnote{2009: 3.42 million normal cases, 0.27 million special cases}
 
 
 
@@ -440,7 +577,7 @@ g10 <- reldist(y=estv2010.total.ind$inc, yo=habe10$inc_habe,
                ylim=c(0.5,5.0),
                bar=TRUE, quiet=FALSE,
                xlab="Proportion of HBS Distribution")
-title(main=paste("Overall realtive density"))
+title(main=paste("Overall relative density"))
 abline(h=1,lty=2)
 g1A <- reldist(y=estv2010.total.ind$inc, yo=habe10$inc_habe,
                show="effect",
@@ -533,7 +670,7 @@ g10 <- reldist(y=estv2010.married.ind$inc, yo=habe10.married$inc_habe,
                ylim=c(0.5,5.0),
                bar=TRUE, quiet=FALSE,
                xlab="Proportion of HBS Distribution")
-title(main=paste("Overall realtive density"))
+title(main=paste("Overall relative density"))
 abline(h=1,lty=2)
 g1A <- reldist(y=estv2010.married.ind$inc, yo=habe10.married$inc_habe,
                show="effect",
@@ -628,7 +765,7 @@ g10 <- reldist(y=estv2010.unmarried.ind$inc, yo=habe10.unmarried$inc_habe,
                ylim=c(0.5,5.0),
                bar=TRUE, quiet=FALSE,
                xlab="Proportion of HBS Distribution")
-title(main=paste("Overall realtive density"))
+title(main=paste("Overall relative density"))
 abline(h=1,lty=2)
 g1A <- reldist(y=estv2010.unmarried.ind$inc, yo=habe10.unmarried$inc_habe,
                show="effect",
