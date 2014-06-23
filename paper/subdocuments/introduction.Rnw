@@ -40,6 +40,8 @@ ggplot(data=swissGini_long,
   theme_bw()
 @
 
+% Change variable-name for the legend
+
 % 4.Abschnitt: What do we know about Switzerland
 % Studies with tax data
 Whereas the aforementioned publications focused on disposable household income from survey data, the revival of tax-data-inequality studies lead to fruitful insights for Switzerland as well. \citet{dell_income_2007} used tax data from the Federal Tax Administration to assess the development of concentration of the highest incomes and wealth (top-shares). In contrast to most other examined countries, Switzerland did not experience a reduction in income and wealth concentration from the pre-First World War period to the decades following the second World War (up to 1996). Using the same approach \citet{foellmi_volatile_2013} expand the Dell et al. time series to 2008 finding that the share of top income has risen, the top 0.01\% share even doubled in the last observed 20 years. A result which opposes the outcome of official data published by the Swiss Federal Statistical Office.\footnote{There are other studies on Switzerland covering different periods but not the recent years. \citet{fluckiger_egalite_2002} and also \citet{jeitziner_regionale_2007, jeitziner_regionale_2009} report constant inequality from 1960-1996 respectively from 1995 to 2003. Covering a similar time period \citet{bauer_verteilung_1994} and \citet{bolzani_distribution_2001} found decreasing inequality. On the other hand \citet{buchmann_zur_1995} and \citet{ernst_inequality_2000} found an increase in the 1980s).} \\
