@@ -38,7 +38,8 @@ ggplot(dflong[dflong$kanton=="CH",], aes(x=steuerperiode,y=Gini,shape=Type))+
   geom_point(aes(shape=Type),size=3)+
   geom_line(data=dflong[dflong$kanton=="CH",],aes(linetype=Type))+
   theme_bw()+
-  xlab("tax period")
+  xlab("tax period")+
+  theme(legend.justification=c(0,1),legend.position=c(0, 1))
 #ggplot(dflong, aes(x=steuerperiode,y=Gini,colour=Type))+geom_line()+facet_wrap(~kanton)+theme_bw()+xlab("tax period")
 @
 
@@ -91,7 +92,8 @@ ggplot(bdlong, aes(x=Jahr,y=Gini,shape=inc_def))+
   geom_point(aes(shape=inc_def),size=3)+
   geom_line(data=bdlong,aes(linetype=inc_def))+
   theme_bw()+
-  xlab("tax period")
+  xlab("tax period")+
+  theme(legend.justification=c(0,1),legend.position=c(0, 1))
 @
 
 \subsection{Measuring inequality}
@@ -164,7 +166,7 @@ bd.2010.ind$inc<-bd.2010.ind$inc/1000
 @
 
 <<Comparing 2003 to 2010>>=
-library(reldist)
+library(reldist, quietly=TRUE, warn.conflicts = FALSE)
 
 # Probability Density Function
 
@@ -178,7 +180,7 @@ title(main="2003 vs 2010",cex=0.6)
 axis(side = 1)
 axis(side = 2)
 fig1legend <- list(x=c(1200,1200),y=c(0.0116031,0.0116031))
-legend(fig1legend,lty=1:2,cex=0.5, bty="n",
+legend(fig1legend,lty=1:2,cex=1, bty="n",
        legend=c("2003","2010"))
 density2 <- density(bd.2010.ind$inc)
 lines(x = (density2$x), y = density2$y, type = "l",lty=2)
@@ -253,16 +255,20 @@ par(mfrow=c(1,1))
 \subsubsection{Normal versus special cases}
 
 The FTA stopped to publicly report data for special cases after tax period 1993/94. 
+<<<<<<< HEAD
 For more recent periods however we can compare data from the 
 BRUELHARTPROJEKT (wie nennen wir das?) to the FTA normal cases, as these data are 
 identical but the BRÜLHART data include special cases. 
+=======
+For more recent periods however we can compare already calculated percentiles provided by the FTA\footnote{These calculations were done on commission of the FTA within the SNF project Sinergia Nr. 130648 "The Swiss Confederation: A Natural Laboratory for Research on Fiscal and Political Decentralization" by Raphael Parchet and Stefanie Brilon in coordination with Prof. Dr. Marius Brülhart.} which are based on both special and normal cases to normal cases alone.
+>>>>>>> 4e505c758e51714de3f029c2018174aeda278bef
 We will have a look at both, the 1993/94 period as the last period where both 
 numbers were reported as well as 2009 where we compare data from the same source 
 but using differnt data sheets.
 
 
 %ABBILDUNGEN ZUM VERGLEICH NORMAL-/SONDERFÄLLE
-<<specialcases9394, echo=FALSE,warning=FALSE>>=
+<<specialcases9394, echo=FALSE,warning=FALSE,hide=TRUE>>=
 library(dplyr, quietly=TRUE, warn.conflicts = FALSE)
 library(ggplot2)
 #library(reldist)
@@ -305,9 +311,84 @@ ggplot(rel, aes(x=pooled.percentile,y=change))+
 
 #steuerpflichtige estv / stpf bruelhart
 #1- (2762419 / 3268548)
+<<<<<<< HEAD
 @
 
 <<specialcases09, echo=FALSE,warning=FALSE>>=
+=======
+
+
+# imputing pseudo-individual data to use reldist
+# we cut at the 5th and 95th percentile because it is unclear what values to use to extrapolate
+ival<-na.omit(normal$inc[-1])
+perval<-normal$percentile[-1]
+normal_i<-unlist(sapply(2:length(ival),function(i){
+  len=(perval[i]-perval[i-1])*100
+  seq(ival[i-1],ival[i],length.out=len)
+}))
+
+ival<-na.omit(pooled$inc)
+perval<-pooled$percentile[-1]
+pooled_i<-unlist(sapply(2:length(ival),function(i){
+  len=(perval[i]-perval[i-1])*100
+  seq(ival[i-1],ival[i],length.out=len)
+}))
+
+
+# Probability Density Function
+
+density1 <- density(normal_i)
+plot(x = (density1$x), y = density1$y, type = "l",
+     xlab = "taxable income", ylab = "density"
+     #axes = FALSE,
+     #xlim = c(-50, 200),
+     #ylim=c(0,0.0116031)
+     )
+title(main="normal cases vs pooled, normal and special cases 1993/94",cex=0.6)
+axis(side = 1)
+axis(side = 2)
+fig1legend <- list(x=c(60,60),y=c(0.019,0.019))
+legend(fig1legend,lty=1:2, bty="n",
+       legend=c("normal cases","pooled, normal and special cases"))
+density2 <- density(pooled_i)
+lines(x = (density2$x), y = density2$y, type = "l",lty=2)
+
+# Relative Distribution
+
+par(mfrow=c(1,3))
+a<-reldist(y=pooled_i, yo=normal_i,
+               smooth=0.4, ci=FALSE,
+               yolabs=seq(-1,3,by=0.5),
+               ylim=c(0.5,5.0),
+               bar=TRUE, quiet=FALSE,
+               xlab="Proportion of Normal-Case-Distribution")
+title(main=paste("Overall relative density 1993/94"))
+abline(h=1,lty=2)
+b<-reldist(y=pooled_i, yo=normal_i,
+               show="effect",
+               bar=TRUE, quiet=FALSE,
+               ylim=c(0.5,5.0), ylab="",
+               smooth=0.4, ci=FALSE,
+               yolabs=seq(-1,3,by=0.5),
+               xlab="Proportion of Normal-Case-Distribution")
+title(main=paste("Effect of Median shift"))
+abline(h=1,lty=2)
+c<-reldist(y=pooled_i, yo=normal_i,
+               smooth=0.4, ci=FALSE,
+               show="residual",
+               bar=TRUE, quiet=FALSE,
+               ylim=c(0.5,5.0), ylab="",
+               yolabs=seq(-1,3,by=0.5),
+               xlab="Proportion of Normal-Case-Distribution")
+title(main=paste("Effect of different shape"))
+abline(h=1,lty=2)
+par(mfrow=c(1,1))
+@
+
+1993/94 including special cases changes the distribution slightly at both ends. Special cases have a slightly lower median income and therefore are more frequent in the lower percentiles and less frequent in the upper percentiles. In addition there is an effect of shape: the distribution of special cases is more skewed so that lower percentiles show lower incomes and higher percentiles show higher incomes compared to just normal cases.
+
+<<specialcases10, echo=FALSE,warning=FALSE,hide=TRUE>>=
+>>>>>>> 4e505c758e51714de3f029c2018174aeda278bef
 library(foreign)
 library(ggplot2)
 #library(reldist)
@@ -349,6 +430,76 @@ ggplot(rel, aes(x=pooled.percentile,y=change))+
 
 #steuerpflichtige estv / stpf bruelhart
 #1- (3422210 / 3689063)
+<<<<<<< HEAD
+=======
+
+# imputing pseudo-individual data to use reldist
+# we cut at the 95th percentile because it is unclear what values to use to extrapolate
+ival<-na.omit(c(0,normal$inc))
+perval<-c(0,normal$percentile)
+normal_i<-unlist(sapply(2:length(ival),function(i){
+  len=(perval[i]-perval[i-1])*100
+  seq(ival[i-1],ival[i],length.out=len)
+}))
+
+#nur bis 95
+ival<-na.omit(c(0,pooled$inc[-15]))
+perval<-c(0,pooled$percentile)
+pooled_i<-unlist(sapply(2:length(ival),function(i){
+  len=(perval[i]-perval[i-1])*100
+  seq(ival[i-1],ival[i],length.out=len)
+}))
+
+
+# Probability Density Function
+
+density1 <- density(normal_i)
+plot(x = (density1$x), y = density1$y, type = "l",
+     xlab = "taxable income", ylab = "density"
+     #axes = FALSE,
+     #xlim = c(-50, 200),
+     #ylim=c(0,0.0116031)
+     )
+title(main="normal cases vs pooled, normal and special cases 2010",cex=0.6)
+axis(side = 1)
+axis(side = 2)
+fig1legend <- list(x=c(65,65),y=c(0.016,0.016))
+legend(fig1legend,lty=1:2, bty="n",
+       legend=c("normal cases","pooled, normal and special cases"))
+density2 <- density(pooled_i)
+lines(x = (density2$x), y = density2$y, type = "l",lty=2)
+
+# Relative Distribution
+
+par(mfrow=c(1,3))
+a<-reldist(y=pooled_i, yo=normal_i,
+               smooth=0.4, ci=FALSE,
+               yolabs=seq(-1,3,by=0.5),
+               ylim=c(0.5,5.0),
+               bar=TRUE, quiet=FALSE,
+               xlab="Proportion of Normal-Case-Distribution")
+title(main=paste("Overall relative density 2010"))
+abline(h=1,lty=2)
+b<-reldist(y=pooled_i, yo=normal_i,
+               show="effect",
+               bar=TRUE, quiet=FALSE,
+               ylim=c(0.5,5.0), ylab="",
+               smooth=0.4, ci=FALSE,
+               yolabs=seq(-1,3,by=0.5),
+               xlab="Proportion of Normal-Case-Distribution")
+title(main=paste("Effect of Median shift"))
+abline(h=1,lty=2)
+c<-reldist(y=pooled_i, yo=normal_i,
+               smooth=0.4, ci=FALSE,
+               show="residual",
+               bar=TRUE, quiet=FALSE,
+               ylim=c(0.5,5.0), ylab="",
+               yolabs=seq(-1,3,by=0.5),
+               xlab="Proportion of Normal-Case-Distribution")
+title(main=paste("Effect of different shape"))
+abline(h=1,lty=2)
+par(mfrow=c(1,1))
+>>>>>>> 4e505c758e51714de3f029c2018174aeda278bef
 @
 
 % Auf neuste Zahlen anpassen
@@ -375,8 +526,8 @@ dflong <- melt(df[,c("G_steink","G_steink0","kanton","steuerperiode")], id=c("ka
 names(dflong)[3]<-"Type"
 names(dflong)[4]<-"Gini"
 levels(dflong$Type)<-c("without zeros","including zeros")
-ggplot(dflong[dflong$kanton=="CH" & dflong$steuerperiode>=1995.5,], aes(x=steuerperiode,y=Gini,colour=Type))+geom_line(size=1)+theme_bw()+xlab("tax period")
-ggplot(dflong[dflong$steuerperiode>=1995.5,], aes(x=steuerperiode,y=Gini,colour=Type))+geom_line()+facet_wrap(~kanton)+theme_bw()+xlab("tax period")+theme(axis.text.x = element_text(angle = 60, hjust = 1))
+ggplot(dflong[dflong$kanton=="CH" & dflong$steuerperiode>=1995.5,], aes(x=steuerperiode,y=Gini,shape=Type,linetype=Type))+geom_line(size=1)+theme_bw()+xlab("tax period")+theme(legend.justification=c(0,1),legend.position=c(0, 1))
+ggplot(dflong[dflong$steuerperiode>=1995.5,], aes(x=steuerperiode,y=Gini,shape=Type,linetype=Type))+geom_line()+facet_wrap(~kanton)+theme_bw()+xlab("tax period")+theme(axis.text.x = element_text(angle = 60, hjust = 1))+theme(legend.justification=c(1,0),legend.position=c(1, 0))
 @
 
 Including zeros leads to significantly higher gini coefficients. However we must keep in mind, that these might be artificially high values as we assume zero income for everyone in the zero group. We can conclude more from the graphic: the ratio between both measures seems to be quite constant although for aggregate Switzerland but there are minor deviations for multiple cantons as well as strong deviations for the cantons Geneva and Ticino. However the problems seem not to result from a shift in the zero-share over time but they are specific for the time-period when the tax system changed. 
@@ -386,10 +537,10 @@ Including zeros leads to significantly higher gini coefficients. However we must
 <<setup_data>>=
 library(dplyr, quietly=TRUE, warn.conflicts = FALSE)
 library(ggplot2)
-library(reldist)
+library(reldist, quietly=TRUE, warn.conflicts = FALSE)
 library(foreign)
 # Get Brülhartdata for 2010
-estv2010 <- read.csv("data/estv_normal_sonder_mitNuller_stE_2010.csv",sep=";")
+estv2010 <- read.csv("../../data/estv_normal_sonder_mitNuller_stE_2010.csv",sep=";")
 ###########################################
 # Select percentiles for all cases (total)
 estv2010.total<-estv2010[c(18:38),c(1,4)]
@@ -421,8 +572,8 @@ estv2010.total.ind$inc<-estv2010.total.ind$inc/1000
 #####################################################
 #         ACHTUNG: Bisher ohne Gewichte!            #
 #####################################################
-
-habe0911<-read.table("P:/WGS/FBS/ISS/Projekte laufend/SNF Ungleichheit/Datengrundlagen/HABE/2009 bis 2011/HABE091011_Standard_130717UOe.txt", header=TRUE)
+try(habe0911<-read.table("C:/Users/Hackstutz/Dropbox/Ungleichheit/HABE/HABE091011/HABE091011_Standard_130717UOe.txt", header=TRUE),silent=TRUE)
+try(habe0911<-read.table("P:/WGS/FBS/ISS/Projekte laufend/SNF Ungleichheit/Datengrundlagen/HABE/2009 bis 2011/HABE091011_Standard_130717UOe.txt", header=TRUE),silent=TRUE)
 habe10<-habe0911 %.% 
   filter(Jahr08==2010)
 habe10<-data.frame(habe10$VerfuegbaresEinkommen08)
@@ -444,7 +595,7 @@ title(main="FTA vs HBS income distribution",cex=0.6)
 axis(side = 1)
 axis(side = 2)
 fig1legend <- list(x=c(2500,2500),y=c(1.103e-02,1.103e-02))
-legend(fig1legend,lty=1:2,cex=0.5, bty="n",
+legend(fig1legend,lty=1:2,cex=1, bty="n",
        legend=c("HBS","FTA"))
 density2 <- density(estv2010.total.ind$inc)
 lines(x = (density2$x), y = density2$y, type = "l",lty=2)
@@ -514,8 +665,8 @@ estv2010.married.ind$inc<-estv2010.married.ind$inc/1000
 
 
 # Select married - HABE
-
-habe0911<-read.table("P:/WGS/FBS/ISS/Projekte laufend/SNF Ungleichheit/Datengrundlagen/HABE/2009 bis 2011/HABE091011_Standard_130717UOe.txt", header=TRUE)
+try(habe0911<-read.table("C:/Users/Hackstutz/Dropbox/Ungleichheit/HABE/HABE091011/HABE091011_Standard_130717UOe.txt", header=TRUE),silent=TRUE)
+try(habe0911<-read.table("P:/WGS/FBS/ISS/Projekte laufend/SNF Ungleichheit/Datengrundlagen/HABE/2009 bis 2011/HABE091011_Standard_130717UOe.txt", header=TRUE),silent=TRUE)
 habe10<-habe0911 %.% 
   filter(Jahr08==2010)
 habe10.married<-habe0911 %.% 
@@ -537,7 +688,7 @@ title(main="FTA vs HBS income distribution",cex=0.6)
 axis(side = 1)
 axis(side = 2)
 fig1legend <- list(x=c(2500,2500),y=c(0.0101390,0.0101390))
-legend(fig1legend,lty=1:2,cex=0.5, bty="n",
+legend(fig1legend,lty=1:2,cex=1, bty="n",
        legend=c("HBS","FTA"))
 density2 <- density(estv2010.married.ind$inc)
 lines(x = (density2$x), y = density2$y, type = "l",lty=2)
@@ -608,8 +759,8 @@ estv2010.unmarried.ind$inc<-estv2010.unmarried.ind$inc/1000
 
 
 # Select unmarried - HABE
-
-habe0911<-read.table("P:/WGS/FBS/ISS/Projekte laufend/SNF Ungleichheit/Datengrundlagen/HABE/2009 bis 2011/HABE091011_Standard_130717UOe.txt", header=TRUE)
+try(habe0911<-read.table("C:/Users/Hackstutz/Dropbox/Ungleichheit/HABE/HABE091011/HABE091011_Standard_130717UOe.txt", header=TRUE),silent=TRUE)
+try(habe0911<-read.table("P:/WGS/FBS/ISS/Projekte laufend/SNF Ungleichheit/Datengrundlagen/HABE/2009 bis 2011/HABE091011_Standard_130717UOe.txt", header=TRUE),silent=TRUE)
 habe10<-habe0911 %.% 
   filter(Jahr08==2010)
 habe10.unmarried<-habe0911 %.% 
@@ -632,7 +783,7 @@ title(main="FTA vs HBS income distribution",cex=0.6)
 axis(side = 1)
 axis(side = 2)
 fig1legend <- list(x=c(1200,1200),y=c(1.764e-02,1.764e-02))
-legend(fig1legend,lty=1:2,cex=0.5, bty="n",
+legend(fig1legend,lty=1:2,cex=1, bty="n",
        legend=c("HBS","FTA"))
 density2 <- density(estv2010.unmarried.ind$inc)
 lines(x = (density2$x), y = density2$y, type = "l",lty=2)
