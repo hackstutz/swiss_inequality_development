@@ -104,7 +104,6 @@ ggplot(bdlong, aes(x=Jahr,y=Gini,shape=inc_def))+
 <<setup_data_Brülhart_2003>>=
 library(dplyr, quietly=TRUE, warn.conflicts = FALSE)
 library(foreign)
-# Ohne Nuller
 bd.0 <- read.csv("../../data/data_Schweiz_mitNull.csv", header=TRUE,sep=";")
 #Veranlagungsperiode -> Jahre
 bd.0$Jahr <- as.numeric(substr(bd.0$Veranlagungsperiode,1,4))
@@ -136,7 +135,6 @@ bd.2003.ind$inc<-bd.2003.ind$inc/1000
 <<setup_data_Brülhart_2010>>=
 library(dplyr, quietly=TRUE, warn.conflicts = FALSE)
 library(foreign)
-# Ohne Nuller
 bd.0 <- read.csv("../../data/data_Schweiz_mitNull.csv", header=TRUE,sep=";")
 #Veranlagungsperiode -> Jahre
 bd.0$Jahr <- as.numeric(substr(bd.0$Veranlagungsperiode,1,4))
