@@ -183,6 +183,24 @@ legend(fig1legend,lty=1:2,cex=0.5, bty="n",
 density2 <- density(bd.2010.ind$inc)
 lines(x = (density2$x), y = density2$y, type = "l",lty=2)
 
+# Variante mit Log
+
+density1 <- density(log(bd.2003.ind$inc))
+plot(x = (density1$x), y = density1$y, type = "l",
+     xlab = "log(taxable income)", ylab = "density",
+     axes = FALSE,
+     xlim = c(-8, 10),
+     ylim=c(0,0.5655167))
+title(main="2003 vs 2010",cex=0.6)
+axis(side = 1)
+axis(side = 2)
+fig1legend <- list(x=c(0,0),y=c(0.5655167,0.5655167))
+legend(fig1legend,lty=1:2,cex=0.5, bty="n",
+       legend=c("2003","2010"))
+density2 <- density(log(bd.2010.ind$inc))
+lines(x = (density2$x), y = density2$y, type = "l",lty=2)
+
+
 # Relative Distribution
 
 par(mfrow=c(1,3))
