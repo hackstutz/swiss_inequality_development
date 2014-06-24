@@ -116,7 +116,7 @@ percentile <- c(1,5,10,20,25,30,40,50,60,70,75,80,90,95,96,97,98,99,99.5,99.9,99
 bd.2003<- data.frame(t(bd.2003[1,start:end]),percentile)
 names(bd.2003)[1]=c("inc")
 cum.p<-c(1,5,10,20,25,30,40,50,60,70,75,80,90,95,96,97,98,99,99.5,99.9,99.99)/100
-prob<-c(cum.p[1],diff(cum.p), .01)
+prob<-c(cum.p[1],diff(cum.p), 1-0.9999)
 freq<-3000
 init<-0 
 bd.2003$inc<-as.numeric(as.character(bd.2003$inc))
@@ -147,7 +147,7 @@ percentile <- c(1,5,10,20,25,30,40,50,60,70,75,80,90,95,96,97,98,99,99.5,99.9,99
 bd.2010<- data.frame(t(bd.2010[1,start:end]),percentile)
 names(bd.2010)[1]=c("inc")
 cum.p<-c(1,5,10,20,25,30,40,50,60,70,75,80,90,95,96,97,98,99,99.5,99.9,99.99)/100
-prob<-c(cum.p[1],diff(cum.p), .01)
+prob<-c(cum.p[1],diff(cum.p), 1-0.9999)
 freq<-3000
 init<-0 
 bd.2010$inc<-as.numeric(as.character(bd.2010$inc))
@@ -547,7 +547,7 @@ estv2010.total<-estv2010[c(18:38),c(1,4)]
 # cumulative probabilites
 cum.p<-c(1,5,10,20,25,30,40,50,60,70,75,80,90,95,96,97,98,99,99.5,99.9,99.99)/100
 # probabilities
-prob<-c(cum.p[1],diff(cum.p), .01)
+prob<-c(cum.p[1],diff(cum.p), 1-0.9999)
 # extreme values beyond x (to sample)
 #freq<-max(normal$anz_pflichtige)
 freq<-3000
@@ -587,12 +587,12 @@ density1 <- density(habe10$inc_habe)
 plot(x = (density1$x), y = density1$y, type = "l",
      xlab = "Einkommen", ylab = "density",
      axes = FALSE,
-     xlim = c(-70, 4600),
-     ylim=c(0,1.103e-02))
+     xlim = c(-30, 1400),
+     ylim=c(0,1.097e-02))
 title(main="FTA vs HBS income distribution",cex=0.6)
 axis(side = 1)
 axis(side = 2)
-fig1legend <- list(x=c(2500,2500),y=c(1.103e-02,1.103e-02))
+fig1legend <- list(x=c(800,800),y=c(1.097e-02,1.097e-02))
 legend(fig1legend,lty=1:2,cex=1, bty="n",
        legend=c("HBS","FTA"))
 density2 <- density(estv2010.total.ind$inc)
@@ -642,7 +642,7 @@ names(estv2010.married)[2]=c("married")
 # cumulative probabilites
 cum.p<-c(1,5,10,20,25,30,40,50,60,70,75,80,90,95,96,97,98,99,99.5,99.9,99.99)/100
 # probabilities
-prob<-c(cum.p[1],diff(cum.p), .01)
+prob<-c(cum.p[1],diff(cum.p), 1-0.9999)
 # extreme values beyond x (to sample)
 #freq<-max(normal$anz_pflichtige)
 freq<-3000
@@ -680,12 +680,12 @@ density1 <- density(habe10.married$inc_habe)
 plot(x = (density1$x), y = density1$y, type = "l",
      xlab = "Einkommen", ylab = "density",
      axes = FALSE,
-     xlim = c(-257, 8000),
-     ylim=c(0,0.0101390))
+     xlim = c(min(rbind(density1$x,density2$x)), max(rbind(density1$x,density2$x))),
+     ylim=c(0,max(rbind(density1$y,density2$y))))
 title(main="FTA vs HBS income distribution",cex=0.6)
 axis(side = 1)
 axis(side = 2)
-fig1legend <- list(x=c(2500,2500),y=c(0.0101390,0.0101390))
+fig1legend <- list(x=c(median(rbind(density1$x,density2$x)),median(rbind(density1$x,density2$x))),y=c(max(rbind(density1$y,density2$y)),max(rbind(density1$y,density2$y))))
 legend(fig1legend,lty=1:2,cex=1, bty="n",
        legend=c("HBS","FTA"))
 density2 <- density(estv2010.married.ind$inc)
@@ -738,7 +738,7 @@ names(estv2010.unmarried)[2]=c("unmarried")
 # cumulative probabilites
 cum.p<-c(1,5,10,20,25,30,40,50,60,70,75,80,90,95,96,97,98,99,99.5,99.9,99.99)/100
 # probabilities
-prob<-c(cum.p[1],diff(cum.p), .01)
+prob<-c(cum.p[1],diff(cum.p), 1-0.9999)
 # extreme values beyond x (to sample)
 #freq<-max(normal$anz_pflichtige)
 freq<-3000
@@ -775,16 +775,17 @@ density1 <- density(habe10.unmarried$inc_habe)
 plot(x = (density1$x), y = density1$y, type = "l",
      xlab = "Einkommen", ylab = "density",
      axes = FALSE,
-     xlim = c(-50, 2500),
-     ylim=c(0,1.764e-02))
+     xlim = c(min(rbind(density1$x,density2$x)), max(rbind(density1$x,density2$x))),
+     ylim=c(0,max(rbind(density1$y,density2$y))))
 title(main="FTA vs HBS income distribution",cex=0.6)
 axis(side = 1)
 axis(side = 2)
-fig1legend <- list(x=c(1200,1200),y=c(1.764e-02,1.764e-02))
+fig1legend <- list(x=c(median(rbind(density1$x,density2$x)),median(rbind(density1$x,density2$x))),y=c(max(rbind(density1$y,density2$y)),max(rbind(density1$y,density2$y))))
 legend(fig1legend,lty=1:2,cex=1, bty="n",
        legend=c("HBS","FTA"))
 density2 <- density(estv2010.unmarried.ind$inc)
 lines(x = (density2$x), y = density2$y, type = "l",lty=2)
+
 
 # Relative Distribution
 
