@@ -271,7 +271,7 @@ library(dplyr, quietly=TRUE, warn.conflicts = FALSE)
 library(ggplot2)
 #library(reldist)
 normal <- read.csv("../../data/ginis_und_perzentile_normal.csv",sep="\t")
-#normal <- normal %.% select(-G_reink, -G_taxed, -ppop0, -G_steink0)
+normal <- normal %.% select(-G_reink, -G_taxed, -ppop0, -G_steink0)
 pooled <- read.csv("../../data/ginis_und_perzentile_beides.csv",sep="\t")
 #special <- read.csv("data/ginis_und_perzentile_sonder.csv",segep="\t")
 normal$case <- "normal case"

@@ -9,10 +9,14 @@ library(dplyr, quietly=TRUE, warn.conflicts = FALSE)
 library(ggplot2)
 library(reldist)
 library(foreign)
+#########################
+# Compare FTA Data and HABE Data
+#############################
 
-#######################
+
+####
 #     2010            #
-#######################
+####
 
 ##
 # Prepare FTA-data for 2010 (out of Rudis code) Normal cases
@@ -178,9 +182,9 @@ format(rpluy(y=normal.ind$inc,yo=habe10$inc_habe,
        digits=3)
 
 
-#######################
+##
 #     2005            #
-#######################
+###
 
 
 ####
@@ -400,7 +404,7 @@ title(main=paste("Overall realtive density",cex=0.6)
 estv2010 <- read.csv("data/estv_normal_sonder_mitNuller_stE_2010.csv",sep=";")
 
 
-###########################################
+####
 # Select percentiles for all cases (total)
 
 estv2010.total<-estv2010[c(18:38),c(1,4)]
@@ -492,7 +496,7 @@ abline(h=1,lty=2)
 par(mfrow=c(1,1))
 
 
-########################
+####
 # Separate comparison for unmarried
 
 
@@ -590,9 +594,9 @@ abline(h=1,lty=2)
 par(mfrow=c(1,1))
 
 
-#################
+####
 # Separate comparison for unmaried
-
+####
 
 ##
 # Unmarried ESTV
@@ -690,8 +694,9 @@ par(mfrow=c(1,1))
 
 
 
-###
+####################################################
 # Sind die klassierten Steuerdaten so anders als die Brülhartdaten?
+#######################################################
 
 # Brülhart
 estv2010.total.ind
@@ -713,7 +718,7 @@ legend(fig1legend,lty=1:2,cex=0.5, bty="n",
 density2 <- density(estv2010.total.ind$inc)
 lines(x = (density2$x), y = density2$y, type = "l",lty=2)
 
-# Relative Distribution
+##############Relative Distribution
 
 par(mfrow=c(1,3))
 g10 <- reldist(y=estv2010.total.ind$inc, yo=normal.ind$inc,
@@ -743,5 +748,56 @@ gA0 <- reldist(y=estv2010.total.ind$inc, yo=normal.ind$inc,
 title(main=paste("Effect of different shape"))
 abline(h=1,lty=2)
 par(mfrow=c(1,1))
+
+
+
+
+########################################################################
+# Ist es möglich direkt mit den Perzentilen anstelle des simulierten Datensatzes zu rechnen
+# Die Funktion Gini kann mit Einkommensklassen arbeiten
+##########################################################################
+
+# Prepare Data (Brülhart mit Nuller)
+library(dplyr, quietly=TRUE, warn.conflicts = FALSE)
+library(foreign)
+# Ohne Nuller
+bd.10<-read.csv("data/data_Schweiz_mitNull.csv", header=TRUE,sep=";")
+bd.10$Jahr <- as.numeric(substr(bd.10$Veranlagungsperiode,1,4))
+bd.10$Jahr[nchar(as.character(bd.10$Veranlagungsperiode))>4] <- bd.10$Jahr[nchar(as.character(bd.10$Veranlagungsperiode))>4] - 2
+bd.2010<-bd.10 %.% 
+  filter(Jahr==2010,Einheit=="Total")
+
+start.p <- which(names(bd.2010)=="p1")
+end.p <- which(names(bd.2010)=="p99_99")
+start.stpf <- which(names(bd.2010)=="stpf_100")
+end.stpf <- which(names(bd.2010)=="stpf_u2000")
+percentile <- c(1,5,10,20,25,30,40,50,60,70,75,80,90,95,96,97,98,99,99.5,99.9,99.99)
+test.0 <- data.frame(t(bd.2010[1,start.p:end.p]),percentile,t(bd.2010[1,start.stpf:end.stpf]))
+
+bd.10<-read.csv("data/data_Schweiz_mitNull.csv", header=TRUE,sep=";")
+bd.10$Jahr <- as.numeric(substr(bd.10$Veranlagungsperiode,1,4))
+bd.10$Jahr[nchar(as.character(bd.10$Veranlagungsperiode))>4] <- bd.10$Jahr[nchar(as.character(bd.10$Veranlagungsperiode))>4] - 2
+bd.2005<-bd.10 %.% 
+  filter(Jahr==2005,Einheit=="Total")
+
+start.p <- which(names(bd.2005)=="p1")
+end.p <- which(names(bd.2005)=="p99_99")
+start.stpf <- which(names(bd.2005)=="stpf_100")
+end.stpf <- which(names(bd.2005)=="stpf_u2000")
+percentile <- c(1,5,10,20,25,30,40,50,60,70,75,80,90,95,96,97,98,99,99.5,99.9,99.99)
+test.comp <- data.frame(t(bd.2005[1,start.p:end.p]),percentile,t(bd.2005[1,start.stpf:end.stpf]))
+
+
+
+library(reldist)
+fig2b <- reldist(y=test.comp$X1,yo=test.0$X1,
+                 yowgt=test.0$X1.1,ywgt=test.comp$X1.1,
+                 ci=FALSE,smooth=0.4,
+                 yolabs=seq(-1,3,by=0.5),
+                 ylim=c(0,5),cex=0.8,
+                 ylab="Relative Density",
+                 xlab="Proportion of 2010")
+title(main="Relative PDF",cex=0.6)
+
 
 
