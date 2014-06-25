@@ -195,7 +195,7 @@ title(main="2003 vs 2010",cex=0.6)
 axis(side = 1)
 axis(side = 2)
 fig1legend <- list(x=c(0,0),y=c(0.5655167,0.5655167))
-legend(fig1legend,lty=1:2,cex=0.5, bty="n",
+legend(fig1legend,lty=1:2,cex=1, bty="n",
        legend=c("2003","2010"))
 density2 <- density(log(bd.2010.ind$inc))
 lines(x = (density2$x), y = density2$y, type = "l",lty=2)
@@ -207,7 +207,7 @@ par(mfrow=c(1,3))
 g10 <- reldist(y=bd.2010.ind$inc, yo=bd.2003.ind$inc,
                smooth=0.4, ci=FALSE,
                yolabs=seq(-1,3,by=0.5),
-               ylim=c(0.5,5.0),
+               ylim=c(0.5,2),
                bar=TRUE, quiet=FALSE,
                xlab="Proportion of 2003 Distribution")
 title(main=paste("Overall realtive density"))
@@ -215,7 +215,7 @@ abline(h=1,lty=2)
 g1A <- reldist(y=bd.2010.ind$inc, yo=bd.2003.ind$inc,
                show="effect",
                bar=TRUE, quiet=FALSE,
-               ylim=c(0.5,5.0), ylab="",
+               ylim=c(0.5,2), ylab="",
                smooth=0.4, ci=FALSE,
                yolabs=seq(-1,3,by=0.5),
                xlab="Proportion of 2003 Distribution")
@@ -225,12 +225,30 @@ gA0 <- reldist(y=bd.2010.ind$inc, yo=bd.2003.ind$inc,
                smooth=0.4, ci=FALSE,
                show="residual",
                bar=TRUE, quiet=FALSE,
-               ylim=c(0.5,5.0), ylab="",
+               ylim=c(0.5,2), ylab="",
                yolabs=seq(-1,3,by=0.5),
                xlab="Proportion of 2003 Distribution")
 title(main=paste("Effect of different shape"))
 abline(h=1,lty=2)
 par(mfrow=c(1,1))
+
+# Polarization index
+
+bd.2010.ind$wgt<-1
+bd.2003.ind$wgt<-1
+
+
+format(rpy(y=bd.2010.ind$inc,yo=bd.2003.ind$inc,
+           ywgt=bd.2010.ind$wgt,yowgt=bd.2003.ind$wgt,pvalue=FALSE),
+       digits=3) # Median Index, middle value is the estimate 
+format(rpluy(y=bd.2010.ind$inc,yo=bd.2003.ind$inc,
+             ywgt=bd.2010.ind$wgt,yowgt=bd.2003.ind$wgt,pvalue=FALSE),
+       digits=3) # Lower Index
+format(rpluy(y=bd.2010.ind$inc,yo=bd.2003.ind$inc,
+             ywgt=bd.2010.ind$wgt,yowgt=bd.2003.ind$wgt,pvalue=TRUE,
+             upper=TRUE),
+       digits=3) # Upper index
+
 @
 
 % Report Polarization index
@@ -357,7 +375,7 @@ par(mfrow=c(1,3))
 a<-reldist(y=pooled_i, yo=normal_i,
                smooth=0.4, ci=FALSE,
                yolabs=seq(-1,3,by=0.5),
-               ylim=c(0.5,5.0),
+               ylim=c(0.5,2.0),
                bar=TRUE, quiet=FALSE,
                xlab="Proportion of Normal-Case-Distribution")
 title(main=paste("Overall relative density 1993/94"))
@@ -365,7 +383,7 @@ abline(h=1,lty=2)
 b<-reldist(y=pooled_i, yo=normal_i,
                show="effect",
                bar=TRUE, quiet=FALSE,
-               ylim=c(0.5,5.0), ylab="",
+               ylim=c(0.5,2.0), ylab="",
                smooth=0.4, ci=FALSE,
                yolabs=seq(-1,3,by=0.5),
                xlab="Proportion of Normal-Case-Distribution")
@@ -375,7 +393,7 @@ c<-reldist(y=pooled_i, yo=normal_i,
                smooth=0.4, ci=FALSE,
                show="residual",
                bar=TRUE, quiet=FALSE,
-               ylim=c(0.5,5.0), ylab="",
+               ylim=c(0.5,2.0), ylab="",
                yolabs=seq(-1,3,by=0.5),
                xlab="Proportion of Normal-Case-Distribution")
 title(main=paste("Effect of different shape"))
@@ -524,9 +542,19 @@ dflong <- melt(df[,c("G_steink","G_steink0","kanton","steuerperiode")], id=c("ka
 names(dflong)[3]<-"Type"
 names(dflong)[4]<-"Gini"
 levels(dflong$Type)<-c("without zeros","including zeros")
-ggplot(dflong[dflong$kanton=="CH" & dflong$steuerperiode>=1995.5,], aes(x=steuerperiode,y=Gini,shape=Type,linetype=Type))+geom_line(size=1)+theme_bw()+xlab("tax period")+theme(legend.justification=c(0,1),legend.position=c(0, 1))
-ggplot(dflong[dflong$steuerperiode>=1995.5,], aes(x=steuerperiode,y=Gini,shape=Type,linetype=Type))+geom_line()+facet_wrap(~kanton)+theme_bw()+xlab("tax period")+theme(axis.text.x = element_text(angle = 60, hjust = 1))+theme(legend.justification=c(1,0),legend.position=c(1, 0))
+ggplot(dflong[dflong$kanton=="CH" & dflong$steuerperiode>=1995.5,], 
+       aes(x=steuerperiode,y=Gini,shape=Type,linetype=Type))+
+  scale_y_continuous(limits=c(0.18,0.6))+
+  scale_x_continuous(limits=c(1994,2012),breaks=number_ticks(10)) +
+  geom_line(size=0.5)+
+  geom_point(aes(shape=Type),size=3)+
+  theme_bw()+
+  xlab("tax period")+
+  theme(legend.justification=c(0,1),legend.position=c(0, 1))
+#ggplot(dflong[dflong$steuerperiode>=1995.5,], aes(x=steuerperiode,y=Gini,shape=Type,linetype=Type))+geom_line()+facet_wrap(~kanton)+theme_bw()+xlab("tax period")+theme(axis.text.x = element_text(angle = 60, hjust = 1))+theme(legend.justification=c(1,0),legend.position=c(1, 0))
 @
+
+
 
 Including zeros leads to significantly higher gini coefficients. However we must keep in mind, that these might be artificially high values as we assume zero income for everyone in the zero group. We can conclude more from the graphic: the ratio between both measures seems to be quite constant although for aggregate Switzerland but there are minor deviations for multiple cantons as well as strong deviations for the cantons Geneva and Ticino. However the problems seem not to result from a shift in the zero-share over time but they are specific for the time-period when the tax system changed. 
 
