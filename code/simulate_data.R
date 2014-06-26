@@ -751,7 +751,6 @@ par(mfrow=c(1,1))
 
 
 
-
 ########################################################################
 # Ist es möglich direkt mit den Perzentilen anstelle des simulierten Datensatzes zu rechnen
 # Die Funktion Gini kann mit Einkommensklassen arbeiten
