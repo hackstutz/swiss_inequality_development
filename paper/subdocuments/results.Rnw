@@ -972,3 +972,55 @@ par(mfrow=c(1,1))
 
 
 
+<<benplot>>=
+### libs
+library(reshape, quietly=TRUE, warn.conflicts = FALSE)
+library(foreign)
+library(dplyr)
+library(reldist)
+library(ggplot2)
+
+### Fetch Ginis from different survey data
+number_ticks <- function(n) {function(limits) pretty(limits, n)}
+swissGini<-read.csv("../../data/swissGini.csv",header=TRUE,sep=";")
+
+### Ginis from Bens File (for imputed gap)
+ben <- filter(read.dta("../../data/estv-gini-kt.dta"),kanton=="CH2")
+
+### and for the rest of Ginis:
+estv <- read.dta("../../data/steuerdaten20140522_stata12.dta")
+
+estv_gini <- estv %.% 
+  filter(kanton=="CH",eink_art=="Nach steuerbarem Einkommen",fall=="Normalfälle",anz_pflichtige>0,steuerperiode!=1945.5) %.% 
+  select(steuerperiode, steink, kanton, eink_ll, eink_ul,anz_pflichtige) %.%
+  group_by(factor(steuerperiode)) %.%
+  mutate(mean_steink=steink/anz_pflichtige) %.%
+  summarise(gini(mean_steink,weights=anz_pflichtige))
+
+names(estv_gini) <- c("Year","FTA")
+estv_gini$Year<-as.numeric(as.character(estv_gini$Year))
+estv_gini$Year[estv_gini$Year<2003] <- estv_gini$Year[estv_gini$Year<2003]-2
+
+
+all_gini <- data.frame("Year"=seq(1916,2012,by=0.5))
+all_gini$FTA <- estv_gini$FTA[match(all_gini$Year,estv_gini$Year)]
+all_gini$HBS <- swissGini$HABE[match(all_gini$Year,swissGini$Year)]
+all_gini$EU.SILC <- swissGini$EU.SILC[match(all_gini$Year,swissGini$Year)]
+all_gini$LIS <- swissGini$LIS[match(all_gini$Year,swissGini$Year)]
+all_gini$FTA_imp <- ben$gini[match(all_gini$Year,ben$jahr)]
+
+all_gini_long<-melt(all_gini,id="Year")
+
+names(all_gini_long) <- c("Year","Data","Gini")
+ggplot(data=na.omit(all_gini_long),
+  aes(y=Gini,x=Year,shape=Data,linetype=Data))+
+  ylab("Gini from different sources") +
+  scale_y_continuous(limits=c(0.18,0.4)) +
+  scale_x_continuous(limits=c(1915,2012),breaks=number_ticks(10)) +
+  geom_point(size=3)+
+  geom_line()+
+  theme_bw()+
+  theme(legend.justification=c(0,1),legend.position=c(0, 1))
+
+
+@
