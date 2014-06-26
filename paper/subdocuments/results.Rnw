@@ -600,6 +600,17 @@ estv2010.total.ind$inc<-estv2010.total.ind$inc/1000
 #####################################################
 try(habe0911<-read.table("C:/Users/Hackstutz/Dropbox/Ungleichheit/HABE/HABE091011/HABE091011_Standard_130717UOe.txt", header=TRUE),silent=TRUE)
 try(habe0911<-read.table("P:/WGS/FBS/ISS/Projekte laufend/SNF Ungleichheit/Datengrundlagen/HABE/2009 bis 2011/HABE091011_Standard_130717UOe.txt", header=TRUE),silent=TRUE)
+try(habe0911<-read.table("C:/Users/rudi/Dropbox/Ungleichheit/HABE/HABE091011/HABE091011_Standard_130717UOe.txt", header=TRUE),silent=TRUE)
+g2009 <- read.csv("C:/Users/rudi/Dropbox/Ungleichheit/HABE/HABE091011/HABE2009_Gewichte_140625UOe.txt",sep="\t")
+g2010 <- read.csv("C:/Users/rudi/Dropbox/Ungleichheit/HABE/HABE091011/HABE2010_Gewichte_140625UOe.txt",sep="\t")
+g2011 <- read.csv("C:/Users/rudi/Dropbox/Ungleichheit/HABE/HABE091011/HABE2011_Gewichte_140625UOe.txt",sep="\t")
+names(g2009)[3:4]<-c("SRH","Gewicht")
+names(g2010)[3:4]<-c("SRH","Gewicht")
+names(g2011)[3:4]<-c("SRH","Gewicht")
+jg091011 <- rbind(g2009,g2010,g2011)
+all.equal(match(jg091011$HaushaltID,habe0911$HaushaltID),1:nrow(habe0911))
+habe0911$jahresgewicht <- jg091011
+
 habe10<-habe0911 %.% 
   filter(Jahr08==2010)
 habe10<-data.frame(habe10$VerfuegbaresEinkommen08)
