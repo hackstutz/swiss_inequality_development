@@ -117,7 +117,7 @@ bd.2003<- data.frame(t(bd.2003[1,start:end]),percentile)
 names(bd.2003)[1]=c("inc")
 cum.p<-c(1,5,10,20,25,30,40,50,60,70,75,80,90,95,96,97,98,99,99.5,99.9,99.99)/100
 prob<-c(cum.p[1],diff(cum.p), 1-0.9999)
-freq<-3000
+freq<-100000
 init<-0 
 bd.2003$inc<-as.numeric(as.character(bd.2003$inc))
 fin<-(abs(max(bd.2003$inc,na.rm=TRUE))+5)
@@ -146,58 +146,79 @@ end <- which(names(bd.2010)=="p99_99")
 percentile <- c(1,5,10,20,25,30,40,50,60,70,75,80,90,95,96,97,98,99,99.5,99.9,99.99)
 bd.2010<- data.frame(t(bd.2010[1,start:end]),percentile)
 names(bd.2010)[1]=c("inc")
-cum.p<-c(1,5,10,20,25,30,40,50,60,70,75,80,90,95,96,97,98,99,99.5,99.9,99.99)/100
-prob<-c(cum.p[1],diff(cum.p), 1-0.9999)
-freq<-3000
-init<-0 
-bd.2010$inc<-as.numeric(as.character(bd.2010$inc))
-fin<-(abs(max(bd.2010$inc,na.rm=TRUE))+5)
-ival<-c(init,bd.2010$inc,fin)
-len<-10000
-s<-sapply(2:length(ival),function(i){
+bd.2010 <- rbind(c(0,0),bd.2010)
+ival<-bd.2010$inc
+perval<-bd.2010$percentile
+bd.2010.ind<-unlist(sapply(2:length(ival),function(i){
+  len=(perval[i]-perval[i-1])*100
   seq(ival[i-1],ival[i],length.out=len)
-})
-s<-sample(s,freq,prob=rep(prob, each=len),replace=T)
-bd.2010.ind<-data.frame(s)
-names(bd.2010.ind)[1]=c("inc")
-bd.2010.ind$inc<-bd.2010.ind$inc/1000
+}))
+
+#cum.p<-c(1,5,10,20,25,30,40,50,60,70,75,80,90,95,96,97,98,99,99.5,99.9,99.99)/100
+#prob<-c(cum.p[1],diff(cum.p), 1-0.9999)
+#freq<-1000
+#init<-0 
+#bd.2010$inc<-as.numeric(as.character(bd.2010$inc))
+#fin<-(abs(max(bd.2010$inc,na.rm=TRUE))+5)
+#ival<-c(init,bd.2010$inc,fin)
+#len<-10000
+#s<-sapply(2:length(ival),function(i){
+#  seq(ival[i-1],ival[i],length.out=len)
+#})
+#s<-sample(s,freq,prob=rep(prob, each=len),replace=T)
+#bd.2010.ind<-data.frame(s)
+#names(bd.2010.ind)[1]=c("inc")
+#bd.2010.ind$inc<-bd.2010.ind$inc/1000
 @
 
 <<Comparing 2003 to 2010>>=
 library(reldist, quietly=TRUE, warn.conflicts = FALSE)
 
+# imputing pseudo-individual data to use reldist
+# we cut at the 5th and 95th percentile because it is unclear what values to use to extrapolate
+bd.2003 <- rbind(c(0,0),bd.2003)
+ival<-bd.2003$inc
+perval<-bd.2003$percentile
+bd.2003.ind<-unlist(sapply(2:length(ival),function(i){
+  len=(perval[i]-perval[i-1])*100
+  seq(ival[i-1],ival[i],length.out=len)
+}))
+
+bd.2010 <- rbind(c(0,0),bd.2010)
+ival<-bd.2010$inc
+perval<-bd.2010$percentile
+bd.2010.ind<-unlist(sapply(2:length(ival),function(i){
+  len=(perval[i]-perval[i-1])*100
+  seq(ival[i-1],ival[i],length.out=len)
+}))
+
 # Probability Density Function
 
-density1 <- density(bd.2003.ind$inc)
+density1 <- density(bd.2003.ind)
 plot(x = (density1$x), y = density1$y, type = "l",
      xlab = "taxable income", ylab = "density",
-     axes = FALSE,
-     xlim = c(-50, 5000),
-     ylim=c(0,0.0116031))
+     axes = FALSE)
 title(main="2003 vs 2010",cex=0.6)
 axis(side = 1)
 axis(side = 2)
 fig1legend <- list(x=c(1200,1200),y=c(0.0116031,0.0116031))
 legend(fig1legend,lty=1:2,cex=1, bty="n",
        legend=c("2003","2010"))
-density2 <- density(bd.2010.ind$inc)
+density2 <- density(bd.2010.ind)
 lines(x = (density2$x), y = density2$y, type = "l",lty=2)
 
 # Variante mit Log
 
-density1 <- density(log(bd.2003.ind$inc))
+density1 <- density(log(bd.2003.ind))
 plot(x = (density1$x), y = density1$y, type = "l",
      xlab = "log(taxable income)", ylab = "density",
-     axes = FALSE,
-     xlim = c(-8, 10),
-     ylim=c(0,0.5655167))
-title(main="2003 vs 2010",cex=0.6)
+     axes = FALSE)
 axis(side = 1)
 axis(side = 2)
-fig1legend <- list(x=c(0,0),y=c(0.5655167,0.5655167))
+fig1legend <- list(x=c(5,5),y=c(0.5655167,0.5655167))
 legend(fig1legend,lty=1:2,cex=1, bty="n",
        legend=c("2003","2010"))
-density2 <- density(log(bd.2010.ind$inc))
+density2 <- density(log(bd.2010.ind))
 lines(x = (density2$x), y = density2$y, type = "l",lty=2)
 
 
@@ -221,12 +242,14 @@ g1A <- reldist(y=bd.2010.ind$inc, yo=bd.2003.ind$inc,
                xlab="Proportion of 2003 Distribution")
 title(main=paste("Effect of Median shift"))
 abline(h=1,lty=2)
-gA0 <- reldist(y=bd.2010.ind$inc, yo=bd.2003.ind$inc,
+gA0 <- reldist(y=bd.2010.ind, yo=bd.2003.ind,
                smooth=0.4, ci=FALSE,
                show="residual",
+               entropy=NA,
                bar=TRUE, quiet=FALSE,
                ylim=c(0.5,2), ylab="",
                yolabs=seq(-1,3,by=0.5),
+               discrete=FALSE,
                xlab="Proportion of 2003 Distribution")
 title(main=paste("Effect of different shape"))
 abline(h=1,lty=2)
@@ -234,18 +257,18 @@ par(mfrow=c(1,1))
 
 # Polarization index
 
-bd.2010.ind$wgt<-1
-bd.2003.ind$wgt<-1
+wgt<-rep(1,length(bd.2003.ind))
 
 
-format(rpy(y=bd.2010.ind$inc,yo=bd.2003.ind$inc,
-           ywgt=bd.2010.ind$wgt,yowgt=bd.2003.ind$wgt,pvalue=FALSE),
+
+format(rpy(y=bd.2010.ind,yo=bd.2003.ind,
+           ywgt=wgt,yowgt=wgt,pvalue=FALSE),
        digits=3) # Median Index, middle value is the estimate 
-format(rpluy(y=bd.2010.ind$inc,yo=bd.2003.ind$inc,
-             ywgt=bd.2010.ind$wgt,yowgt=bd.2003.ind$wgt,pvalue=FALSE),
+format(rpluy(y=bd.2010.ind,yo=bd.2003.ind,
+             ywgt=wgt,yowgt=wgt,pvalue=FALSE),
        digits=3) # Lower Index
-format(rpluy(y=bd.2010.ind$inc,yo=bd.2003.ind$inc,
-             ywgt=bd.2010.ind$wgt,yowgt=bd.2003.ind$wgt,pvalue=TRUE,
+format(rpluy(y=bd.2010.ind,yo=bd.2003.ind,
+             ywgt=wgt,yowgt=wgt,pvalue=FALSE,
              upper=TRUE),
        digits=3) # Upper index
 
@@ -476,8 +499,7 @@ lines(x = (density2$x), y = density2$y, type = "l",lty=2)
 par(mfrow=c(1,3))
 a<-reldist(y=pooled_i, yo=normal_i,
                smooth=0.4, ci=FALSE,
-               yolabs=seq(-1,3,by=0.5),
-               ylim=c(0.5,5.0),
+               ylim=c(0.5,2.0),
                bar=TRUE, quiet=FALSE,
                xlab="Proportion of Normal-Case-Distribution")
 title(main=paste("Overall relative density 2010"))
@@ -485,9 +507,8 @@ abline(h=1,lty=2)
 b<-reldist(y=pooled_i, yo=normal_i,
                show="effect",
                bar=TRUE, quiet=FALSE,
-               ylim=c(0.5,5.0), ylab="",
+               ylim=c(0.5,2.0), ylab="",
                smooth=0.4, ci=FALSE,
-               yolabs=seq(-1,3,by=0.5),
                xlab="Proportion of Normal-Case-Distribution")
 title(main=paste("Effect of Median shift"))
 abline(h=1,lty=2)
@@ -495,12 +516,28 @@ c<-reldist(y=pooled_i, yo=normal_i,
                smooth=0.4, ci=FALSE,
                show="residual",
                bar=TRUE, quiet=FALSE,
-               ylim=c(0.5,5.0), ylab="",
-               yolabs=seq(-1,3,by=0.5),
+               ylim=c(0.5,2.0), ylab="",
                xlab="Proportion of Normal-Case-Distribution")
 title(main=paste("Effect of different shape"))
 abline(h=1,lty=2)
 par(mfrow=c(1,1))
+
+wgt<-rep(1,length(normal_i))
+
+
+format(rpy(y=pooled_i,yo=normal_i,
+           ywgt=wgt,yowgt=wgt,pvalue=FALSE),
+       digits=3) # Median Index, middle value is the estimate 
+format(rpluy(y=pooled_i,yo=normal_i,
+             ywgt=wgt,yowgt=wgt,pvalue=FALSE),
+       digits=3) # Lower Index
+format(rpluy(y=pooled_i,yo=normal_i,
+             ywgt=wgt,yowgt=wgt,pvalue=FALSE,
+             upper=TRUE),
+       digits=3) # Upper index
+
+gini(normal_i)-gini(pooled_i)
+
 @
 
 2010 the picture is similar but more apparent: There is a small effect of median shift lowering incomes in the lowest percentiles. The effect of shape however contributes most.
@@ -542,7 +579,85 @@ ggplot(dflong[dflong$kanton=="CH" & dflong$steuerperiode>=1995.5,],
 #ggplot(dflong[dflong$steuerperiode>=1995.5,], aes(x=steuerperiode,y=Gini,shape=Type,linetype=Type))+geom_line()+facet_wrap(~kanton)+theme_bw()+xlab("tax period")+theme(axis.text.x = element_text(angle = 60, hjust = 1))+theme(legend.justification=c(1,0),legend.position=c(1, 0))
 @
 
+<<with_without_zeros RelDist,warning=FALSE>>=
+bd.2010 <- filter(read.csv("../../data/data_Schweiz.csv", header=TRUE,sep=";"),Veranlagungsperiode==2010,Einheit=="Total")
+bd.0.2010 <- filter(read.csv("../../data/data_Schweiz_mitNull.csv", header=TRUE,sep=";"),Veranlagungsperiode==2010,Einheit=="Total")
+start <- which(names(bd.2010)=="p1")
+end <- which(names(bd.2010)=="p99_99")
+percentile <- c(1,5,10,20,25,30,40,50,60,70,75,80,90,95,96,97,98,99,99.5,99.9,99.99)
+bd.2010<- data.frame(t(bd.2010[1,start:end]),percentile)
+names(bd.2010)[1]=c("inc")
+bd.0.2010<- data.frame(t(bd.0.2010[1,start:end]),percentile)
+names(bd.0.2010)[1]=c("inc")
 
+bd.0.2010 <- rbind(c(0,0),bd.0.2010)
+ival<-bd.0.2010$inc
+perval<-bd.0.2010$percentile
+bd.0.2010.ind<-unlist(sapply(2:length(ival),function(i){
+  len=(perval[i]-perval[i-1])*100
+  seq(ival[i-1],ival[i],length.out=len)
+}))
+
+bd.2010 <- rbind(c(0,0),bd.2010)
+ival<-bd.2010$inc
+perval<-bd.2010$percentile
+bd.2010.ind<-unlist(sapply(2:length(ival),function(i){
+  len=(perval[i]-perval[i-1])*100
+  seq(ival[i-1],ival[i],length.out=len)
+}))
+
+# Prop-Density Plot
+density1 <- density(log(bd.2010.ind))
+plot(x = (density1$x), y = density1$y, type = "l",
+     xlab = "taxable income", ylab = "density"
+     #axes = FALSE,
+     #xlim = c(-50, 200),
+     #ylim=c(0,0.0116031)
+     )
+title(main="all tax units vs without non-taxed",cex=0.6)
+axis(side = 1)
+axis(side = 2)
+fig1legend <- list(x=c(6,6),y=c(0.6,0.6))
+legend(fig1legend,lty=1:2, bty="n",
+       legend=c("without non-taxed","all tax units"))
+density2 <- density(log(bd.0.2010.ind))
+lines(x = (density2$x), y = density2$y, type = "l",lty=2)
+
+
+# Relative Distribution
+
+gA0 <- reldist(y=bd.2010.ind, yo=bd.0.2010.ind,
+               smooth=0.4, ci=FALSE,
+               show="residual",
+               entropy=NA,
+               bar=TRUE, quiet=FALSE,
+               ylim=c(0.5,2), ylab="",
+               yolabs=seq(-1,3,by=0.5),
+               discrete=FALSE,
+               xlab="Proportion of 2010 Distribution (including non-taxed)")
+title(main=paste("Effect of different shape"))
+abline(h=1,lty=2)
+
+
+# Polarization index
+
+wgt<-rep(1,length(bd.2010.ind))
+
+
+
+format(rpy(y=bd.2010.ind,yo=bd.0.2010.ind,
+           ywgt=wgt,yowgt=wgt,pvalue=FALSE),
+       digits=3) # Median Index, middle value is the estimate 
+format(rpluy(y=bd.2010.ind,yo=bd.0.2010.ind,
+             ywgt=wgt,yowgt=wgt,pvalue=FALSE),
+       digits=3) # Lower Index
+format(rpluy(y=bd.2010.ind,yo=bd.0.2010.ind,
+             ywgt=wgt,yowgt=wgt,pvalue=FALSE,
+             upper=TRUE),
+       digits=3) # Upper index
+
+
+@
 
 Including zeros leads to significantly higher gini coefficients. However we must keep in mind, that these might be artificially high values as we assume zero income for everyone in the zero group. We can conclude more from the graphic: the ratio between both measures seems to be quite constant although for aggregate Switzerland but there are minor deviations for multiple cantons as well as strong deviations for the cantons Geneva and Ticino. However the problems seem not to result from a shift in the zero-share over time but they are specific for the time-period when the tax system changed. 
 
@@ -553,12 +668,33 @@ library(dplyr, quietly=TRUE, warn.conflicts = FALSE)
 library(ggplot2)
 library(reldist, quietly=TRUE, warn.conflicts = FALSE)
 library(foreign)
+
+bd.0$Jahr <- as.numeric(substr(bd.0$Veranlagungsperiode,1,4))
+bd.0$Jahr[nchar(as.character(bd.0$Veranlagungsperiode))>4] <- bd.0$Jahr[nchar(as.character(bd.0$Veranlagungsperiode))>4] - 2
+bd.2010<-bd.0 %.% 
+  filter(Jahr==2010,Einheit=="Total")
+start <- which(names(bd.2010)=="p1")
+end <- which(names(bd.2010)=="p99_99")
+percentile <- c(1,5,10,20,25,30,40,50,60,70,75,80,90,95,96,97,98,99,99.5,99.9,99.99)
+bd.2010<- data.frame(t(bd.2010[1,start:end]),percentile)
+names(bd.2010)[1]=c("inc")
+bd.2010 <- rbind(c(0,0),bd.2010)
+ival<-bd.2010$inc
+perval<-bd.2010$percentile
+bd.2010.ind<-unlist(sapply(2:length(ival),function(i){
+  len=(perval[i]-perval[i-1])*100
+  seq(ival[i-1],ival[i],length.out=len)
+}))
+
+bd.2010.ind<-bd.2010.ind/1000
+
+######
+# Old Version
 # Get Brülhartdata for 2010
 estv2010 <- read.csv("../../data/estv_normal_sonder_mitNuller_stE_2010.csv",sep=";")
-###########################################
+###
 # Select percentiles for all cases (total)
 estv2010.total<-estv2010[c(18:38),c(1,4)]
-##
 # Simulate individual data points
 # cumulative probabilites
 cum.p<-c(1,5,10,20,25,30,40,50,60,70,75,80,90,95,96,97,98,99,99.5,99.9,99.99)/100
@@ -614,53 +750,54 @@ density1 <- density(habe10$inc_habe)
 plot(x = (density1$x), y = density1$y, type = "l",
      xlab = "Einkommen", ylab = "density",
      axes = FALSE,
-     xlim = c(-30, 1400),
-     ylim=c(0,1.097e-02))
+     #xlim = c(-30, 1400),
+     ylim=c(0,1.151e-02 ))
 title(main="FTA vs HBS income distribution",cex=0.6)
 axis(side = 1)
 axis(side = 2)
-fig1legend <- list(x=c(800,800),y=c(1.097e-02,1.097e-02))
+fig1legend <- list(x=c(400,400),y=c(1.097e-02,1.097e-02))
 legend(fig1legend,lty=1:2,cex=1, bty="n",
        legend=c("HBS","FTA"))
-density2 <- density(estv2010.total.ind$inc)
+density2 <- density(bd.2010.ind)
 lines(x = (density2$x), y = density2$y, type = "l",lty=2)
 
 # Relative Distribution
 
-par(mfrow=c(1,3))
-g10 <- reldist(y=estv2010.total.ind$inc, yo=habe10$inc_habe,
-               smooth=0.4, ci=FALSE,
-               yolabs=seq(-1,3,by=0.5),
-               ylim=c(0.5,5.0),
-               bar=TRUE, quiet=FALSE,
-               xlab="Proportion of HBS Distribution")
-title(main=paste("Overall relative density"))
-abline(h=1,lty=2)
-g1A <- reldist(y=estv2010.total.ind$inc, yo=habe10$inc_habe,
-               show="effect",
-               bar=TRUE, quiet=FALSE,
-               ylim=c(0.5,5.0), ylab="",
-               smooth=0.4, ci=FALSE,
-               yolabs=seq(-1,3,by=0.5),
-               xlab="Proportion of HBS Distribution")
-title(main=paste("Effect of Median shift"))
-abline(h=1,lty=2)
-gA0 <- reldist(y=estv2010.total.ind$inc, yo=habe10$inc_habe,
+
+gA0 <- reldist(y=bd.2010.ind, yo=habe10$inc_habe,
                smooth=0.4, ci=FALSE,
                show="residual",
                bar=TRUE, quiet=FALSE,
-               ylim=c(0.5,5.0), ylab="",
-               yolabs=seq(-1,3,by=0.5),
+               ylim=c(0.5,2.0), ylab="",
                xlab="Proportion of HBS Distribution")
 title(main=paste("Effect of different shape"))
 abline(h=1,lty=2)
-par(mfrow=c(1,1))
+
 
 ########################
 # Separate comparison for unmarried
 
 # Select married - ESTV
 
+bd.2010 <- filter(read.csv("../../data/data_Schweiz_mitNull.csv", header=TRUE,sep=";"),Veranlagungsperiode==2010,Einheit=="Verheiratet / mariés")
+start <- which(names(bd.2010)=="p1")
+end <- which(names(bd.2010)=="p99_99")
+percentile <- c(1,5,10,20,25,30,40,50,60,70,75,80,90,95,96,97,98,99,99.5,99.9,99.99)
+bd.2010<- data.frame(t(bd.2010[1,start:end]),percentile)
+names(bd.2010)[1]=c("inc")
+bd.2010 <- rbind(c(0,0),bd.2010)
+ival<-bd.2010$inc
+perval<-bd.2010$percentile
+bd.2010.ind<-unlist(sapply(2:length(ival),function(i){
+  len=(perval[i]-perval[i-1])*100
+  seq(ival[i-1],ival[i],length.out=len)
+}))
+
+bd.2010.ind<-bd.2010.ind/1000
+
+
+#######
+# Old Version
 estv2010.married<-estv2010[c(18:38),c(1,2)]
 names(estv2010.married)[2]=c("married")
 ##
@@ -685,7 +822,7 @@ s<-sample(s,freq,prob=rep(prob, each=len),replace=T)
 estv2010.married.ind<-data.frame(s)
 names(estv2010.married.ind)[1]=c("inc")
 estv2010.married.ind$inc<-estv2010.married.ind$inc/1000
-
+#####
 
 
 
@@ -707,7 +844,7 @@ density1 <- density(habe10.married$inc_habe)
 plot(x = (density1$x), y = density1$y, type = "l",
      xlab = "Einkommen", ylab = "density",
      axes = FALSE,
-     xlim = c(min(rbind(density1$x,density2$x)), max(rbind(density1$x,density2$x))),
+     xlim = c(min(rbind(density1$x,density2$x)), 800),
      ylim=c(0,max(rbind(density1$y,density2$y))))
 title(main="FTA vs HBS income distribution",cex=0.6)
 axis(side = 1)
@@ -715,39 +852,23 @@ axis(side = 2)
 fig1legend <- list(x=c(median(rbind(density1$x,density2$x)),median(rbind(density1$x,density2$x))),y=c(max(rbind(density1$y,density2$y)),max(rbind(density1$y,density2$y))))
 legend(fig1legend,lty=1:2,cex=1, bty="n",
        legend=c("HBS","FTA"))
-density2 <- density(estv2010.married.ind$inc)
+density2 <- density(bd.2010.ind)
 lines(x = (density2$x), y = density2$y, type = "l",lty=2)
 
 # Relative Distribution
 
-par(mfrow=c(1,3))
-g10 <- reldist(y=estv2010.married.ind$inc, yo=habe10.married$inc_habe,
-               smooth=0.4, ci=FALSE,
-               yolabs=seq(-1,3,by=0.5),
-               ylim=c(0.5,5.0),
-               bar=TRUE, quiet=FALSE,
-               xlab="Proportion of HBS Distribution")
-title(main=paste("Overall relative density"))
-abline(h=1,lty=2)
-g1A <- reldist(y=estv2010.married.ind$inc, yo=habe10.married$inc_habe,
-               show="effect",
-               bar=TRUE, quiet=FALSE,
-               ylim=c(0.5,5.0), ylab="",
-               smooth=0.4, ci=FALSE,
-               yolabs=seq(-1,3,by=0.5),
-               xlab="Proportion of HBS Distribution")
-title(main=paste("Effect of Median shift"))
-abline(h=1,lty=2)
-gA0 <- reldist(y=estv2010.married.ind$inc, yo=habe10.married$inc_habe,
+
+
+
+gA0 <- reldist(y=bd.2010.ind, yo=habe10.married$inc_habe,
                smooth=0.4, ci=FALSE,
                show="residual",
                bar=TRUE, quiet=FALSE,
-               ylim=c(0.5,5.0), ylab="",
-               yolabs=seq(-1,3,by=0.5),
+               ylim=c(0.5,2.0), ylab="",
                xlab="Proportion of HBS Distribution")
 title(main=paste("Effect of different shape"))
 abline(h=1,lty=2)
-par(mfrow=c(1,1))
+
 
 
 #################
