@@ -116,10 +116,10 @@ Studies on income try to focus on the disposable income, which subtracts certain
 %\subsubsection{Imputing the gap}
 %The imputation is not a focus of the paper so we basically follow the most simple approach of Martinez (xxxx). That is estimating the missing taxable income statistics via OLS using information from time trends and cantons. Our imputation model therefore includes canton inequality measures and periods dummies to explain aggregate swiss inequality.
 
-\subsubsection{Estimating the bias}
-For most of the observed range (1941 to 2010) we do not have any information how many tax units fall into the category of having income that is not zero but is too little to qualify for federal taxation (lets call those ``zeros'' for convenience) . However starting 1995, the FTA provides exactly this information for each canton. This enables us to estimate the bias we introduce for each canton and each period between 1995 and 2010. Consequently we can obtain information whether the bias is stable over time (which makes it possible to safely interpret the changes of inequality over time) and whether the bias is different for each canton. \textcolor{red}{Unterschiede zwischen Kantonen wären gut um zu argumentieren, dass andere Länder auch davon betroffen sind, in etwa sowas wie ``je höher der Steuerfreibetrag, umso stärker der Bias''. Länder de erst sehr spät besteuern (und über nicht Besteuerte dann auch nicht Buch führen) haben einen krassen Bias. Wir könnten dann empfehlungen geben, ab welchem Perzentil man save interpretieren kann oder so.}
+\subsubsection{Non-taxed}
+Some tax units are missing in the FTA data as they do not qualify for taxation below a certain income threshold. The income distribution is therefore cut at the left end. For most of the observed range it is not documented how many tax units fall into this unobserved category. Since 1995 however the FTA provides the number of people not being taxed (we will call these tax units ``zeros''). From 1995 to 2010 we can therefore estimate the bias we introduce when ignoring the zeros. In this section we will try to analyze whether the bias is stable over time (and cantons). If the bias was stable over time, we could still analyze trends and changes of inequality no matter how severe the bias is. 
 
-One can take a first look at the descriptives plotting the share of zeros over time seperately for each canton.
+First it is useful to look at the descriptives plotting the share of zeros over time.
 
 <<setup>>=
 library(foreign)
@@ -129,28 +129,28 @@ df$zeros <- df$null_norm/df$cpop # i only use normal cases here
 
 <<zero_descriptives>>=
 library(ggplot2)
-ggplot(df[df$steuerperiode>=1995,], aes(x=steuerperiode,y=zeros))+geom_line()+facet_wrap(~kanton)+theme_bw()
-ggplot(df[df$steuerperiode>=1995,], aes(x=steuerperiode,y=zeros))+geom_line()+facet_wrap(~kanton)+geom_line(aes(y=G_steink),color="blue")+theme_bw()
+ggplot(df[df$steuerperiode>=1995&df$kanton=="CH",], aes(x=steuerperiode,y=zeros))+geom_line()+facet_wrap(~kanton)+theme_bw()
+#ggplot(df[df$steuerperiode>=1995,], aes(x=steuerperiode,y=zeros))+geom_line()+facet_wrap(~kanton)+geom_line(aes(y=G_steink),color="blue")+theme_bw()
 @
 
-We can see multiple things here:
+The number of zeros increased slightly. Different interpretations seems possible. The increased share of zeros could be driven by the FTA's inflation adjustments or an increase in social deductions. Another plausible explanation is the increasing number of unmarried couples filling in two separate tax forms instead of one so we observe two ``small'' incomes instead of one ``large'' income, thus inflating the number of people falling below the taxation threshold. 
 
-\begin{enumerate}
-\item There is a small overall upward trend which we assume to be the Federal Administrations inflation adjustments to the tax threshold.
-\item Geneva and Tessin show wild changes but those might be explained by the tax gap ("Bemessungslücke") that people exploited when the cantons changed the tax system. It remains unclear however why we can't see similar patter within other cantons.
-\item There is some variance and we see different patterns over time and cantons. When estimating Gini coefficients or the like we must therefore assume that ignoring ``the zeros'' leads to a bias that is not stable over time.
-\end{enumerate}
+%\begin{enumerate}
+%\item There is a small overall upward trend which we assume to be the Federal Administrations inflation adjustments to the tax threshold.
+%\item Geneva and Tessin show wild changes but those might be explained by the tax gap ("Bemessungslücke") that people exploited when the cantons changed the tax system. It %remains unclear however why we can't see similar patter within other cantons.
+%\item There is some variance and we see different patterns over time and cantons. When estimating Gini coefficients or the like we must therefore assume that ignoring ``the zeros'' leads to a bias that is not stable over time.
+%\end{enumerate}
 
-We might try two strategies to moderate the problem:
+As we want to report reliably inequality time series we pursue two strategies:
 
 \begin{enumerate}
 \item Add the zeros as a separate group
-\item Fit a model to predict the inequality measure (e.g. the Gini coefficient) using the share of zeros as a predictor
+\item Carry out a statistical test whether the share of zeros alters the Gini coefficient
 \end{enumerate}
 
-By adding the zeros as a separate group we face several problems. With the exception of Geneva 1995/96 Pareto interpolation of percentiles p20 and above seems viable. Low percentiles however would need to be extrapolated so we might impose unrealistic assumptions. Even when estimating ``safe'' measures above p20 (better p50) or a Gini coefficient we need to make an assumption about the income structure of that group (a distribution, a mean income or zero-income). To be consistent with the measure of ``taxable income'' we could assume an income of zero for that group, calculate Gini coefficients and compare them with the original (uncorrected/plain) version. To get a rough number we could (by cantons) check the squared correlation between plain and corrected Gini.
+By adding the zeros back as a separate group we need to make an assumption about the income distribution within that group. We know these cases had incomes between zero and the threshold (usually around 15.000 CHF for the period 1995-2010). In figure WITHWITHOUTZEROSTIMESERIES we show Gini coefficients calculated under the assumption of the zeros being zero. This is problematic for two reasons: first we know these units might earn more (up to the threshold) so Ginis calculated on this assumptions will be too high. Second we assume the zero group to be perfectly homogenous which on the contrary has a lowering effect on the Gini coefficient. Therefore we must at least assume a distribution for the zeros that has some variance and ranges from zero to the threshold. We decided to use the most simple approach fulfilling both criteria which is to interpolate a uniform distribution between zero and each tax periods threshold.
 
-The second approach however is more robust as we do not impose additional assumptions but instead exercise some curve fitting.
+The second approach investigates whether the FTA time series is suitable to analyze trends of inequality even if the inequality measures are biased. We can do this by regressing the inequality measure (here the Gini coefficient) on the share of zeros. Simply spoken we test if cutting a larger (left) tail of the distribution changes the shape of the distribution. We include Gini coefficient for all cantons in our analyses to improve the power of our statistical test\footnote{Furthermore without cantonal data (but only data for aggregate Switzerland) it is impossible to distinguish whether inequality changed due to the number of unobserved people or any other variable that changed over time). 
 
 <<corrected_gini>>=
 df$J<-factor(df$steuerperiode)
@@ -202,34 +202,36 @@ SmoothCoefficientPlot(fit,modelnames=paste0("By cantons: Impact of the share of 
 
 @
 
-The model outputs a test statisic for each canton that tells us whether the variation of the zero-rate over time leads to a significant deviation from the typical ``canton gini-level''. As the model has a decent fit we are not in great danger of omitted variable bias. Using a joint F-Test we can now test if all canton interactions are zero. 
+The model outputs a test statistic for each canton that tells us whether the variation of the zero-rate over time leads to a significant deviation from the typical ``canton gini-level''. As the model has a decent fit we are not in great danger of omitted variable bias. Using a joint F-Test we can now test if all canton interactions are zero. 
 
 <<ftest, echo=FALSE>>=
 library(survey, quietly=TRUE, warn.conflicts = FALSE)
 ftest <- regTermTest(fit,"kanton:zeros")
 @
 
-In our case we can clearly reject the hypothesis that all interactions are zero ($p=\Sexpr{round(ftest$p,3)}$). This leads to the conclusion  that Gini coefficients are biased by the variation of the zero-share which is kind of obvious but at the same time we can use the model to report adjusted Gini coefficients. For example one might be interested in how inequality would had developed if the zero-share would have been constant over time. (Note RF: predict all data point using canton, time and the initial OR final zero-share to homogenize the time series)
-Furthermore we can quantify how large the bias is and we can do this separately for tax periods or separately for cantons. 
+In our case we can clearly reject the hypothesis that all interactions are zero ($p=\Sexpr{round(ftest$p,3)}$). This leads to the conclusion that Gini coefficients are biased by the variation of the zero-share. As a minimum a researcher using tax data should therefore control the share of unobserved people, while the best solution is to thoroughly the mechanisms behind a change in the zero share (e.g. this might be due to increased unemployment in one period and due to changes of the tax system in another period.). Fortunately the model coefficient of Switzerland as a whole is not significant suggesting that the cantonal biases cancel each other out. This seems plausible if the phenomenon is e.g. driven by tax competition because most of the ``tax optimization'' happens within Switzerland.
+% which is kind of obvious but at the same time we can use the model to report adjusted Gini coefficients. For example one might be interested in how inequality would had developed if the zero-share would have been constant over time. (Note RF: predict all data point using canton, time and the initial OR final zero-share to homogenize the time series)
+%Furthermore we can quantify how large the bias is and we can do this separately for tax periods or separately for cantons. 
 
-For all cantons:
+%For all cantons:
 
-<<magnitude_of_bias>>=
-reduced_fit <- lm(G_steink~kanton+factor(steuerperiode),data=df)
-#summary(reduced_fit)
-@
+%<<magnitude_of_bias>>=
+%reduced_fit <- lm(G_steink~kanton+factor(steuerperiode),data=df)
+%#summary(reduced_fit)
+%@
 
-We can see the the model fit reduces to explaining 61.5\% of the Gini variation versus 92.6\% when the information from the zero-shares was used. Although this so some extent attributable to the additional 26 parameters: this is huge. 
+%We can see the the model fit reduces to explaining 61.5\% of the Gini variation versus 92.6\% when the information from the zero-shares was used. Although this so some extent attributable to the additional 26 parameters: this is huge. 
 
-The model indicates some cases that deserve more attention: Schwyz (positive coefficient) and Geneva (negative coefficient) and the tax period 2000 as well as the most recent periods.
+%The model indicates some cases that deserve more attention: Schwyz (positive coefficient) and Geneva (negative coefficient) and the tax period 2000 as well as the most recent periods.
 
-A positive coefficient (e.g. Schwyz) can be read as follows: In periods with many zeros we measure higher Gini coefficients. We can derive, that the distribution of income is more skewed for high incomes than for low incomes. Simply speaking, the contrast between low and middle class is less pronounced than the contrast between middle and top class. One possible explanation would be that incomes stem from two different populations: 1) the people of Schwyz who possibly follow a log-normal or gamma distribution and 2) particularly rich people who moved to Schwyz to avoid taxes. 
+Figure COEFPLOT can be read as follows: A positive coefficient (e.g. Schwyz) states that we measure higher Gini coefficients in periods with many zeros. We can derive, that the distribution of incomes is more skewed for high incomes than for low incomes. Simply speaking, the contrast between low and middle class is less pronounced than the contrast between middle and top class. One possible explanation would be that incomes stem from two different distributions (populations): 1) local people of Schwyz who follow a less skewed distribution and 2) particularly rich people who moved to Schwyz (to avoid taxes). 
 
 A negative coefficient (e.g. Geneva) means the more zeros there are the smaller the Gini measure was compared to other tax periods within that canton (remember this is a fixed-effects model). This is the case we would usually expect: more zeros mask inequality that arises from the bottom.
 
-What can we conclude from that analysis? First one must notice that aggregate measure like the Gini (or others) do not always react in the same way when we cut off one part of the distribution, therefore the measures calculated from tax data is biased. On the other hand, the model coefficient of Switzerland as a whole is not significant suggesting that the cantonal biases cancel out each other. This seems plausible. Most of the ``tax optimization'' happens within Switzerland so the rich people who moved to Schwyz are now missing at another canton.
+Another information we can read from the coefficient plot is the (zero-)adjusted inequality development represented by the period dummies. However these values indicate an unweighted change of the Gini coefficient which relates to cantons (not aggregate Switzerland). Fortunately the overall picture of inequality development looks very similar to the plain time series of Gini coefficients. 
+%What can we conclude from that analysis? First one must notice that aggregate measure like the Gini (or others) do not always react in the same way when we cut off one part of the distribution, therefore the measures calculated from tax data is biased. On the other hand, the model coefficient of Switzerland as a whole is not significant suggesting that the cantonal biases cancel out each other. This seems plausible. Most of the ``tax optimization'' happens within Switzerland so the rich people who moved to Schwyz are now missing at another canton.
 
-We can even see more from the model coefficients. The period dummies indicate how the distribution of incomes has changed: compared to 1995, the subsequent periods have a negative coefficient, i.e. the bias we introduce by omitting the zeros increased, especially from the mid nineties to the mid 2000s. To simplify: cutting off zeros more and more seems to lead to an underestimation of our inequality measure, probably because the skewness in the left part of the distribution increased pointing to an increased pauperization that is masked by omitting the left tail of the income distribution.
+And there is even more to see from the model coefficients: The period-zero-interactions in the model state how an increase of zeros (cutting off a larger piece of the left tail) affects the Gini coefficient in each period compared to 1995. We can see that 2004 to 2010 the (negative) effect is significantly larger than 1995. To simplify: cutting off zeros increasingly leads to an underestimation of inequality measures, probably because the skewness in the left part of the distribution increased. To simplify: in the last decade tax units are increasingly pushed below the observable threshold concealing part of the inequality development. One less dramatic interpretation of this result is the increasing number of unmarried couples filling in two separate tax forms.
 
 
 
