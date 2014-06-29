@@ -293,6 +293,8 @@ format(rpluy(y=bd.2010.ind,yo=bd.2003.ind,
 
 \subsubsection{Normal versus special cases}
 
+
+
 The FTA stopped to publicly report data for special cases after tax period 1993/94. 
 For more recent periods however we can compare already calculated percentiles provided by the FTA\footnote{These calculations were done on commission of the FTA within the SNF project Sinergia Nr. 130648 "The Swiss Confederation: A Natural Laboratory for Research on Fiscal and Political Decentralization" by Raphael Parchet and Stefanie Brilon in coordination with Prof. Dr. Marius Brülhart.} which are based on both special and normal cases to normal cases alone.
 We will have a look at both, the 1993/94 period as the last period where both 
@@ -561,6 +563,8 @@ gini(normal_i)-gini(pooled_i)
 \emph{Income measures with and without zeros}
 
 taxable income with and without zeros
+
+% Beim Vergleich der Datensätze unterschieden nach nur besteuerten und unter berücksichtigung der nicht besteuerten, stellt sich die Frage wie die unteren Einkommen imputiert werden. Wir haben uns überlegt, dass dies vor allem singles (übrige) betrifft, weil Familien in den unteren Einkommenstabellen bereits sehr selten vorkommen. Deswegen reicht es nur die Untergrenze für singels zu berücksichtigen. 
 
 <<with_without_zeros,warning=FALSE>>=
 dflong <- melt(df[,c("G_steink","G_steink0","kanton","steuerperiode")], id=c("kanton","steuerperiode"))
