@@ -5,8 +5,12 @@ capture cd C:/Users/rudi/Dropbox/Git/swiss_inequality_development/data
 use steuerdaten20140522_stata12.dta, clear
 
 sort steuerperiode kanton eink_ll
+* 1945.5 fixen (geht irgendwie nicht mehr)
 replace steink = steink[_n+481]-steink_diff if steuerperiode ==1945.5
 replace anz_pflichtige = anz_pflichtige[_n+481]-anz_pflichtige_diff if steuerperiode ==1945.5
+
+* 1918 fixen
+replace steink = (eink_ll+eink_ul)/2 * anz_pflichtige if steuerperiode==1918
 
 * nur Normalfälle und steuerbares EK behalten, reines EK kommt weg, Sonderfälle auch
 keep if eink_art==0 & fall==0
@@ -56,18 +60,40 @@ replace reink=0 if expanded==1
 replace anz_pflichtige=null_norm if expanded==1
 sort kanton steuerperiode eink_ll eink_ul
 
-* Ginis für steink noch mal berechnen inkl. Nuller
+* Ginis für steink noch mal berechnen inkl. Nuller; einmal mit Annahme inc=0 und einmal inc=0.5*untergrenze
 
 by kanton steuerperiode: gen cpop0 = sum(anz_pflichtige)
 by kanton steuerperiode: gen cpopp0 = cpop0/cpop0[_N]
 by kanton steuerperiode: gen ppop0 = anz_pflichtige/cpop0[_N]
 
+
+*untergrenzen einfügen
+gen untergrenze = .
+replace untergrenze = 12.9 if steuerperiode==1991.5
+*93/94 und 95/96
+replace untergrenze = 14 if steuerperiode>1992 
+*97/98  99/00 und 01/02
+replace untergrenze = 14.9 if steuerperiode>1996 
+*03 04 05
+replace untergrenze = 16.1 if steuerperiode>2002
+*06-10 
+replace untergrenze = 16.9 if steuerperiode>2005
+clonevar steink_halb = steink
+replace steink_halb = 0.5*untergrenze*anz_pflichtige if eink_ll==0 & eink_ul==0 & steink==0 & expanded==1
 by kanton steuerperiode: gen cinc0 = sum(steink)
 by kanton steuerperiode: gen finc0 = cinc0/cinc0[_N]
 by kanton steuerperiode: gen Gc0 = ppop0 * finc0 / 2
 by kanton steuerperiode: replace Gc0 = Gc0 + ppop0 * finc0[_n-1] / 2 if _n>1
 by kanton steuerperiode: gen G_steink0 = (0.5 - sum(Gc0))/0.5
 by kanton steuerperiode: replace G_steink0 = . if _n<_N
+
+by kanton steuerperiode: gen cinc_halb = sum(steink_halb)
+by kanton steuerperiode: gen finc_halb = cinc_halb/cinc_halb[_N]
+by kanton steuerperiode: gen Gc_halb = ppop0 * finc_halb / 2
+by kanton steuerperiode: replace Gc_halb = Gc_halb + ppop0 * finc_halb[_n-1] / 2 if _n>1
+by kanton steuerperiode: gen G_steink_halb = (0.5 - sum(Gc_halb))/0.5
+by kanton steuerperiode: replace G_steink_halb = . if _n<_N
+
 
 drop if expanded==1
 
@@ -120,7 +146,7 @@ sort kanton steuerperiode eink_ll
 * Mean
 by kanton steuerperiode: gen mean = cinc[_N]/cpop[_N]
 
-drop if G_steink== . | G_steink0== . | G_steink==1 | G_steink0==1 |  G_reink== . | G_reink==1 |  G_taxed== . | G_taxed==1
+drop if G_steink== . | G_steink0== . | G_steink==1 | G_steink0==1 |  G_steink_halb==1 | G_steink_halb==. | G_reink== . | G_reink==1 |  G_taxed== . | G_taxed==1
 
 keep steuerperiode G_* kanton p* mean anz_pflichtige cpop cinc null*
 drop ppop
