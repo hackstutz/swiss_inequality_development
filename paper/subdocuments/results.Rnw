@@ -220,9 +220,12 @@ format(rpluy(y=bd.2010.ind,yo=bd.2003.ind,
              ywgt=wgt,yowgt=wgt,pvalue=FALSE,
              upper=TRUE),
        digits=3) # Upper index
+
+gini(bd.2010.ind)-gini(bd.2003.ind)
+
 @
 
-% Der Vergleich liesse sich auch mit den Perzentilen des Reineinkommens auf der Grundlage der aggregierten ESTV-Daten machen.Dies wäre ein Vorteil, falls die Nuller in den Individual-Daten der ESTV als Nuller geführt sind und nicht mit dem tatsächlichen steuerbaren Einkommen
+% Der Vergleich liesse sich auch mit den Perzentilen des Reineinkommens auf der Grundlage der aggregierten ESTV-Daten machen. Dies wäre ein Vorteil, falls die Nuller in den Individual-Daten der ESTV als Nuller geführt sind und nicht mit dem tatsächlichen steuerbaren Einkommen
 
 % FEHLT: Tabelle mit Median, lower und upper polaritätsindex plus Gini bzw. Differenz der Ginis
 
@@ -541,13 +544,15 @@ gini(normal_i)-gini(pooled_i)
 
 
 
-% Beim Vergleich der Datensätze unterschieden nach nur besteuerten und unter berücksichtigung der nicht besteuerten, stellt sich die Frage wie die unteren Einkommen imputiert werden. Wir haben uns überlegt, dass dies vor allem singles (übrige) betrifft, weil Familien in den unteren Einkommenstabellen bereits sehr selten vorkommen. Deswegen reicht es nur die Untergrenze für singels zu berücksichtigen. 
+% Beim Vergleich der Datensätze unterschieden nach nur besteuerten und unter berücksichtigung der nicht besteuerten, stellt sich die Frage wie die unteren Einkommen imputiert werden. Wir haben uns überlegt, dass dies vor allem singles (übrige) betrifft, weil Familien in den unteren Einkommenstabellen bereits sehr selten vorkommen. Deswegen reicht es nur die Untergrenze für singels zu berücksichtigen. Diese liegt 2010 bei 16'900 verändert sich aber über die Zeit
 
-<<with_without_zeros,warning=FALSE>>=
-dflong <- melt(df[,c("G_steink","G_steink0","kanton","steuerperiode")], id=c("kanton","steuerperiode"))
+<<with_without_zeros_Gini,warning=FALSE>>=
+df <- read.csv("../../data/ginis_und_perzentile_normal.csv",sep="\t")
+library(reshape)
+dflong <- melt(df[,c("G_steink","G_steink0","G_steink_halb","kanton","steuerperiode")], id=c("kanton","steuerperiode"))
 names(dflong)[3]<-"Type"
 names(dflong)[4]<-"Gini"
-levels(dflong$Type)<-c("without zeros","including zeros")
+levels(dflong$Type)<-c("without zeros","including zeros","imputed values for zeros")
 ggplot(dflong[dflong$kanton=="CH" & dflong$steuerperiode>=1995.5,], 
        aes(x=steuerperiode,y=Gini,shape=Type,linetype=Type))+
   scale_y_continuous(limits=c(0.18,0.6))+
@@ -557,10 +562,16 @@ ggplot(dflong[dflong$kanton=="CH" & dflong$steuerperiode>=1995.5,],
   theme_bw()+
   xlab("tax period")+
   theme(legend.justification=c(0,1),legend.position=c(0, 1))
+
+# Kantonale Unterschiede
+#####
 #ggplot(dflong[dflong$steuerperiode>=1995.5,], aes(x=steuerperiode,y=Gini,shape=Type,linetype=Type))+geom_line()+facet_wrap(~kanton)+theme_bw()+xlab("tax period")+theme(axis.text.x = element_text(angle = 60, hjust = 1))+theme(legend.justification=c(1,0),legend.position=c(1, 0))
+#####
 @
 
-<<with_without_zeros RelDist,warning=FALSE>>=
+% Wenn wir annehmen, dass die Brülhart-Daten, sowohl die unteren als auch die oberen Perzentile angemessen abbildend, dann reicht der Vergleich. Etwas merkwürdig ist es jetzt, wenn wir die Gini-Reihe mit den ESTV Daten machen und dann den Vergleich mit den Brülhartdaten
+
+<<with_without_zeros_RelDist_mitBrülhart,warning=FALSE>>=
 bd.2010 <- filter(read.csv("../../data/data_Schweiz.csv", header=TRUE,sep=";"),Veranlagungsperiode==2010,Einheit=="Total")
 bd.0.2010 <- filter(read.csv("../../data/data_Schweiz_mitNull.csv", header=TRUE,sep=";"),Veranlagungsperiode==2010,Einheit=="Total")
 start <- which(names(bd.2010)=="p1")
@@ -624,7 +635,88 @@ abline(h=1,lty=2)
 
 wgt<-rep(1,length(bd.2010.ind))
 
+format(rpy(y=bd.2010.ind,yo=bd.0.2010.ind,
+           ywgt=wgt,yowgt=wgt,pvalue=FALSE),
+       digits=3) # Median Index, middle value is the estimate 
+format(rpluy(y=bd.2010.ind,yo=bd.0.2010.ind,
+             ywgt=wgt,yowgt=wgt,pvalue=FALSE),
+       digits=3) # Lower Index
+format(rpluy(y=bd.2010.ind,yo=bd.0.2010.ind,
+             ywgt=wgt,yowgt=wgt,pvalue=FALSE,
+             upper=TRUE),
+       digits=3) # Upper index
 
+@
+
+% Wenn etwas bei den unteren Perzentilen nicht stimmt (nicht Besteuerte als Null gewertet), dann müsste der Vergleich mit den ESTV-Nullern gemacht werden.
+% Es ist mir aktuell unklar bei welchem Datensazt jetzt die Perzentile mit imputierten Nullern vorliegt.
+
+<<with_without_zeros_RelDist_mitESTV,warning=FALSE>>=
+
+## Nicht fertig angepasst!!!
+estvSteink<-(read.csv("../../data/ginis_und_perzentile_normal.csv", header=TRUE,sep="\t"))
+estvSteink<-filter(estvSteink,kanton=="CH")
+start <- which(names(estvSteink)=="p1")
+end <- which(names(estvSteink)=="p9999")
+percentile <- c(1,5,10,20,25,30,40,50,60,70,75,80,90,95,96,97,98,99,99.5,99.9,99.99)
+estvReink<- data.frame(t(estvReink[1,start:end]),percentile)
+
+names(bd.2010)[1]=c("inc")
+bd.0.2010<- data.frame(t(bd.0.2010[1,start:end]),percentile)
+names(bd.0.2010)[1]=c("inc")
+
+bd.0.2010 <- rbind(c(0,0),bd.0.2010)
+ival<-bd.0.2010$inc
+perval<-bd.0.2010$percentile
+bd.0.2010.ind<-unlist(sapply(2:length(ival),function(i){
+  len=(perval[i]-perval[i-1])*100
+  seq(ival[i-1],ival[i],length.out=len)
+}))
+
+bd.2010 <- rbind(c(0,0),bd.2010)
+ival<-bd.2010$inc
+perval<-bd.2010$percentile
+bd.2010.ind<-unlist(sapply(2:length(ival),function(i){
+  len=(perval[i]-perval[i-1])*100
+  seq(ival[i-1],ival[i],length.out=len)
+}))
+
+# Prop-Density Plot
+density1 <- density(log(bd.2010.ind))
+plot(x = (density1$x), y = density1$y, type = "l",
+     xlab = "taxable income", ylab = "density"
+     #axes = FALSE,
+     #xlim = c(-50, 200),
+     #ylim=c(0,0.0116031)
+     )
+title(main="all tax units vs without non-taxed",cex=0.6)
+axis(side = 1)
+axis(side = 2)
+fig1legend <- list(x=c(6,6),y=c(0.6,0.6))
+legend(fig1legend,lty=1:2, bty="n",
+       legend=c("without non-taxed","all tax units"))
+density2 <- density(log(bd.0.2010.ind))
+lines(x = (density2$x), y = density2$y, type = "l",lty=2)
+
+
+# Relative Distribution
+
+gA0 <- reldist(y=bd.2010.ind, yo=bd.0.2010.ind,
+               smooth=0.4, ci=FALSE,
+               show="residual",
+               entropy=NA,
+               bar=TRUE, quiet=FALSE,
+               ylim=c(0.5,2), ylab="",
+               yolabs=seq(-1,3,by=0.5),
+               discrete=FALSE,
+               xlab="Proportion of 2010 Distribution (including non-taxed)")
+title(main=paste("Effect of different shape"))
+abline(h=1,lty=2)
+
+
+# Polarization index
+
+wgt<-rep(1,length(bd.2010.ind))
 
 format(rpy(y=bd.2010.ind,yo=bd.0.2010.ind,
            ywgt=wgt,yowgt=wgt,pvalue=FALSE),
@@ -637,23 +729,17 @@ format(rpluy(y=bd.2010.ind,yo=bd.0.2010.ind,
              upper=TRUE),
        digits=3) # Upper index
 
-
 @
+
 
 Including zeros leads to significantly higher gini coefficients. However we must keep in mind, that these might be artificially high values as we assume zero income for everyone in the zero group. We can conclude more from the graphic: the ratio between both measures seems to be quite constant although for aggregate Switzerland but there are minor deviations for multiple cantons as well as strong deviations for the cantons Geneva and Ticino. However the problems seem not to result from a shift in the zero-share over time but they are specific for the time-period when the tax system changed. 
 
 \emph{comparison of tax-data and survey data distribution}
 
-<<setup_data>>=
+<<setup_data Brülhart_mitNuller_und_HABE_2010,warning=FALSE>>=
 library(dplyr, quietly=TRUE, warn.conflicts = FALSE)
-library(ggplot2)
-library(reldist, quietly=TRUE, warn.conflicts = FALSE)
 library(foreign)
-
-bd.0$Jahr <- as.numeric(substr(bd.0$Veranlagungsperiode,1,4))
-bd.0$Jahr[nchar(as.character(bd.0$Veranlagungsperiode))>4] <- bd.0$Jahr[nchar(as.character(bd.0$Veranlagungsperiode))>4] - 2
-bd.2010<-bd.0 %.% 
-  filter(Jahr==2010,Einheit=="Total")
+bd.2010 <- filter(read.csv("../../data/data_Schweiz_mitNull.csv", header=TRUE,sep=";"),Veranlagungsperiode==2010,Einheit=="Total")
 start <- which(names(bd.2010)=="p1")
 end <- which(names(bd.2010)=="p99_99")
 percentile <- c(1,5,10,20,25,30,40,50,60,70,75,80,90,95,96,97,98,99,99.5,99.9,99.99)
@@ -667,93 +753,97 @@ bd.2010.ind<-unlist(sapply(2:length(ival),function(i){
   seq(ival[i-1],ival[i],length.out=len)
 }))
 
-bd.2010.ind<-bd.2010.ind/1000
-
-######
-# Old Version
-# Get Brülhartdata for 2010
-estv2010 <- read.csv("../../data/estv_normal_sonder_mitNuller_stE_2010.csv",sep=";")
-###
-# Select percentiles for all cases (total)
-estv2010.total<-estv2010[c(18:38),c(1,4)]
-# Simulate individual data points
-# cumulative probabilites
-cum.p<-c(1,5,10,20,25,30,40,50,60,70,75,80,90,95,96,97,98,99,99.5,99.9,99.99)/100
-# probabilities
-prob<-c(cum.p[1],diff(cum.p), 1-0.9999)
-# extreme values beyond x (to sample)
-#freq<-max(normal$anz_pflichtige)
-freq<-3000
-init<-0
-fin<-(abs(max(estv2010.total$Total,na.rm=TRUE))+5)
-# generate the sequence to take pairs from
-ival<-c(init,estv2010.total$Total,fin)
-len<-10000 # sequence of each pair
-s<-sapply(2:length(ival),function(i){
-  seq(ival[i-1],ival[i],length.out=len)
-})
-s<-sample(s,freq,prob=rep(prob, each=len),replace=T)
-estv2010.total.ind<-data.frame(s)
-names(estv2010.total.ind)[1]=c("inc")
-estv2010.total.ind$inc<-estv2010.total.ind$inc/1000
+bd.2010.ind<-bd.2010.ind/1000 # Reskalierung auf 1000er
 
 
 # HABE - 2010 all cases 
 
 #####################################################
-#         ACHTUNG: Bisher ohne Gewichte!            #
-#####################################################
+library(reshape)
+library(dplyr)
 try(habe0911<-read.table("C:/Users/Hackstutz/Dropbox/Ungleichheit/HABE/HABE091011/HABE091011_Standard_130717UOe.txt", header=TRUE),silent=TRUE)
 try(habe0911<-read.table("P:/WGS/FBS/ISS/Projekte laufend/SNF Ungleichheit/Datengrundlagen/HABE/2009 bis 2011/HABE091011_Standard_130717UOe.txt", header=TRUE),silent=TRUE)
 try(habe0911<-read.table("C:/Users/rudi/Dropbox/Ungleichheit/HABE/HABE091011/HABE091011_Standard_130717UOe.txt", header=TRUE),silent=TRUE)
-g2009 <- read.csv("C:/Users/rudi/Dropbox/Ungleichheit/HABE/HABE091011/HABE2009_Gewichte_140625UOe.txt",sep="\t")
-g2010 <- read.csv("C:/Users/rudi/Dropbox/Ungleichheit/HABE/HABE091011/HABE2010_Gewichte_140625UOe.txt",sep="\t")
-g2011 <- read.csv("C:/Users/rudi/Dropbox/Ungleichheit/HABE/HABE091011/HABE2011_Gewichte_140625UOe.txt",sep="\t")
+try(g2009 <- read.csv("C:/Users/rudi/Dropbox/Ungleichheit/HABE/HABE091011/HABE2009_Gewichte_140625UOe.txt",sep="\t"),silent=TRUE)
+try(g2010 <- read.csv("C:/Users/rudi/Dropbox/Ungleichheit/HABE/HABE091011/HABE2010_Gewichte_140625UOe.txt",sep="\t"),silent=TRUE)
+try(g2011 <- read.csv("C:/Users/rudi/Dropbox/Ungleichheit/HABE/HABE091011/HABE2011_Gewichte_140625UOe.txt",sep="\t"),silent=TRUE)
+try(g2009 <- read.csv("P:/WGS/FBS/ISS/Projekte laufend/SNF Ungleichheit/Datengrundlagen/HABE/2009 bis 2011/HABE2009_Gewichte_140625UOe.txt",sep="\t"),silent=TRUE)
+try(g2010 <- read.csv("P:/WGS/FBS/ISS/Projekte laufend/SNF Ungleichheit/Datengrundlagen/HABE/2009 bis 2011/HABE2010_Gewichte_140625UOe.txt",sep="\t"),silent=TRUE)
+try(g2011 <- read.csv("P:/WGS/FBS/ISS/Projekte laufend/SNF Ungleichheit/Datengrundlagen/HABE/2009 bis 2011/HABE2011_Gewichte_140625UOe.txt",sep="\t"),silent=TRUE)
 names(g2009)[3:4]<-c("SRH","Gewicht")
 names(g2010)[3:4]<-c("SRH","Gewicht")
 names(g2011)[3:4]<-c("SRH","Gewicht")
 jg091011 <- rbind(g2009,g2010,g2011)
 all.equal(match(jg091011$HaushaltID,habe0911$HaushaltID),1:nrow(habe0911))
-habe0911$jahresgewicht <- jg091011
+habe0911$jahresgewicht <- jg091011$Gewicht
 
-habe10<-habe0911 %.% 
-  filter(Jahr08==2010)
-habe10<-data.frame(habe10$VerfuegbaresEinkommen08)
-names(habe10)<-"inc_habe"
+habe10<-subset(habe0911,Jahr08==2010)
+habe10$psteink<-habe10$Bruttoeinkommen08+habe10$A31m+habe10$A35m
+
+# Wir brauchen (a) verfügbares Einkommen (b) Bruttoeinkommen und c(Bruttoeinkommen nach Soziversicherungsbeiträgen(A31m) und Monetäre Trasnferausgaben an andere HaushalteA35m)
+habe10<-data.frame(habe10$VerfuegbaresEinkommen08*12/1000,habe10$Bruttoeinkommen08*12/1000,habe10$psteink*12/1000,habe10$jahresgewicht)
+names(habe10)<-c("inc_habe","brutto","psteink","gew")
 habe10$inc_habe[habe10$inc_habe<0]<-0 # One values is -20'000
-habe10$inc_habe<-habe10$inc_habe*12/1000 # transform from monthly income to income per year
+@
 
 
+<<BrülhartvsHABE,warning=FALSE>>=
+library(ggplot2)
+library(reldist, quietly=TRUE, warn.conflicts = FALSE)
 
-# Probability density Function
+# Probability density Function (unterschiedliche Einkommen)
+######
 
-density1 <- density(habe10$inc_habe)
+#density1 <- density(bd.2010.ind)
+#plot(x = (density1$x), y = density1$y, type = "l",
+#     xlab = "Einkommen", ylab = "density",
+#     axes = FALSE,
+#     xlim = c(-30, 800))
+#     #ylim=c(0,1.151e-02 ))
+#title(main="FTA vs HBS income distribution",cex=0.6)
+#axis(side = 1)
+#axis(side = 2)
+#fig1legend <- list(x=c(400,400),y=c(0.004,0.004))
+#legend(fig1legend,lty=1:4,cex=1, bty="n",
+#       legend=c("FTA","HBS VerfE","HBS Brutto","HBS Brutto(kor)"))
+#density2 <- density(habe10$inc_habe,weights=habe10$gew/sum(habe10$gew))
+#lines(x = (density2$x), y = density2$y, type = "l",lty=2)
+#density3 <- density(habe10$brutto,weights=habe10$gew/sum(habe10$gew))
+#lines(x = (density3$x), y = density3$y, type = "l",lty=3)
+#density4 <- density(habe10$psteink,weights=habe10$gew/sum(habe10$gew))
+#lines(x = (density4$x), y = density4$y, type = "l",lty=4)
+######
+
+par(mfrow=c(1,2))
+# Probability density Function (FTA (Brülhart vs HBS Brutto (korrigiert)))
+density1 <- density(bd.2010.ind)
 plot(x = (density1$x), y = density1$y, type = "l",
      xlab = "Einkommen", ylab = "density",
      axes = FALSE,
-     #xlim = c(-30, 1400),
-     ylim=c(0,1.151e-02 ))
+     xlim = c(-30, 800))
+     #ylim=c(0,1.151e-02 ))
 title(main="FTA vs HBS income distribution",cex=0.6)
 axis(side = 1)
 axis(side = 2)
-fig1legend <- list(x=c(400,400),y=c(1.097e-02,1.097e-02))
+fig1legend <- list(x=c(400,400),y=c(0.004,0.004))
 legend(fig1legend,lty=1:2,cex=1, bty="n",
-       legend=c("HBS","FTA"))
-density2 <- density(bd.2010.ind)
+       legend=c("FTA","HBS"))
+density2 <- density(habe10$psteink,weights=habe10$gew/sum(habe10$gew))
 lines(x = (density2$x), y = density2$y, type = "l",lty=2)
+
 
 # Relative Distribution
 
-
-gA0 <- reldist(y=bd.2010.ind, yo=habe10$inc_habe,
+gA0 <- reldist(y=habe10$psteink, yo=bd.2010.ind,
+               ywgt=habe10$gew,
                smooth=0.4, ci=FALSE,
                show="residual",
                bar=TRUE, quiet=FALSE,
                ylim=c(0.5,2.0), ylab="",
-               xlab="Proportion of HBS Distribution")
+               xlab="Proportion of FTA Distribution")
 title(main=paste("Effect of different shape"))
 abline(h=1,lty=2)
-
+par(mfrow=c(1,1))
 
 ########################
 # Separate comparison for unmarried
@@ -777,51 +867,25 @@ bd.2010.ind<-unlist(sapply(2:length(ival),function(i){
 bd.2010.ind<-bd.2010.ind/1000
 
 
-#######
-# Old Version
-estv2010.married<-estv2010[c(18:38),c(1,2)]
-names(estv2010.married)[2]=c("married")
-##
-# Simulate individual data points
-# Percentile-Plot (descriptive  purpose)
-# cumulative probabilites
-cum.p<-c(1,5,10,20,25,30,40,50,60,70,75,80,90,95,96,97,98,99,99.5,99.9,99.99)/100
-# probabilities
-prob<-c(cum.p[1],diff(cum.p), 1-0.9999)
-# extreme values beyond x (to sample)
-#freq<-max(normal$anz_pflichtige)
-freq<-3000
-init<-0
-fin<-(abs(max(estv2010.married$married,na.rm=TRUE))+5)
-# generate the sequence to take pairs from
-ival<-c(init,estv2010.married$married,fin)
-len<-10000 # sequence of each pair
-s<-sapply(2:length(ival),function(i){
-  seq(ival[i-1],ival[i],length.out=len)
-})
-s<-sample(s,freq,prob=rep(prob, each=len),replace=T)
-estv2010.married.ind<-data.frame(s)
-names(estv2010.married.ind)[1]=c("inc")
-estv2010.married.ind$inc<-estv2010.married.ind$inc/1000
-#####
-
 
 
 # Select married - HABE
-try(habe0911<-read.table("C:/Users/Hackstutz/Dropbox/Ungleichheit/HABE/HABE091011/HABE091011_Standard_130717UOe.txt", header=TRUE),silent=TRUE)
-try(habe0911<-read.table("P:/WGS/FBS/ISS/Projekte laufend/SNF Ungleichheit/Datengrundlagen/HABE/2009 bis 2011/HABE091011_Standard_130717UOe.txt", header=TRUE),silent=TRUE)
-habe10<-habe0911 %.% 
-  filter(Jahr08==2010)
+
+
+
 habe10.married<-habe0911 %.% 
   filter(Familientyp08>130,Jahr08==2010)
-habe10.married<-data.frame(habe10.married$VerfuegbaresEinkommen08)
-names(habe10.married)<-"inc_habe"
+habe10.married$psteink<-habe10.married$Bruttoeinkommen08+habe10.married$A31m+habe10.married$A35m
+# Wir brauchen (a) verfügbares Einkommen (b) Bruttoeinkommen und c(Bruttoeinkommen nach Soziversicherungsbeiträgen(A31m) und Monetäre Trasnferausgaben an andere HaushalteA35m)
+habe10.married<-data.frame(habe10.married$VerfuegbaresEinkommen08*12/1000,habe10.married$Bruttoeinkommen08*12/1000,habe10.married$psteink*12/1000,habe10.married$jahresgewicht)
+names(habe10.married)<-c("inc_habe","brutto","psteink","gew")
 habe10.married$inc_habe[habe10.married$inc_habe<0]<-0 # One values is -20'000
-habe10.married$inc_habe<-habe10.married$inc_habe*12/1000 # transform from monthly income to income per year
+
 
 # Probability Density Function
 
-density1 <- density(habe10.married$inc_habe)
+par(mfrow=c(1,2))
+density1 <- density(bd.2010.ind)
 plot(x = (density1$x), y = density1$y, type = "l",
      xlab = "Einkommen", ylab = "density",
      axes = FALSE,
@@ -833,27 +897,28 @@ axis(side = 2)
 fig1legend <- list(x=c(median(rbind(density1$x,density2$x)),median(rbind(density1$x,density2$x))),y=c(max(rbind(density1$y,density2$y)),max(rbind(density1$y,density2$y))))
 legend(fig1legend,lty=1:2,cex=1, bty="n",
        legend=c("HBS","FTA"))
-density2 <- density(bd.2010.ind)
+density2 <- density(habe10.married$psteink,weights=habe10.married$gew/sum(habe10.married$gew))
 lines(x = (density2$x), y = density2$y, type = "l",lty=2)
 
 # Relative Distribution
 
 
-
-
-gA0 <- reldist(y=bd.2010.ind, yo=habe10.married$inc_habe,
+gA0 <- reldist(y=habe10.married$inc_habe, yo=bd.2010.ind,
+               ywgt=habe10.married$gew,
                smooth=0.4, ci=FALSE,
                show="residual",
                bar=TRUE, quiet=FALSE,
                ylim=c(0.5,2.0), ylab="",
-               xlab="Proportion of HBS Distribution")
+               xlab="Proportion of FTA Distribution")
 title(main=paste("Effect of different shape"))
 abline(h=1,lty=2)
-
+par(mfrow=c(1,1))
 
 
 #################
 # Separate comparison for unmaried
+
+### Not corrected!!!
 
 
 bd.2010 <- filter(read.csv("../../data/data_Schweiz_mitNull.csv", header=TRUE,sep=";"),Veranlagungsperiode==2010,Einheit=="Unverheiratet / non-mariés")
