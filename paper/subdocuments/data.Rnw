@@ -126,14 +126,13 @@ Another critical issue with tax data is the problem of tax evasion, which defini
 \begin{table}[h]
 \begin{tabular}{lcccc}
                                    & FTA       & Survey data\\
-Statistical unit                   & individuals/couples  & households\\                                   
-Concepts of economic ressources?   & limited   & yes (for recent periods)\\
-Equivalisation?                    & limited   & yes\\
-Top incomes covered?               & yes       & no\\
+Statistical unit                   & Tax units (individuals/married couples)  & Households\\                                   
+Concepts of economic resources  & Data-driven   & Theory-driven\\
+Population coverage & total population & sample \\ 
+Top incomes covered                 & Yes   & No\\
 Low incomes covered?               & no        & yes\\
-Range                              & 1945-2010 & 1982-2011\\
-Comparison over time possible? 	   & yes       & limited\\
-Cross country comparison possible? & limited   & yes
+Comparison over time possible 	   & Long       & Short \\
+Cross country comparison possible? & limited   & possible
         
 \end{tabular}
 \end{table}
