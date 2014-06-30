@@ -150,9 +150,9 @@ As we want to report reliably inequality time series we pursue two strategies:
 
 By adding the zeros back as a separate group we need to make an assumption about the income distribution within that group. We know these cases had incomes between zero and the threshold (usually around 15.000 CHF for the period 1995-2010). In figure WITHWITHOUTZEROSTIMESERIES we show Gini coefficients calculated under the assumption of the zeros being zero. This is problematic for two reasons: first we know these units might earn more (up to the threshold) so Ginis calculated on this assumptions will be too high. Second we assume the zero group to be perfectly homogenous which on the contrary has a lowering effect on the Gini coefficient. Therefore we must at least assume a distribution for the zeros that has some variance and ranges from zero to the threshold. We decided to use the most simple approach fulfilling both criteria which is to interpolate a uniform distribution between zero and each tax periods threshold.
 
-The second approach investigates whether the FTA time series is suitable to analyze trends of inequality even if the inequality measures are biased. We can do this by regressing the inequality measure (here the Gini coefficient) on the share of zeros. Simply spoken we test if cutting a larger (left) tail of the distribution changes the shape of the distribution. We include Gini coefficient for all cantons in our analyses to improve the power of our statistical test\footnote{Furthermore without cantonal data (but only data for aggregate Switzerland) it is impossible to distinguish whether inequality changed due to the number of unobserved people or any other variable that changed over time). 
+The second approach investigates whether the FTA time series is suitable to analyze trends of inequality even if the inequality measures are biased. We can do this by regressing the inequality measure (here the Gini coefficient) on the share of zeros. Simply spoken we test if cutting a larger (left) tail of the distribution changes the shape of the distribution. We include Gini coefficient for all cantons in our analyses to improve the power of our statistical test\footnote{Furthermore without cantonal data (but only data for aggregate Switzerland) it is impossible to distinguish whether inequality changed due to the number of unobserved people or any other variable that changed over time)}. 
 
-<<corrected_gini>>=
+<<corrected_gini, dev='bmp'>>=
 df$J<-factor(df$steuerperiode)
 fit <- lm(G_steink~kanton+kanton:zeros+J+zeros:J,data=df)
 #summary(fit)
@@ -197,7 +197,7 @@ SmoothCoefficientPlot <- function(models, modelnames = "", removeintercept = FAL
   return(OutputPlot)
   }
 
-library(grid) #for arrow() function
+library(grid,quietly=TRUE, warn.conflicts=FALSE) #for arrow() function
 SmoothCoefficientPlot(fit,modelnames=paste0("By cantons: Impact of the share of zeros on inequality (Gini) Rsq=", round(summary(fit)$r.squared,2)))+geom_text(show_guide=FALSE,x=77,y=2.2,size=4,label="effect variation\nover time")+geom_segment(aes(x = 85, y = 1.5, xend = 71, yend = 1.5))+geom_segment(aes(x = 71, y = 1.5, xend = 71, yend = 1.3))+geom_segment(aes(x = 85, y = 1.5, xend = 85, yend = 1.3))+geom_text(show_guide=FALSE,x=57,y=1.9,size=4,label="effect variation\nby cantons")+geom_segment(aes(x = 71, y = 1.2, xend = 45, yend = 1.2))+geom_segment(aes(x = 71, y = 1.2, xend = 71, yend = 1.0))+geom_segment(aes(x = 45, y = 1.2, xend = 45, yend = 1.0))+ggtitle("Bias variation by time and cantons")
 
 @
