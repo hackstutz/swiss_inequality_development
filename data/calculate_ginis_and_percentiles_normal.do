@@ -111,12 +111,15 @@ gen k = ((P_b-P_a)/((1/(a^theta))-(1/(b^theta))))^(1/theta)
 
 gen dist = .
 
-foreach j of numlist 1 5 10 20 25 30 40 50 60 70 75 80 90 95 99 {
+foreach j of numlist 1 5 10 20 25 30 40 50 60 70 75 80 90 95 96 97 98 99 99.5 99.9 99.99 {
+local varname=`j'
+if (`varname'>99) local varname = `varname' *100
+
 replace dist = cpopp-`j'/100
 *wir wollen die kategorie die kleinstöglich über dem perzentil liegt, also tun wir die die kleinstmöglich darunter liegen weit weg -> 1
 replace dist=1 if dist <0
-bysort kanton steuerperiode dist: gen p`j' = k * (1/(1-`j'/100))^(1/theta)
-by kanton steuerperiode: replace p`j' = p`j'[1]
+bysort kanton steuerperiode dist: gen p`varname' = k * (1/(1-`j'/100))^(1/theta)
+by kanton steuerperiode: replace p`varname' = p`varname'[1]
 }
 sort kanton steuerperiode eink_ll
 
@@ -145,10 +148,20 @@ sort kanton steuerperiode eink_ll
 
 * Mean
 by kanton steuerperiode: gen mean = cinc[_N]/cpop[_N]
+by kanton steuerperiode: gen sum_pflichtige = sum(anz_pflichtige)
 
-drop if G_steink== . | G_steink0== . | G_steink==1 | G_steink0==1 |  G_steink_halb==1 | G_steink_halb==. | G_reink== . | G_reink==1 |  G_taxed== . | G_taxed==1
+*drop if G_steink== . | G_steink0== . | G_steink==1 | G_steink0==1 |  G_steink_halb==1 | G_steink_halb==. | G_reink== . | G_reink==1 |  G_taxed== . | G_taxed==1
+* Gini steht immer in der letzten Zeile, nur die behalten wir
+bysort kanton steuerperiode (eink_ll): gen last=1 if _n==_N
+drop if last!=1
 
-keep steuerperiode G_* kanton p* mean anz_pflichtige cpop cinc null*
+*1er zu Missings
+foreach var of varlist G_* {
+replace `var' = . if `var'==1	
+}
+
+
+keep steuerperiode G_* kanton p* mean sum_pflichtige cpop cinc null*
 drop ppop
 
 outsheet using "ginis_und_perzentile_normal.csv", replace
