@@ -4,12 +4,7 @@
 
 \section{Results}
 
-% Brauchen wir glaubs nicht mehr
-%\textcolor{red}{Gesamtschweizer Grafik (mit imputierten Daten) einmal eine Linie mit Bias, einmal ohne
-%Kantonsweise Grafiken
-%Kuznets / U-Turn, Test der Hypothesen mit den final Daten. Der link zwischen rein deskriptiv  und Theorie plus Modell ist aktuell noch ein krasser Drahtseilakt...}
 
-% Der Übersicht halber habe ich hier die Titel hier analog zum "Struktur-Issue" auf git gesetzt
 
 \subsection{Defining income}
 
@@ -117,8 +112,10 @@ bd.2003.ind<-unlist(sapply(2:length(ival),function(i){
   len=(perval[i]-perval[i-1])*100
   seq(ival[i-1],ival[i],length.out=len)
 }))
+bd.2003.ind<-bd.2003.ind/1000
 
 # Alt
+#####
 #prob<-c(cum.p[1],diff(cum.p), 1-0.9999)
 #init<-0 
 ##freq<-100000
@@ -133,6 +130,7 @@ bd.2003.ind<-unlist(sapply(2:length(ival),function(i){
 #names(bd.2003.ind)[1]=c("inc")
 #3bd.2003.ind<-data.frame(s)
 #bd.2003.ind$inc<-bd.2003.ind$inc/1000
+#####
 @
 
 <<setup_data_Brülhart_2010>>=
@@ -171,8 +169,8 @@ plot(x = (density1$x), y = density1$y, type = "l",
      axes = FALSE)
 axis(side = 1)
 axis(side = 2)
-fig1legend <- list(x=c(5,5),y=c(0.5655167,0.5655167))
-legend(fig1legend,lty=1:2,cex=1, bty="n",
+fig1legend <- list(x=c(0,0),y=c(0.5655167,0.5655167))
+legend(fig1legend,lty=1:2,cex=0.7, bty="n",
        legend=c("2003","2010"))
 density2 <- density(log(bd.2010.ind))
 lines(x = (density2$x), y = density2$y, type = "l",lty=2)
@@ -210,7 +208,7 @@ abline(h=1,lty=2)
 par(mfrow=c(1,1))
 @
 
-<<polindex>>=
+<<polindex20032010>>=
 wgt<-rep(1,length(bd.2003.ind))
 format(rpy(y=bd.2010.ind,yo=bd.2003.ind,
            ywgt=wgt,yowgt=wgt,pvalue=FALSE),
@@ -222,16 +220,12 @@ format(rpluy(y=bd.2010.ind,yo=bd.2003.ind,
              ywgt=wgt,yowgt=wgt,pvalue=FALSE,
              upper=TRUE),
        digits=3) # Upper index
-
 @
 
+% Der Vergleich liesse sich auch mit den Perzentilen des Reineinkommens auf der Grundlage der aggregierten ESTV-Daten machen.Dies wäre ein Vorteil, falls die Nuller in den Individual-Daten der ESTV als Nuller geführt sind und nicht mit dem tatsächlichen steuerbaren Einkommen
 
-% Zero-shares (alter Textbaustein)
-%Estimation using population statistics (1945/46-1993/94) and official tax administration statistics (1995/96 and later) 
-% Das allenfalls in der Methodensection machen?
-% Vergleich mit der Dell-Reihe zu Non-fillers
-% Überschneidungen gib es leider nicht 
-% Interessant wäre es auch, zu sehen ob es Brüche in den Zeitreihen der Zahl der Steuerpflichtigen und jener ohne Besteuerung gibt.
+% FEHLT: Tabelle mit Median, lower und upper polaritätsindex plus Gini bzw. Differenz der Ginis
+
 
 \subsection{Population coverage}
 
@@ -243,8 +237,8 @@ We will have a look at both, the 1993/94 period as the last period where both
 numbers were reported as well as 2010 where we compare data from the same source (FTA)
 but based on different reporting (aggregated data vs. percentiles).
 
-%ABBILDUNGEN ZUM VERGLEICH NORMAL-/SONDERFÄLLE
-<<specialcases9394, echo=FALSE,warning=FALSE,hide=TRUE>>=
+% Variante 1993/1994
+<<setup_data_ESTVspecialcases9394, echo=FALSE,warning=FALSE,hide=TRUE>>=
 library(dplyr, quietly=TRUE, warn.conflicts = FALSE)
 library(ggplot2)
 #library(reldist)
@@ -268,30 +262,8 @@ pooled <- data.frame(t(d[2,start:end]),percentile,case="pooled")
 names(normal)[1]=c("inc")
 names(pooled)[1]=c("inc")
 percentiles <- rbind(normal,pooled)  
-ggplot(percentiles, aes(x=percentile,y=inc,group=case,colour=case))+
-	geom_line()+theme_bw()+
-	scale_colour_grey()+
-	xlab("Percentile")+ylab("taxable income")+
-	ggtitle("Taxable incomes of normal and special cases 1993/94")+
-  theme(legend.justification=c(0,1),legend.position=c(0, 1))
-
-
-#plot relative distribution
-rel <- data.frame(pooled$inc,normal$inc,pooled$percentile)
-rel$change <- rel$pooled.inc/rel$normal.inc
-ggplot(rel, aes(x=pooled.percentile,y=change))+
-	geom_line()+theme_bw()+
-	scale_colour_grey()+
-	geom_line(linetype="dashed",aes(y=1),size=1)+
-	xlab("Percentile")+ylab("taxable income")+
-	ggtitle("Taxable incomes of normal versus special cases 1993/94")
-
-#steuerpflichtige estv / stpf bruelhart
-#1- (2762419 / 3268548)
-
 
 # imputing pseudo-individual data to use reldist
-# we cut at the 5th and 95th percentile because it is unclear what values to use to extrapolate
 ival<-na.omit(normal$inc[-1])
 perval<-normal$percentile[-1]
 normal_i<-unlist(sapply(2:length(ival),function(i){
@@ -306,9 +278,14 @@ pooled_i<-unlist(sapply(2:length(ival),function(i){
   seq(ival[i-1],ival[i],length.out=len)
 }))
 
+@
+
+<<specialcases9394, echo=FALSE,warning=FALSE,hide=TRUE>>=
+#plot relative distribution
 
 # Probability Density Function
 
+par(mfrow=c(1,2))
 density1 <- density(normal_i)
 plot(x = (density1$x), y = density1$y, type = "l",
      xlab = "taxable income", ylab = "density"
@@ -319,47 +296,86 @@ plot(x = (density1$x), y = density1$y, type = "l",
 title(main="normal cases vs pooled, normal and special cases 1993/94",cex=0.6)
 axis(side = 1)
 axis(side = 2)
-fig1legend <- list(x=c(60,60),y=c(0.019,0.019))
+fig1legend <- list(x=c(70,70),y=c(0.016,0.016))
 legend(fig1legend,lty=1:2, bty="n",
-       legend=c("normal cases","pooled, normal and special cases"))
+       legend=c("normal cases","pooled, normal and special cases"),cex=0.5)
 density2 <- density(pooled_i)
 lines(x = (density2$x), y = density2$y, type = "l",lty=2)
 
-# Relative Distribution
+# Overall Reldist and Effect of Median shift
+########
 
-par(mfrow=c(1,3))
-a<-reldist(y=pooled_i, yo=normal_i,
-               smooth=0.4, ci=FALSE,
-               yolabs=seq(-1,3,by=0.5),
-               ylim=c(0.5,2.0),
-               bar=TRUE, quiet=FALSE,
-               xlab="Proportion of Normal-Case-Distribution")
-title(main=paste("Overall relative density 1993/94"))
-abline(h=1,lty=2)
-b<-reldist(y=pooled_i, yo=normal_i,
-               show="effect",
-               bar=TRUE, quiet=FALSE,
-               ylim=c(0.5,2.0), ylab="",
-               smooth=0.4, ci=FALSE,
-               yolabs=seq(-1,3,by=0.5),
-               xlab="Proportion of Normal-Case-Distribution")
-title(main=paste("Effect of Median shift"))
-abline(h=1,lty=2)
+#par(mfrow=c(1,3))
+#a<-reldist(y=pooled_i, yo=normal_i,
+               #smooth=0.4, ci=FALSE,
+               #yolabs=seq(-1,3,by=0.5),
+              #ylim=c(0.5,2.0),
+               #bar=TRUE, quiet=FALSE,
+               #xlab="Proportion of Normal-Case-Distribution")
+#title(main=paste("Overall relative density 1993/94"))
+#abline(h=1,lty=2)
+#b<-reldist(y=pooled_i, yo=normal_i,
+               #show="effect",
+               #bar=TRUE, quiet=FALSE,
+               #ylim=c(0.5,2.0), ylab="",
+               #smooth=0.4, ci=FALSE,
+               #yolabs=seq(-1,3,by=0.5),
+               #xlab="Proportion of Normal-Case-Distribution")
+#title(main=paste("Effect of Median shift"))
+#abline(h=1,lty=2)
+######
+
+# Effect of differen shape
 c<-reldist(y=pooled_i, yo=normal_i,
                smooth=0.4, ci=FALSE,
                show="residual",
                bar=TRUE, quiet=FALSE,
                ylim=c(0.5,2.0), ylab="",
-               yolabs=seq(-1,3,by=0.5),
                xlab="Proportion of Normal-Case-Distribution")
 title(main=paste("Effect of different shape"))
 abline(h=1,lty=2)
 par(mfrow=c(1,1))
+
+# Older Versions Rel-Dist-Plots (1993/1994)
+########
+#ggplot(percentiles, aes(x=percentile,y=inc,group=case,colour=case))+
+#  geom_line()+theme_bw()+
+#  scale_colour_grey()+
+#	xlab("Percentile")+ylab("taxable income")+
+#	ggtitle("Taxable incomes of normal and special cases 1993/94")+
+#  theme(legend.justification=c(0,1),legend.position=c(0, 1))
+# rel <- data.frame(pooled$inc,normal$inc,pooled$percentile)
+# rel$change <- rel$pooled.inc/rel$normal.inc
+# ggplot(rel, aes(x=pooled.percentile,y=change))+
+#	geom_line()+theme_bw()+
+#	scale_colour_grey()+
+#	geom_line(linetype="dashed",aes(y=1),size=1)+
+#	xlab("Percentile")+ylab("taxable income")+
+#	ggtitle("Taxable incomes of normal versus special cases 1993/94")
+#####
+
+@
+
+<<polindexspecialcases9394>>=
+wgt<-rep(1,length(normal_i))
+format(rpy(y=pooled_i,yo=normal_i,
+           ywgt=wgt,yowgt=wgt,pvalue=FALSE),
+       digits=3) # Median Index, middle value is the estimate 
+format(rpluy(y=pooled_i,yo=normal_i,
+             ywgt=wgt,yowgt=wgt,pvalue=FALSE),
+       digits=3) # Lower Index
+format(rpluy(y=pooled_i,yo=normal_i,
+             ywgt=wgt,yowgt=wgt,pvalue=FALSE,
+             upper=TRUE),
+       digits=3) # Upper index
+
+gini(pooled_i)-gini(normal_i)
 @
 
 1993/94 including special cases changes the distribution slightly at both ends. Special cases have a slightly lower median income and therefore are more frequent in the lower percentiles and less frequent in the upper percentiles. In addition there is an effect of shape: the distribution of special cases is more skewed so that lower percentiles show lower incomes and higher percentiles show higher incomes compared to just normal cases.
 
-<<specialcases10, echo=FALSE,warning=FALSE,hide=TRUE>>=
+% Variante 2010
+<<setup_data_specialcases10, echo=FALSE,warning=FALSE,hide=TRUE>>=
 library(foreign)
 library(ggplot2)
 #library(reldist)
@@ -381,29 +397,10 @@ pooled$inc<-pooled$inc/1000 #adjust scale
 normal$case <- "normal case"
 pooled$case <- "pooled, normal and special cases"
 percentiles <- rbind(normal,pooled)
-ggplot(percentiles, aes(x=percentile,y=inc,group=case,colour=case))+
-	geom_line()+theme_bw()+
-	scale_colour_grey()+
-	xlab("Percentile")+ylab("taxable income")+
-	ggtitle("Taxable incomes of normal and special cases 2010")+
-  theme(legend.justification=c(0,1),legend.position=c(0, 1))
-
-
-#plot relative distribution
-rel <- data.frame(pooled$inc,normal$inc,pooled$percentile)
-rel$change <- rel$pooled.inc/rel$normal.inc
-ggplot(rel, aes(x=pooled.percentile,y=change))+
-	geom_line()+theme_bw()+
-	geom_line(linetype="dashed",aes(y=1),size=2)+
-	scale_colour_grey()+
-	xlab("Percentile")+ylab("taxable income")+
-	ggtitle("Taxable incomes of normal versus special cases 2010")
-
-#steuerpflichtige estv / stpf bruelhart
-#1- (3422210 / 3689063)
 
 # imputing pseudo-individual data to use reldist
 # we cut at the 95th percentile because it is unclear what values to use to extrapolate
+# (Cutting through omitting na)
 ival<-na.omit(c(0,normal$inc))
 perval<-c(0,normal$percentile)
 normal_i<-unlist(sapply(2:length(ival),function(i){
@@ -420,8 +417,38 @@ pooled_i<-unlist(sapply(2:length(ival),function(i){
 }))
 
 
+##Older Versions of Reldist-Plot
+######
+#ggplot(percentiles, aes(x=percentile,y=inc,group=case,colour=case))+
+#  geom_line()+theme_bw()+
+#	scale_colour_grey()+
+#	xlab("Percentile")+ylab("taxable income")+
+#	ggtitle("Taxable incomes of normal and special cases 2010")+
+#  theme(legend.justification=c(0,1),legend.position=c(0, 1))
+#####
+@
+
+<<specialcases10, echo=FALSE,warning=FALSE,hide=TRUE>>=
+
+#Older Version of Relative Distribution plot
+######## 
+#rel <- data.frame(pooled$inc,normal$inc,pooled$percentile)
+#rel$change <- rel$pooled.inc/rel$normal.inc
+#ggplot(rel, aes(x=pooled.percentile,y=change))+
+	#geom_line()+theme_bw()+
+	#geom_line(linetype="dashed",aes(y=1),size=2)+
+	#scale_colour_grey()+
+	#xlab("Percentile")+ylab("taxable income")+
+	#ggtitle("Taxable incomes of normal versus special cases 2010")
+
+#steuerpflichtige estv / stpf bruelhart
+#1- (3422210 / 3689063)
+######
+
+
 # Probability Density Function
 
+par(mfrow=c(1,2))
 density1 <- density(normal_i)
 plot(x = (density1$x), y = density1$y, type = "l",
      xlab = "taxable income", ylab = "density"
@@ -429,33 +456,38 @@ plot(x = (density1$x), y = density1$y, type = "l",
      #xlim = c(-50, 200),
      #ylim=c(0,0.0116031)
      )
-title(main="normal cases vs pooled, normal and special cases 2010",cex=0.6)
+title(main="normal cases vs pooled, normal and special cases 2010",cex.main=0.9)
 axis(side = 1)
 axis(side = 2)
 fig1legend <- list(x=c(65,65),y=c(0.016,0.016))
 legend(fig1legend,lty=1:2, bty="n",
-       legend=c("normal cases","pooled, normal and special cases"))
+       legend=c("normal cases","pooled, normal and special cases"),cex=0.5)
 density2 <- density(pooled_i)
 lines(x = (density2$x), y = density2$y, type = "l",lty=2)
 
-# Relative Distribution
 
-par(mfrow=c(1,3))
-a<-reldist(y=pooled_i, yo=normal_i,
-               smooth=0.4, ci=FALSE,
-               ylim=c(0.5,2.0),
-               bar=TRUE, quiet=FALSE,
-               xlab="Proportion of Normal-Case-Distribution")
-title(main=paste("Overall relative density 2010"))
-abline(h=1,lty=2)
-b<-reldist(y=pooled_i, yo=normal_i,
-               show="effect",
-               bar=TRUE, quiet=FALSE,
-               ylim=c(0.5,2.0), ylab="",
-               smooth=0.4, ci=FALSE,
-               xlab="Proportion of Normal-Case-Distribution")
-title(main=paste("Effect of Median shift"))
-abline(h=1,lty=2)
+
+# Relative Distribution - Overall and Effect of Median shift
+#########
+
+#a<-reldist(y=pooled_i, yo=normal_i,
+#               smooth=0.4, ci=FALSE,
+#               ylim=c(0.5,2.0),
+#               bar=TRUE, quiet=FALSE,
+#               xlab="Proportion of Normal-Case-Distribution")
+# title(main=paste("Overall relative density 2010"))
+# abline(h=1,lty=2)
+# b<-reldist(y=pooled_i, yo=normal_i,
+#               show="effect",
+#               bar=TRUE, quiet=FALSE,
+#               ylim=c(0.5,2.0), ylab="",
+#               smooth=0.4, ci=FALSE,
+#               xlab="Proportion of Normal-Case-Distribution")
+# title(main=paste("Effect of Median shift"))
+# abline(h=1,lty=2)
+######
+
+# Relative Distribution - Effect of different shapes
 c<-reldist(y=pooled_i, yo=normal_i,
                smooth=0.4, ci=FALSE,
                show="residual",
@@ -465,6 +497,10 @@ c<-reldist(y=pooled_i, yo=normal_i,
 title(main=paste("Effect of different shape"))
 abline(h=1,lty=2)
 par(mfrow=c(1,1))
+@
+
+<<polindexspecialcases10, echo=FALSE,warning=FALSE,hide=TRUE>>=
+
 
 wgt<-rep(1,length(normal_i))
 
@@ -481,7 +517,6 @@ format(rpluy(y=pooled_i,yo=normal_i,
        digits=3) # Upper index
 
 gini(normal_i)-gini(pooled_i)
-
 @
 
 2010 the picture is similar but more apparent: There is a small effect of median shift lowering incomes in the lowest percentiles. The effect of shape however contributes most.
@@ -502,9 +537,9 @@ gini(normal_i)-gini(pooled_i)
 
 
 
-\emph{Income measures with and without zeros}
+\emph{taxable income with and without non-taxed}
 
-taxable income with and without zeros
+
 
 % Beim Vergleich der Datensätze unterschieden nach nur besteuerten und unter berücksichtigung der nicht besteuerten, stellt sich die Frage wie die unteren Einkommen imputiert werden. Wir haben uns überlegt, dass dies vor allem singles (übrige) betrifft, weil Familien in den unteren Einkommenstabellen bereits sehr selten vorkommen. Deswegen reicht es nur die Untergrenze für singels zu berücksichtigen. 
 
