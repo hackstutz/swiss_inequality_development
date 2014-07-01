@@ -123,7 +123,7 @@ Another critical issue with tax data is the problem of tax evasion, which defini
 %- flexibel applications of appropriate inequality measures
 % - appropriate income definition
 
-\begin{table}[h]
+\begin{center}
 \begin{tabular}{lcccc}
                                    & FTA       & Survey data\\
 Statistical unit                   & Tax units (individuals/married couples)  & Households\\                                   
@@ -135,7 +135,7 @@ Comparison over time possible 	   & Long       & Short \\
 Cross country comparison possible? & limited   & possible
         
 \end{tabular}
-\end{table}
+\end{center}
 
 %RF: damit haben wir WER, WANN, WAS, wollen wir noch ein WOMIT/WAS DARSTELLEN -> methodik -> reldist ? jaa
 
