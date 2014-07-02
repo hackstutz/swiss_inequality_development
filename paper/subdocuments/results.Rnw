@@ -605,10 +605,8 @@ lines(x = (density2$x), y = density2$y, type = "l",lty=2)
 gA0 <- reldist(y=bd.2010.ind, yo=bd.0.2010.ind,
                smooth=0.4, ci=FALSE,
                show="residual",
-               entropy=NA,
                bar=TRUE, quiet=FALSE,
                ylim=c(0.5,2), ylab="",
-               yolabs=seq(-1,3,by=0.5),
                discrete=FALSE,
                xlab="Proportion of 2010 Distribution (including non-taxed)")
 title(main=paste("Effect of different shape"))
@@ -676,10 +674,8 @@ lines(x = (density2$x), y = density2$y, type = "l",lty=2)
 gA0 <- reldist(y=bd.2010.ind, yo=bd.0.2010.ind,
                smooth=0.4, ci=FALSE,
                show="residual",
-               entropy=NA,
                bar=TRUE, quiet=FALSE,
                ylim=c(0.5,2), ylab="",
-               yolabs=seq(-1,3,by=0.5),
                discrete=FALSE,
                xlab="Proportion of 2010 Distribution (including non-taxed)")
 title(main=paste("Effect of different shape"))
