@@ -8,7 +8,7 @@
 
 \subsection{Defining income}
 
-\emph{Gini coefficients for taxable income, income before deductions and taxable income after fedaral tax}
+\emph{Gini coefficients for taxable income, income before deductions and taxable income after federal tax}
 
 <<setup_gini_data>>=
 library(foreign,quietly=TRUE, warn.conflicts=FALSE)
@@ -17,7 +17,7 @@ df <- read.csv("../../data/ginis_und_perzentile_normal.csv",sep="\t")
 df$zeros <- df$null_norm/df$cpop # i only use normal cases here
 @
 
-<<different_ginis>>=
+<<different_ginis, fig.cap='',fig.pos='H'>>=
 df$G_reink[df$G_reink==1]<-NA
 df$G_taxed[df$G_taxed==1]<-NA
 library(reshape)
@@ -73,7 +73,7 @@ bdlong<-rbind(bd.0.long,bd.long)
 names(bdlong)[61]<-"Income"
 @
 
-<<equivalencescale>>=
+<<equivalencescale, fig.cap='',fig.pos='H'>>=
 library(ggplot2)
 number_ticks <- function(n) {function(limits) pretty(limits, n)}
 ggplot(bdlong, aes(x=Jahr,y=Gini,shape=Income))+
@@ -157,7 +157,7 @@ bd.2010.ind<-unlist(sapply(2:length(ival),function(i){
 bd.2010.ind<-bd.2010.ind/1000
 @
 
-<<reldist20032010, echo=FALSE>>=
+<<reldist20032010, echo=FALSE, fig.cap='',fig.pos='H'>>=
 library(reldist, quietly=TRUE, warn.conflicts = FALSE)
 
 # Probability Density Function
@@ -248,11 +248,7 @@ polTable(bd.2010.ind,bd.2003.ind)
 
 \emph{Normal versus special cases}
 
-The FTA stopped to publicly report data for special cases after tax period 1993/94. 
-For more recent periods however we can compare already calculated percentiles provided by the FTA\footnote{These calculations were done on commission of the FTA within the SNF project Sinergia Nr. 130648 "The Swiss Confederation: A Natural Laboratory for Research on Fiscal and Political Decentralization" by Raphael Parchet and Stefanie Brilon in coordination with Prof. Dr. Marius Brülhart.} which are based on both special and normal cases to normal cases alone.
-We will have a look at both, the 1993/94 period as the last period where both 
-numbers were reported as well as 2010 where we compare data from the same source (FTA)
-but based on different reporting (aggregated data vs. percentiles).
+The FTA distinguishes normal from special cases as described in the data section. To test whether it matters which cases the researcher looks at we want to compare the distributions of normal and special cases. Unfortunately, the FTA stopped to publicly report data for special cases after tax period 1993/94. Therefore we will compare the two distributions for a rather old dataset. However the FTA does report aggregate statistics (e.g. percentiles) based on a pool of all cases (normal and special) for more recent periods\footnote{These calculations were done on commission of the FTA within the SNF project Sinergia Nr. 130648 "The Swiss Confederation: A Natural Laboratory for Research on Fiscal and Political Decentralization" by Raphael Parchet and Stefanie Brilon in coordination with Prof. Dr. Marius Brülhart.} which allows us to do a corresponding analysis for 2010 as well.
 
 % Variante 1993/1994
 <<setup_data_ESTVspecialcases9394>>=
@@ -298,7 +294,7 @@ pooled_i<-unlist(sapply(2:length(ival),function(i){
 
 @
 
-<<specialcases9394>>=
+<<specialcases9394, fig.cap='',fig.pos='H'>>=
 #plot relative distribution
 
 # Probability Density Function
@@ -378,7 +374,8 @@ par(mfrow=c(1,1))
 polTable(pooled_i,normal_i)
 @
 
-1993/94 including special cases changes the distribution slightly at both ends. Special cases have a slightly lower median income and therefore are more frequent in the lower percentiles and less frequent in the upper percentiles. In addition there is an effect of shape: the distribution of special cases is more skewed so that lower percentiles show lower incomes and higher percentiles show higher incomes compared to just normal cases.
+1993/94 a pooled data set of normal and special cases has a slightly higher density at both ends compared to data based in normal cases only. Special cases appear to have a slightly lower median income and their distribution is more skewed. Therefore special cases are more polarized than normal cases, i.e. striving away from the median (positive Median Index of 0.02). This tendency is more pronounces in the lower than upper part  of the distribution (Lower Index of 0.029 compared to Upper Index if 0.01). 
+As the special cases consist of a broad mix of individuals it remains unclear which factor explains the differences of both distributions. Possible explanations can be immigrants partly concentrating in lower income percentiles, low income artists who belong to the special cases or a more technical selection effect: tax units not liable for taxation throughout the whole year are special cases; those cases might have lower incomes, e.g. if they moved and stopped working. To get a more complete picture we can look how the two distributions relate to each other in 2010 (see FIGURE SPECIAL2010).
 
 % Variante 2010
 <<setup_data_specialcases10>>=
@@ -435,7 +432,7 @@ pooled_i<-unlist(sapply(2:length(ival),function(i){
 #####
 @
 
-<<specialcases10>>=
+<<specialcases10, fig.cap='',fig.pos='H'>>=
 
 #Older Version of Relative Distribution plot
 ######## 
@@ -510,8 +507,7 @@ par(mfrow=c(1,1))
 polTable(pooled_i,normal_i)
 @
 
-2010 the picture is similar but more apparent: There is a small effect of median shift lowering incomes in the lowest percentiles. The effect of shape however contributes most.
-
+2010 the picture is similar but more apparent: Special cases appear more frequent around the lower percentiles of the pooled distribution (Lower Index of 0.039), however 2010 there is a more noteworthy effect in the upper part of the distribution (Upper Index of 0.022). According to figure \ref{fig:specialcases10} we can attribute this effect to the top percentiles. This gives credibility to the thesis that rich immigrants whose number increased between 1994 and 2010 drive the effect.
 
 % Auf neuste Zahlen anpassen
 
@@ -534,7 +530,7 @@ polTable(pooled_i,normal_i)
 
 % Beim Vergleich der Datensätze unterschieden nach nur besteuerten und unter berücksichtigung der nicht besteuerten, stellt sich die Frage wie die unteren Einkommen imputiert werden. Wir haben uns überlegt, dass dies vor allem singles (übrige) betrifft, weil Familien in den unteren Einkommenstabellen bereits sehr selten vorkommen. Deswegen reicht es nur die Untergrenze für singels zu berücksichtigen. Diese liegt 2010 bei 16'900 verändert sich aber über die Zeit
 
-<<with_without_zeros_Gini,warning=FALSE>>=
+<<with_without_zeros_Gini,warning=FALSE, fig.cap='',fig.pos='H'>>=
 df <- read.csv("../../data/ginis_und_perzentile_normal.csv",sep="\t")
 library(reshape)
 dflong <- melt(df[,c("G_steink","G_steink0","G_steink_halb","kanton","steuerperiode")], id=c("kanton","steuerperiode"))
@@ -559,7 +555,7 @@ ggplot(dflong[dflong$kanton=="CH" & dflong$steuerperiode>=1995.5,],
 
 % Wenn wir annehmen, dass die Brülhart-Daten, sowohl die unteren als auch die oberen Perzentile angemessen abbildend, dann reicht der Vergleich. Etwas merkwürdig ist es jetzt, wenn wir die Gini-Reihe mit den ESTV Daten machen und dann den Vergleich mit den Brülhartdaten
 
-<<with_without_zeros_RelDist_mitBruelhart,warning=FALSE>>=
+<<with_without_zeros_RelDist_mitBruelhart,warning=FALSE, fig.cap='',fig.pos='H'>>=
 bd.2010 <- filter(read.csv("../../data/data_Schweiz.csv", header=TRUE,sep=";"),Veranlagungsperiode==2010,Einheit=="Total")
 bd.0.2010 <- filter(read.csv("../../data/data_Schweiz_mitNull.csv", header=TRUE,sep=";"),Veranlagungsperiode==2010,Einheit=="Total")
 start <- which(names(bd.2010)=="p1")
@@ -627,7 +623,7 @@ polTable(bd.2010.ind,bd.0.2010.ind)
 % Wenn etwas bei den unteren Perzentilen nicht stimmt (nicht Besteuerte als Null gewertet), dann müsste der Vergleich mit den ESTV-Nullern gemacht werden.
 % Es ist mir aktuell unklar bei welchem Datensazt jetzt die Perzentile mit imputierten Nullern vorliegt.
 
-<<with_without_zeros_RelDist_mitESTV,warning=FALSE>>=
+<<with_without_zeros_RelDist_mitESTV,warning=FALSE, fig.cap='',fig.pos='H'>>=
 
 ## Nicht fertig angepasst!!!
 estvSteink<-(read.csv("../../data/ginis_und_perzentile_normal.csv", header=TRUE,sep="\t"))
@@ -753,7 +749,7 @@ habe10$inc_habe[habe10$inc_habe<0]<-0 # One values is -20'000
 @
 
 
-<<BruelhartvsHABE,warning=FALSE>>=
+<<BruelhartvsHABE,warning=FALSE, fig.cap='',fig.pos='H'>>=
 library(ggplot2)
 library(reldist, quietly=TRUE, warn.conflicts = FALSE)
 
@@ -971,7 +967,7 @@ par(mfrow=c(1,1))
 
 
 
-<<benplot>>=
+<<benplot, fig.cap='',fig.pos='H'>>=
  ### libs
 library(reshape, quietly=TRUE, warn.conflicts = FALSE)
 library(foreign)

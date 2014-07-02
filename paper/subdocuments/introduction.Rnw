@@ -23,7 +23,7 @@ As we focus our paper on the case of Switzerland, it is important to embed our w
 
 
 
-<<Swiss inequality Plot>>=
+<<Swiss inequality Plot, fig.cap='',fig.pos='H'>>=
 library(ggplot2)
 library(foreign)
 library(reshape, quietly=TRUE, warn.conflicts = FALSE)
