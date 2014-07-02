@@ -246,7 +246,7 @@ polTable(bd.2010.ind,bd.2003.ind)
 
 \subsection{Population coverage}
 
-\subsubsection{Normal versus special cases}
+\emph{Normal versus special cases}
 
 The FTA stopped to publicly report data for special cases after tax period 1993/94. 
 For more recent periods however we can compare already calculated percentiles provided by the FTA\footnote{These calculations were done on commission of the FTA within the SNF project Sinergia Nr. 130648 "The Swiss Confederation: A Natural Laboratory for Research on Fiscal and Political Decentralization" by Raphael Parchet and Stefanie Brilon in coordination with Prof. Dr. Marius Brülhart.} which are based on both special and normal cases to normal cases alone.
@@ -904,35 +904,6 @@ bd.2010.ind<-unlist(sapply(2:length(ival),function(i){
 bd.2010.ind<-bd.2010.ind/1000
 
 
-##
-# Unmarried ESTV
-estv2010 <- read.csv("../../data/estv_normal_sonder_mitNuller_stE_2010.csv",sep=";")
-estv2010.unmarried<-estv2010[c(18:38),c(1,3)]
-names(estv2010.unmarried)[2]=c("unmarried")
-##
-# Simulate individual data points
-# Percentile-Plot (descriptive  purpose)
-# cumulative probabilites
-cum.p<-c(1,5,10,20,25,30,40,50,60,70,75,80,90,95,96,97,98,99,99.5,99.9,99.99)/100
-# probabilities
-prob<-c(cum.p[1],diff(cum.p), 1-0.9999)
-# extreme values beyond x (to sample)
-#freq<-max(normal$anz_pflichtige)
-freq<-3000
-init<-0
-fin<-(abs(max(estv2010.unmarried$unmarried,na.rm=TRUE))+5)
-# generate the sequence to take pairs from
-ival<-c(init,estv2010.unmarried$unmarried,fin)
-len<-10000 # sequence of each pair
-s<-sapply(2:length(ival),function(i){
-  seq(ival[i-1],ival[i],length.out=len)
-})
-s<-sample(s,freq,prob=rep(prob, each=len),replace=T)
-estv2010.unmarried.ind<-data.frame(s)
-names(estv2010.unmarried.ind)[1]=c("inc")
-estv2010.unmarried.ind$inc<-estv2010.unmarried.ind$inc/1000
-
-
 # Select unmarried - HABE
 habe10<-habe0911 %.% 
   filter(Jahr08==2010)
@@ -946,6 +917,7 @@ habe10.unmarried$inc_habe<-habe10.unmarried$inc_habe*12/1000 # transform from mo
 
 # Probability Density Function
 
+par(mfrow=c(1,2))
 density1 <- density(habe10.unmarried$inc_habe)
 plot(x = (density1$x), y = density1$y, type = "l",
      xlab = "Einkommen", ylab = "density",
@@ -963,25 +935,26 @@ lines(x = (density2$x), y = density2$y, type = "l",lty=2)
 
 
 # Relative Distribution
+# Overall and Median effect
+#####
+#g10 <- reldist(y=estv2010.unmarried.ind$inc, yo=habe10.unmarried$inc_habe,
+ #              smooth=0.4, ci=FALSE,
+#               yolabs=seq(-1,3,by=0.5),
+   #            ylim=c(0.5,5.0),
+    #           bar=TRUE, quiet=FALSE,
+     #          xlab="Proportion of HBS Distribution")
+#title(main=paste("Overall realtive density"))
+#abline(h=1,lty=2)
+#g1A <- reldist(y=estv2010.unmarried.ind$inc, yo=habe10.unmarried$inc_habe,
+ #              show="effect",
+  #             bar=TRUE, quiet=FALSE,
+  #             ylim=c(0.5,5.0), ylab="",
+  #             smooth=0.4, ci=FALSE,
+  #             yolabs=seq(-1,3,by=0.5),
+  #             xlab="Proportion of HBS Distribution")
+#title(main=paste("Effect of Median shift"))
+#abline(h=1,lty=2)
 
-par(mfrow=c(1,3))
-g10 <- reldist(y=estv2010.unmarried.ind$inc, yo=habe10.unmarried$inc_habe,
-               smooth=0.4, ci=FALSE,
-               yolabs=seq(-1,3,by=0.5),
-               ylim=c(0.5,5.0),
-               bar=TRUE, quiet=FALSE,
-               xlab="Proportion of HBS Distribution")
-title(main=paste("Overall realtive density"))
-abline(h=1,lty=2)
-g1A <- reldist(y=estv2010.unmarried.ind$inc, yo=habe10.unmarried$inc_habe,
-               show="effect",
-               bar=TRUE, quiet=FALSE,
-               ylim=c(0.5,5.0), ylab="",
-               smooth=0.4, ci=FALSE,
-               yolabs=seq(-1,3,by=0.5),
-               xlab="Proportion of HBS Distribution")
-title(main=paste("Effect of Median shift"))
-abline(h=1,lty=2)
 gA0 <- reldist(y=bd.2010.ind, yo=habe10.unmarried$inc_habe,
                smooth=0.4, ci=FALSE,
                show="residual",
