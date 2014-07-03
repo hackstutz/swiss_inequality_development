@@ -2,7 +2,14 @@
 
 % Diese Abschnitt muss ersetzt werden mit der von uns gewählten Vorgehensweise
 
-\subsubsection{Relative distribution (RD) methods}
+In the last section we described the advantages and drawback of taxdata discussing five aspects, which we regard as crucial concering the assessment of inequality. To get a feeling of the importance of these aspects, we exploit the FTA-tax data as far as possible and perform several insightful calculations adressing four of the five mentioned aspects. No further investigation is possible regarding aspect (1) concepts on measuring economic ressource. But for the other four thematic areas, we can provide deeper insight. In general our main strategy is to apply different possible concepts within one conceptional area (income, units, measurement, population coverage) while holding other conceptual differences constant. With this strategy we want to show, the sensitiveness the assessement of inequality is especially if one looks at time trends.\\
+
+To fulfill the above described task, we use two techniques. To assess the development over time, we calculate in generall gini-coefficents for all possible time points, allowing us the make time trends visible and to compare the result out of the FTA-tax data to other publications. For selected periodes we expand the analysis with relative distribution methods, which allows an indepth analysis of distributional differences and therefore catches the shortcomins of gini-coefficents. \\
+
+To calculate Gini-coefficents we follow common definitions, like it is describded for example in \citep{jann_einfuhrung_2005}. Because the relative distribution methods are not that widely know, we provide a short introduction of the important concepts in this section. We expand the methodsection with an extended analysis about the importance of non-taxed, because the issue of non-taxed is a especially thorny one.
+
+
+\subsubsection{Relative distribution (RD) framework}
 
 The RD-framework is based on the concept of a ``relative distribution'', a transformation of the data from two distributions into a single distribution that contains all of the information necessary for scale-invariant comparison. This allows to make distribution differences ``visual'' in an elegant way and it is also a base for summary statistics, which are more sensitive to detailed theoretical hypotheses in contrast to other measures like the gini-coefficient or top income-shares, which inform either about the whole population or only about the top part of the distribution.\\
 
