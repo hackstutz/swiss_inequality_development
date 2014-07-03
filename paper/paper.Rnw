@@ -48,6 +48,18 @@
 \renewcommand{\abstractnamefont}{\normalfont\bfseries} % Set the "Abstract" text to bold
 \renewcommand{\abstracttextfont}{\normalfont\small\itshape} % Set the abstract itself to small italic text
 
+%%%%%% new command to break multicol environment from time to time
+\newcounter{tempcolnum}
+\makeatletter
+\newcommand{\multicolinterrupt}[1]{% Stuff to span both rows
+\setcounter{tempcolnum}{\col@number}
+\end{multicols}
+#1%
+\begin{multicols}{\value{tempcolnum}}
+}
+\makeatother
+%%%%%%%
+
 \usepackage{titlesec} % Allows customization of titles
 \renewcommand\thesection{\Roman{section}} % Roman numerals for the sections
 \renewcommand\thesubsection{\Roman{subsection}} % Roman numerals for subsections
