@@ -45,7 +45,7 @@ ggplot(dflong[dflong$kanton=="CH",], aes(x=steuerperiode,y=Gini,shape=Income))+
 #ggplot(dflong, aes(x=steuerperiode,y=Gini,colour=Type))+geom_line()+facet_wrap(~kanton)+theme_bw()+xlab("tax period")
 @
 
-\emph{Equivalence scale}
+\subsection{Statistical units -- Equivalence scale}
 
 <<setup_data_Brühlhart with and without taxed>>=
 # Ohne Nuller
@@ -578,6 +578,8 @@ bd.2010.ind<-unlist(sapply(2:length(ival),function(i){
   seq(ival[i-1],ival[i],length.out=len)
 }))
 
+
+par(mfrow=c(1,2))
 # Prop-Density Plot
 density1 <- density(log(bd.2010.ind))
 plot(x = (density1$x), y = density1$y, type = "l",
@@ -607,6 +609,8 @@ gA0 <- reldist(y=bd.2010.ind, yo=bd.0.2010.ind,
                xlab="Proportion of 2010 Distribution (including non-taxed)")
 title(main=paste("Effect of different shape"))
 abline(h=1,lty=2)
+
+par(mfrow=c(1,1))
 @
 
 
@@ -616,72 +620,6 @@ polTable(bd.2010.ind,bd.0.2010.ind,tablabel="polzeros")
 
 % Wenn etwas bei den unteren Perzentilen nicht stimmt (nicht Besteuerte als Null gewertet), dann müsste der Vergleich mit den ESTV-Nullern gemacht werden.
 % Es ist mir aktuell unklar bei welchem Datensazt jetzt die Perzentile mit imputierten Nullern vorliegt.
-
-<<with_without_zeros_RelDist_mitESTV,warning=FALSE, fig.cap='',fig.pos='H'>>=
-
-## Nicht fertig angepasst!!!
-estvSteink<-(read.csv("../../data/ginis_und_perzentile_normal.csv", header=TRUE,sep="\t"))
-estvSteink<-filter(estvSteink,kanton=="CH")
-start <- which(names(estvSteink)=="p1")
-end <- which(names(estvSteink)=="p9999")
-percentile <- c(1,5,10,20,25,30,40,50,60,70,75,80,90,95,96,97,98,99,99.5,99.9,99.99)
-estvReink<- data.frame(t(estvReink[1,start:end]),percentile)
-
-names(bd.2010)[1]=c("inc")
-bd.0.2010<- data.frame(t(bd.0.2010[1,start:end]),percentile)
-names(bd.0.2010)[1]=c("inc")
-
-bd.0.2010 <- rbind(c(0,0),bd.0.2010)
-ival<-bd.0.2010$inc
-perval<-bd.0.2010$percentile
-bd.0.2010.ind<-unlist(sapply(2:length(ival),function(i){
-  len=(perval[i]-perval[i-1])*100
-  seq(ival[i-1],ival[i],length.out=len)
-}))
-
-bd.2010 <- rbind(c(0,0),bd.2010)
-ival<-bd.2010$inc
-perval<-bd.2010$percentile
-bd.2010.ind<-unlist(sapply(2:length(ival),function(i){
-  len=(perval[i]-perval[i-1])*100
-  seq(ival[i-1],ival[i],length.out=len)
-}))
-
-# Prop-Density Plot
-density1 <- density(log(bd.2010.ind))
-plot(x = (density1$x), y = density1$y, type = "l",
-     xlab = "taxable income", ylab = "density"
-     #axes = FALSE,
-     #xlim = c(-50, 200),
-     #ylim=c(0,0.0116031)
-     )
-title(main="all tax units vs without non-taxed",cex=0.6)
-axis(side = 1)
-axis(side = 2)
-fig1legend <- list(x=c(6,6),y=c(0.6,0.6))
-legend(fig1legend,lty=1:2, bty="n",
-       legend=c("without non-taxed","all tax units"))
-density2 <- density(log(bd.0.2010.ind))
-lines(x = (density2$x), y = density2$y, type = "l",lty=2)
-
-
-# Relative Distribution
-
-gA0 <- reldist(y=bd.2010.ind, yo=bd.0.2010.ind,
-               smooth=0.4, ci=FALSE,
-               show="residual",
-               bar=TRUE, quiet=FALSE,
-               ylim=c(0.5,2), ylab="",
-               discrete=FALSE,
-               xlab="Proportion of 2010 Distribution (including non-taxed)")
-title(main=paste("Effect of different shape"))
-abline(h=1,lty=2)
-@
-
-<<polindexzeros2, results='asis'>>=
-polTable(bd.2010.ind,bd.0.2010.ind,tablabel="polzeros2")
-@
-
 
 Including zeros leads to significantly higher gini coefficients. However we must keep in mind, that these might be artificially high values as we assume zero income for everyone in the zero group. We can conclude more from the graphic: the ratio between both measures seems to be quite constant although for aggregate Switzerland but there are minor deviations for multiple cantons as well as strong deviations for the cantons Geneva and Ticino. However the problems seem not to result from a shift in the zero-share over time but they are specific for the time-period when the tax system changed. 
 

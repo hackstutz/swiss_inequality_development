@@ -3,12 +3,12 @@
 %%%-------------------------------------------------%%%
 
 \begin{abstract}
-There is empirical evidence that economic inequality increased in the majority of western countries over the last decades (\citealt{cooperation_divided_2011}, \citealt{gornick_income_2013}). 
+There is empirical evidence that economic inequality increased in the majority of western countries over the last decades (\citealt{oecd_divided_2011}, \citealt{gornick_income_2013}). 
 In Switzerland, however, the development is unclear, as there is evidence for trends in both directions. Part of the inconclusive picture is due to different methodological approaches. In this paper we discuss the role of tax-data concerning the assessment of inequality in income. 
 The focus of the discussion lays herein to show the benefits and shortcomings of tax data compared to current ``state of the art'' measurement concepts of economic inequality. 
 We present common and new strategies to handle tax data specific methodological difficulties and compare results out of aggregated federal tax statistics to results from the Household Budget Survey (HBS). 
-We can show to which extend survey data underestimate inequality in income. 
-Following the results out of the tax-data Switzerland experienced in slight rise in inequality in recent years, similar to other western countries, but only because of rise in upper percentiles of the income distribution.
+We find theoretical inconsistencies in both tax and survey data which both result in an underestimation of inequality.
+Following the results from tax-data Switzerland experienced in slight rise in inequality in recent years, similar to other western countries due to a polarization of the income distribution.
 
 % Salverda-Stuff und das neue Piketty Buch sollten irgendwo erwähnt werden
 

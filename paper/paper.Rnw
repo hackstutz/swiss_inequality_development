@@ -70,7 +70,8 @@
 \pagestyle{fancy} % All pages have headers and footers
 \fancyhead{} % Blank out the default header
 \fancyfoot{} % Blank out the default footer
-\fancyhead[C]{Running title $\bullet$ November 2012 $\bullet$ Vol. XXI, No. 1} % Custom header text
+\newdateformat{mydate}{\monthname[\THEMONTH] \THEYEAR}
+\fancyhead[C]{Assessing income inequality with tax data $\bullet$ \mydate $\bullet$ Working paper} % Custom header text
 \fancyfoot[RO,LE]{\thepage} % Custom footer text
 %\bibliographystyle{plain}
 \bibliographystyle{unsrtnat}
@@ -87,7 +88,7 @@
 %  TITLE SECTION
 %----------------------------------------------------------------------------------------
 
-\title{\vspace{-15mm}\fontsize{24pt}{10pt}\selectfont\textbf{Assessing economic inequality with tax data - Switzerland from 1945 to 2010}} % Article title
+\title{\vspace{-15mm}\fontsize{24pt}{10pt}\selectfont\textbf{Assessing income inequality with tax data - Switzerland from 1917 to 2010}} % Article title
 
 \author{
 \large
