@@ -1,6 +1,5 @@
 \section{Methods}
 
-\subsection{Outline of research strategy and applied methods}
 
 % Diese Abschnitt muss ersetzt werden mit der von uns gewählten Vorgehensweise
 
@@ -11,7 +10,7 @@ To fulfill the above described task, we use two techniques. To assess the develo
 To calculate Gini-coefficients we follow common definitions, like it is described for example in \citep{jann_einfuhrung_2005}. Because the relative distribution methods are not that widely known, we provide a short introduction of the important concepts in this section. We additional expand the method section with an extended analysis about the importance of non-taxed, because the issue of non-taxed is a especially thorny one.
 
 
-\subsubsection{Relative distribution (RD) framework}
+\subsection{Relative distribution (RD) framework}
 
 The RD-framework is based on the concept of a ``relative distribution'', a transformation of the data from two distributions into a single distribution that contains all of the information necessary for scale-invariant comparison. This allows to make distribution differences ``visual'' in an elegant way and it is also a base for summary statistics, which are more sensitive to detailed theoretical hypotheses in contrast to other measures like the Gini-coefficient or top income-shares, which inform either about the whole population or only about the top part of the distribution.\\
 
@@ -157,7 +156,7 @@ The median relative polarization index (MRP) is defined as the mean absolute dev
 %\subsubsection{Imputing the gap}
 %The imputation is not a focus of the paper so we basically follow the most simple approach of Martinez (xxxx). That is estimating the missing taxable income statistics via OLS using information from time trends and cantons. Our imputation model therefore includes canton inequality measures and periods dummies to explain aggregate swiss inequality.
 
-\subsubsection{Non-taxed}
+\subsection{Non-taxed}
 Some tax units are missing in the FTA data as they do not qualify for taxation below a certain income threshold. The income distribution is therefore cut at the left end. For most of the observed range it is not documented how many tax units fall into this unobserved category. Since 1995 however the FTA provides the number of people not being taxed (we will call these tax units ``zeros''). From 1995 to 2010 we can therefore estimate the bias we introduce when ignoring the zeros. In this section we will try to analyze whether the bias is stable over time (and cantons). If the bias was stable over time, we could still analyze trends and changes of inequality no matter how severe the bias is. 
 
 First it is useful to look at the descriptives plotting the share of zeros over time.
