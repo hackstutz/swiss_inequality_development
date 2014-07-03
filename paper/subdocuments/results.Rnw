@@ -4,15 +4,23 @@
 
 \section{Results}
 
-
+<<libraries, include=FALSE>>=
+library(foreign,quietly=TRUE, warn.conflicts=FALSE)
+library(ggplot2)
+library(dplyr, quietly=TRUE, warn.conflicts = FALSE)
+library(reshape)
+# before loading reldist we load nlme and mgcv. else reldist prints library loading messages
+library(nlme,quietly=TRUE, warn.conflicts=FALSE)
+library(mgcv,quietly=TRUE, warn.conflicts=FALSE)
+library(reldist,quietly=TRUE,warn.conflicts=FALSE) #for reldist plots and inequality measures
+library(Hmisc,quietly=TRUE,warn.conflicts=FALSE) #for polTable function / Latex tables
+@
 
 \subsection{Defining income}
 
 \emph{Gini coefficients for taxable income, income before deductions and taxable income after federal tax}
 
 <<setup_gini_data>>=
-library(foreign,quietly=TRUE, warn.conflicts=FALSE)
-library(ggplot2)
 df <- read.csv("../../data/ginis_und_perzentile_normal.csv",sep="\t")
 df$zeros <- df$null_norm/df$cpop # i only use normal cases here
 @
@@ -40,7 +48,6 @@ ggplot(dflong[dflong$kanton=="CH",], aes(x=steuerperiode,y=Gini,shape=Income))+
 \emph{Equivalence scale}
 
 <<setup_data_Brühlhart with and without taxed>>=
-library(dplyr, quietly=TRUE, warn.conflicts = FALSE)
 # Ohne Nuller
 bd <- read.csv("../../data/data_Schweiz.csv", header=TRUE,sep=";")
 #Veranlagungsperiode -> Jahre
@@ -74,7 +81,6 @@ names(bdlong)[61]<-"Income"
 @
 
 <<equivalencescale, fig.cap='',fig.pos='H'>>=
-library(ggplot2)
 number_ticks <- function(n) {function(limits) pretty(limits, n)}
 ggplot(bdlong, aes(x=Jahr,y=Gini,shape=Income))+
   scale_y_continuous(limits=c(0.3,0.55))+
@@ -91,8 +97,6 @@ ggplot(bdlong, aes(x=Jahr,y=Gini,shape=Income))+
 % Vergleich über die Zeit da, wo zum ersten Mal Gesamtschweizerische Daten vorliegen bis zur neusten Reihe: 2003 vs 2010
 
 <<setup_data_Brülhart_2003>>=
-library(dplyr, quietly=TRUE, warn.conflicts = FALSE)
-library(foreign)
 bd.0 <- read.csv("../../data/data_Schweiz_mitNull.csv", header=TRUE,sep=";")
 #Veranlagungsperiode -> Jahre
 bd.0$Jahr <- as.numeric(substr(bd.0$Veranlagungsperiode,1,4))
@@ -134,8 +138,6 @@ bd.2003.ind<-bd.2003.ind/1000
 @
 
 <<setup_data_Brülhart_2010>>=
-library(dplyr, quietly=TRUE, warn.conflicts = FALSE)
-library(foreign)
 bd.0 <- read.csv("../../data/data_Schweiz_mitNull.csv", header=TRUE,sep=";")
 #Veranlagungsperiode -> Jahre
 bd.0$Jahr <- as.numeric(substr(bd.0$Veranlagungsperiode,1,4))
@@ -158,7 +160,6 @@ bd.2010.ind<-bd.2010.ind/1000
 @
 
 <<reldist20032010, echo=FALSE, fig.cap='',fig.pos='H'>>=
-library(reldist, quietly=TRUE, warn.conflicts = FALSE)
 
 # Probability Density Function
 
@@ -210,18 +211,13 @@ par(mfrow=c(1,1))
 
 <<poltable>>=
 # Setup functin to produce latex tables with polarization indices and difference in ginis
-polTable <- function(y, yo, ywgt=1, yowgt=1,ndig=2,title="Inequality Indices") {
-stopifnot(is.numeric(y), is.numeric(yo)) # all TRUE
+polTable <- function(y, yo, ywgt=1, yowgt=1,ndig=2,title="Inequality Indices",caption='',tablabel) {
+stopifnot(is.numeric(y), is.numeric(yo),exists("tablabel")) # all TRUE
 #y vector with new distribution
 #yo vector with reference distribution
 #ywgt yowgt: weights to use (optional)
 #ndig: digits to display, default 2
 #title: table title (optional)
-
-# load neccessary libraries
-library(reldist,quietly=TRUE,warn.conflicts=FALSE) #for Latex tables
-library(Hmisc,quietly=TRUE,warn.conflicts=FALSE)
-library(xtable,quietly=TRUE,warn.conflicts=FALSE)
 
 # Create vector of weights 1 if nothing else is defined
 if(length(ywgt)==1 & ywgt==1) ywgt <- rep(1, length(y))
@@ -232,11 +228,11 @@ lower <- rpluy(y=y,yo=yo, ywgt=ywgt,yowgt=yowgt,pvalue=FALSE)[2] # Lower Index
 upper <- rpluy(y=y,yo=yo, ywgt=ywgt,yowgt=yowgt,pvalue=FALSE, upper=TRUE)[2] # Upper index
 dgini <- gini(y)-gini(yo)
 
-latex(format(c("Median Index"=med, "Lower Index"=lower, "Upper Index"=upper, "$\\Delta$ Gini"=dgini),digits=ndig),file="",title=title,table.env=FALSE)
+latex(format(c("Median Index"=med, "Lower Index"=lower, "Upper Index"=upper, "$\\Delta$ Gini"=dgini),digits=ndig),file="",title=title,where='H',label=tablabel,caption=caption)
 }
 
 <<polindex20032010, results='asis'>>=
-polTable(bd.2010.ind,bd.2003.ind)
+polTable(bd.2010.ind,bd.2003.ind, tablabel="pol20032010")
 @
 
 % Der Vergleich liesse sich auch mit den Perzentilen des Reineinkommens auf der Grundlage der aggregierten ESTV-Daten machen. Dies wäre ein Vorteil, falls die Nuller in den Individual-Daten der ESTV als Nuller geführt sind und nicht mit dem tatsächlichen steuerbaren Einkommen
@@ -252,9 +248,9 @@ The FTA distinguishes normal from special cases as described in the data section
 
 % Variante 1993/1994
 <<setup_data_ESTVspecialcases9394>>=
-library(dplyr, quietly=TRUE, warn.conflicts = FALSE)
-library(ggplot2, quietly=TRUE, warn.conflicts = FALSE)
-#library(reldist)
+#library(dplyr, quietly=TRUE, warn.conflicts = FALSE)
+#library(ggplot2, quietly=TRUE, warn.conflicts = FALSE)
+
 normal <- read.csv("../../data/ginis_und_perzentile_normal.csv",sep="\t")
 normal <- select(normal, p1:p99, kanton, steuerperiode, -p96,-p97,-p98)
 #normal <- normal %.% select(-G_reink, -G_taxed, -ppop0, -G_steink0)
@@ -371,16 +367,16 @@ par(mfrow=c(1,1))
 @
 
 <<polindexspecialcases9394, results='asis'>>=
-polTable(pooled_i,normal_i)
+polTable(pooled_i,normal_i,tablabel="pol9394spec")
 @
 
-1993/94 a pooled data set of normal and special cases has a slightly higher density at both ends compared to data based in normal cases only. Special cases appear to have a slightly lower median income and their distribution is more skewed. Therefore special cases are more polarized than normal cases, i.e. striving away from the median (positive Median Index of 0.02). This tendency is more pronounces in the lower than upper part  of the distribution (Lower Index of 0.029 compared to Upper Index if 0.01). 
-As the special cases consist of a broad mix of individuals it remains unclear which factor explains the differences of both distributions. Possible explanations can be immigrants partly concentrating in lower income percentiles, low income artists who belong to the special cases or a more technical selection effect: tax units not liable for taxation throughout the whole year are special cases; those cases might have lower incomes, e.g. if they moved and stopped working. To get a more complete picture we can look how the two distributions relate to each other in 2010 (see FIGURE SPECIAL2010).
+1993/94 a pooled data set of normal and special cases has a slightly higher density at both ends compared to data based in normal cases only (see figure \ref{fig:specialcases9394}). Special cases appear to have a slightly lower median income and their distribution is more skewed. Therefore special cases are more polarized than normal cases (see table \ref{pol9394spec}), i.e. striving away from the median (positive Median Index of 0.02). This tendency is more pronounced in the lower than upper part  of the distribution (Lower Index of 0.029 compared to Upper Index if 0.01). 
+As the special cases consist of a broad mix of individuals it remains unclear which factor explains the differences of both distributions. Possible explanations can be immigrants partly concentrating in lower income percentiles, low income artists who belong to the special cases or a more technical selection effect: tax units not liable for taxation throughout the whole year are special cases; those cases might have lower incomes, e.g. if they moved and stopped working. To get a more complete picture we can look how the two distributions relate to each other in 2010 (see figure \ref{fig:specialcases10}).
 
 % Variante 2010
 <<setup_data_specialcases10>>=
-library(foreign)
-library(ggplot2)
+#library(foreign)
+#library(ggplot2)
 #library(reldist)
 normal <- filter(read.csv("../../data/ginis_und_perzentile_normal.csv",sep="\t"),kanton=="CH",steuerperiode==2010)
 normal <- select(normal, p1:p99, kanton, steuerperiode, -p96,-p97,-p98)
@@ -504,7 +500,7 @@ par(mfrow=c(1,1))
 @
 
 <<polindexspecialcases10, results='asis'>>=
-polTable(pooled_i,normal_i)
+polTable(pooled_i,normal_i,tablabel="pol2010spec")
 @
 
 2010 the picture is similar but more apparent: Special cases appear more frequent around the lower percentiles of the pooled distribution (Lower Index of 0.039), however 2010 there is a more noteworthy effect in the upper part of the distribution (Upper Index of 0.022). According to figure \ref{fig:specialcases10} we can attribute this effect to the top percentiles. This gives credibility to the thesis that rich immigrants whose number increased between 1994 and 2010 drive the effect.
@@ -532,7 +528,7 @@ polTable(pooled_i,normal_i)
 
 <<with_without_zeros_Gini,warning=FALSE, fig.cap='',fig.pos='H'>>=
 df <- read.csv("../../data/ginis_und_perzentile_normal.csv",sep="\t")
-library(reshape)
+#library(reshape)
 dflong <- melt(df[,c("G_steink","G_steink0","G_steink_halb","kanton","steuerperiode")], id=c("kanton","steuerperiode"))
 names(dflong)[3]<-"Type"
 names(dflong)[4]<-"Gini"
@@ -615,7 +611,7 @@ abline(h=1,lty=2)
 
 
 <<polindexzeros, results='asis'>>=
-polTable(bd.2010.ind,bd.0.2010.ind)
+polTable(bd.2010.ind,bd.0.2010.ind,tablabel="polzeros")
 @
 
 % Wenn etwas bei den unteren Perzentilen nicht stimmt (nicht Besteuerte als Null gewertet), dann müsste der Vergleich mit den ESTV-Nullern gemacht werden.
@@ -683,7 +679,7 @@ abline(h=1,lty=2)
 @
 
 <<polindexzeros2, results='asis'>>=
-polTable(bd.2010.ind,bd.0.2010.ind)
+polTable(bd.2010.ind,bd.0.2010.ind,tablabel="polzeros2")
 @
 
 
@@ -692,8 +688,8 @@ Including zeros leads to significantly higher gini coefficients. However we must
 \emph{comparison of tax-data and survey data distribution}
 
 <<setup_data Brülhart_mitNuller_und_HABE_2010,warning=FALSE>>=
-library(dplyr, quietly=TRUE, warn.conflicts = FALSE)
-library(foreign)
+#library(dplyr, quietly=TRUE, warn.conflicts = FALSE)
+#library(foreign)
 bd.2010 <- filter(read.csv("../../data/data_Schweiz_mitNull.csv", header=TRUE,sep=";"),Veranlagungsperiode==2010,Einheit=="Total")
 start <- which(names(bd.2010)=="p1")
 end <- which(names(bd.2010)=="p99_99")
@@ -714,8 +710,8 @@ bd.2010.ind<-bd.2010.ind/1000 # Reskalierung auf 1000er
 # HABE - 2010 all cases 
 
 #####################################################
-library(reshape, quietly=TRUE, warn.conflicts=FALSE)
-library(dplyr, quietly=TRUE, warn.conflicts=FALSE)
+#library(reshape, quietly=TRUE, warn.conflicts=FALSE)
+#library(dplyr, quietly=TRUE, warn.conflicts=FALSE)
 try(habe0911<-read.table("C:/Users/Hackstutz/Dropbox/Ungleichheit/HABE/HABE091011/HABE091011_Standard_130717UOe.txt", header=TRUE),silent=TRUE)
 try(habe0911<-read.table("P:/WGS/FBS/ISS/Projekte laufend/SNF Ungleichheit/Datengrundlagen/HABE/2009 bis 2011/HABE091011_Standard_130717UOe.txt", header=TRUE),silent=TRUE)
 try(habe0911<-read.table("C:/Users/rudi/Dropbox/Ungleichheit/HABE/HABE091011/HABE091011_Standard_130717UOe.txt", header=TRUE),silent=TRUE)
@@ -746,8 +742,8 @@ habe10$inc_habe[habe10$inc_habe<0]<-0 # One values is -20'000
 
 
 <<BruelhartvsHABE,warning=FALSE, fig.cap='',fig.pos='H'>>=
-library(ggplot2)
-library(reldist, quietly=TRUE, warn.conflicts = FALSE)
+#library(ggplot2)
+#library(reldist, quietly=TRUE, warn.conflicts = FALSE)
 
 # Probability density Function (unterschiedliche Einkommen)
 ######
@@ -776,7 +772,7 @@ par(mfrow=c(1,2))
 # Probability density Function (FTA (Brülhart vs HBS Brutto (korrigiert)))
 density1 <- density(bd.2010.ind)
 plot(x = (density1$x), y = density1$y, type = "l",
-     xlab = "Einkommen", ylab = "density",
+     xlab = "income", ylab = "density",
      axes = FALSE,
      xlim = c(-30, 800))
      #ylim=c(0,1.151e-02 ))
@@ -845,7 +841,7 @@ habe10.married$inc_habe[habe10.married$inc_habe<0]<-0 # One values is -20'000
 par(mfrow=c(1,2))
 density1 <- density(bd.2010.ind)
 plot(x = (density1$x), y = density1$y, type = "l",
-     xlab = "Einkommen", ylab = "density",
+     xlab = "income", ylab = "density",
      axes = FALSE,
      xlim = c(min(rbind(density1$x,density2$x)), 800),
      ylim=c(0,max(rbind(density1$y,density2$y))))
@@ -912,7 +908,7 @@ habe10.unmarried$inc_habe<-habe10.unmarried$inc_habe*12/1000 # transform from mo
 par(mfrow=c(1,2))
 density1 <- density(habe10.unmarried$inc_habe)
 plot(x = (density1$x), y = density1$y, type = "l",
-     xlab = "Einkommen", ylab = "density",
+     xlab = "income", ylab = "density",
      axes = FALSE,
      xlim = c(min(rbind(density1$x,density2$x)), 800),
      ylim=c(0,max(rbind(density1$y,density2$y))))
@@ -958,6 +954,10 @@ abline(h=1,lty=2)
 par(mfrow=c(1,1))
 @
 
+From the discussion in the data section we would expect differences between the income distributions from survey and tax data. Within the FTA data we observe zeros for incomes below the threshold to be liable for federal tax while survey data might cover this range. On the other hand we expect underreporting from both lowest percentiles and highest percentiles (middle class bias) within the survey data. Figure \ref{fig:BruelhartvsHABE1} (left) however reveals a more critical issue related to tax data, that is the median location of income compared to survey data. Although we try to measure similar concepts of income, survey data shows a median (93.000 CHF) more than twice as big as tax data (44.600 CHF). The issue here is clearly the assumptions of household composition. While survey data is likely to capture the correct household composition, tax data can only approximate households by using marital status. Splitting the data in married and unmarried tax units underpins this argument. From figure \ref{fig:BruelhartvsHABE2} we can see that married tax units (FTA data) and household with married couples (survey data) are better (but still not perfectly) comparable. Figure \ref{fig:BruelhartvsHABE2} (right) shows the expected shape difference between the two distributions:  survey data has a bias towards the (median-adjusted) 80\% to 90\% percentile (of the FTA data distribution). Top percentiles are badly covered by survey data, suggesting that inequality measures based on survey data might underestimate inequality development that arises from changes in the incomes of the rich. Though, survey data can be of interest if one is interested in the lower 20\% of the income distribution. 
+
+The bad household approximation within tax data needs to be addressed in further research. One possible way would be to link tax data to household ID's from the residential register.
+
 
 \subsection{Intertemporal comparison}
 
@@ -965,11 +965,7 @@ par(mfrow=c(1,1))
 
 <<benplot, fig.cap='',fig.pos='H'>>=
  ### libs
-library(reshape, quietly=TRUE, warn.conflicts = FALSE)
-library(foreign)
-library(dplyr)
-library(reldist)
-library(ggplot2)
+#library(reshape, quietly=TRUE, warn.conflicts = FALSE)
 
 ### Fetch Ginis from different survey data
 number_ticks <- function(n) {function(limits) pretty(limits, n)}
@@ -1008,6 +1004,13 @@ all_gini$FTA_imp <- ben$gini[match(all_gini$Year,ben$jahr)]
 all_gini_long<-melt(all_gini,id="Year")
 
 names(all_gini_long) <- c("Year","Data","Gini")
+
+all_gini_long$annotation<-""
+all_gini_long$annotation[all_gini_long$Year==1939.5] <- "Tolle\nSteuererhöhung"
+all_gini_long$annotation[all_gini_long$Year==1955.5] <- "Tolle\nSteuersenkung"
+
+annotations <- data.frame("Year"=c(1939.5,1955.5),"label"=c("Tolle\nSteuererhöhung","Tolle\nSteuersenkung"))
+
 ggplot(data=na.omit(all_gini_long),
   aes(y=Gini,x=Year,shape=Data,linetype=Data))+
   ylab("Gini from different sources") +
@@ -1015,6 +1018,9 @@ ggplot(data=na.omit(all_gini_long),
   scale_x_continuous(limits=c(1915,2012),breaks=number_ticks(10)) +
   geom_point(size=3)+
   geom_line()+
+  geom_text(aes(label=annotation,y=0.29),color="#555555",size=3)+
+  geom_segment(aes(x = 1939.5, y = 0.295, xend = 1939.5, yend = Gini[Year==1939.5]),color="#aaaaaa") +
+  geom_segment(aes(x = 1955.5, y = 0.295, xend = 1955.5, yend = Gini[Year==1955.5]),color="#aaaaaa") +
   theme_bw()+
   theme(legend.justification=c(0,1),legend.position=c(0, 1))
 

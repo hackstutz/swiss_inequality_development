@@ -123,20 +123,26 @@ Another critical issue with tax data is the problem of tax evasion, which defini
 %- flexibel applications of appropriate inequality measures
 % - appropriate income definition
 
+\multicolinterrupt{
+\begin{table}[H]
+\caption{\label{datacomp}} 
 \begin{center}
-\begin{tabular}{lcccc}
+\begin{tabular}{lcc}
+\hline\hline
                                    & FTA       & Survey data\\
+\hline
 Statistical unit                   & Tax units (individuals/married couples)  & Households\\                                   
 Concepts of economic resources  & Data-driven   & Theory-driven\\
 Population coverage & total population & sample \\ 
 Top incomes covered                 & Yes   & No\\
 Low incomes covered?               & no        & yes\\
 Comparison over time possible 	   & Long       & Short \\
-Cross country comparison possible? & limited   & possible
-        
+Cross country comparison possible? & limited   & possible\\
+\hline
 \end{tabular}
 \end{center}
-
+\end{table}
+}
 %RF: damit haben wir WER, WANN, WAS, wollen wir noch ein WOMIT/WAS DARSTELLEN -> methodik -> reldist ? jaa
 
 
