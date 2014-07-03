@@ -2,7 +2,7 @@
 
 % Diese Abschnitt muss ersetzt werden mit der von uns gewählten Vorgehensweise
 
-\subsubsection{Relative distribution (RD) methods }
+\subsubsection{Relative distribution (RD) methods}
 
 The RD-framework is based on the concept of a ``relative distribution'', a transformation of the data from two distributions into a single distribution that contains all of the information necessary for scale-invariant comparison. This allows to make distribution differences ``visual'' in an elegant way and it is also a base for summary statistics, which are more sensitive to detailed theoretical hypotheses in contrast to other measures like the gini-coefficient or top income-shares, which inform either about the whole population or only about the top part of the distribution.\\
 
