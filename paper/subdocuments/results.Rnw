@@ -16,9 +16,21 @@ library(reldist,quietly=TRUE,warn.conflicts=FALSE) #for reldist plots and inequa
 library(Hmisc,quietly=TRUE,warn.conflicts=FALSE) #for polTable function / Latex tables
 @
 
+In this section we will present results following the strategy introducded in the last section. As describded this includes changeing possible concepts within one field (incomde defintion, statistical unit, measurement and population coverage) while holding other conceptional differences constant. To get the best possible comparison we rely on different data sources (FTA-tax tax data and HBS-survey data) and different time periodes. The presentation of results therefore includes a despriction of the uses data.
+
 \subsection{Defining income}
 
 \emph{Gini coefficients for taxable income, income before deductions and taxable income after federal tax}
+
+We start with the effect of income definition on the assessment of income inequality. As described in the previous section income definitions are either closer to the market outcome or the the income, which shapes the possibility to consume (disposable income). With FTA-Tax data in-between income measures can be defined. This includes
+
+\begin{itemize}
+  \item \textit{taxable income}: all incomes declared for taxes (earnings, income from property and current transfers received) minus several deductions
+  \item \textit{net income}: Is a sort of total income, which excludes some (but not all) deductions
+  \item \textit{taxable income after federal tax}: By subtracting federal taxes from the taxable income, we get closer to the disposable income
+\end{itemize}
+
+Following this three definitions we calculate Gini-coefficients out of the FTA-tax statistics. Because information about net income per income bracket is only reported from 1983/1984 until 2010, we can show differences over this time period.
 
 <<setup_gini_data>>=
 df <- read.csv("../../data/ginis_und_perzentile_normal.csv",sep="\t")
@@ -33,7 +45,7 @@ number_ticks <- function(n) {function(limits) pretty(limits, n)}
 dflong <- melt(df[,c("G_steink","G_reink","G_taxed","kanton","steuerperiode")], id=c("kanton","steuerperiode"))
 names(dflong)[3]<-"Income"
 names(dflong)[4]<-"Gini"
-levels(dflong$Income)<-c("taxable income","income before deductions","taxable income after tax")
+levels(dflong$Income)<-c("taxable income","net income","taxable income after federal tax")
 ggplot(dflong[dflong$kanton=="CH",], aes(x=steuerperiode,y=Gini,shape=Income))+
   scale_y_continuous(limits=c(0.3,0.55))+
   scale_x_continuous(limits=c(1982,2012),breaks=number_ticks(10)) +
@@ -44,6 +56,9 @@ ggplot(dflong[dflong$kanton=="CH",], aes(x=steuerperiode,y=Gini,shape=Income))+
   theme(legend.justification=c(0,1),legend.position=c(0, 1))
 #ggplot(dflong, aes(x=steuerperiode,y=Gini,colour=Type))+geom_line()+facet_wrap(~kanton)+theme_bw()+xlab("tax period")
 @
+
+As \ref{fig:different_ginis shows, the development for the three defined measures of income is quit parallel except for the 1980s. In this time periode the Gini-coefficent for net income veers. This has probably to do with a change in regulations of deductions and shows that interpretation over time has to be very carefull, becauses changes in taxation or regulation systems can affect the outcome. In generall inequality assesst with taxable income is higher than inequality assesst with net income or taxable income after federal taxes. While it is not surprising that federal taxes reduces inequality slightly because of the progressivity of the taxes and it is somehow astonishing that adding deductions (from net income to taxable income) increases inequality slightly.
+
 
 \subsection{Statistical units -- Equivalence scale}
 
