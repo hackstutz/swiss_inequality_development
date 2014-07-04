@@ -37,7 +37,7 @@ df <- read.csv("../../data/ginis_und_perzentile_normal.csv",sep="\t")
 df$zeros <- df$null_norm/df$cpop # i only use normal cases here
 @
 
-<<different_ginis, fig.cap='',fig.pos='H'>>=
+<<different_ginis, fig.cap='Gini coefficients for different income measures',fig.pos='H'>>=
 df$G_reink[df$G_reink==1]<-NA
 df$G_taxed[df$G_taxed==1]<-NA
 library(reshape)
@@ -99,7 +99,7 @@ bdlong<-rbind(bd.0.long,bd.long)
 names(bdlong)[61]<-"Income"
 @
 
-<<equivalencescale, fig.cap='',fig.pos='H'>>=
+<<equivalencescale, fig.cap='Gini coefficients with and without equivalization',fig.pos='H'>>=
 number_ticks <- function(n) {function(limits) pretty(limits, n)}
 ggplot(bdlong, aes(x=Jahr,y=Gini,shape=Income))+
   scale_y_continuous(limits=c(0.3,0.55))+
@@ -186,7 +186,7 @@ bd.2010.ind<-unlist(sapply(2:length(ival),function(i){
 bd.2010.ind<-bd.2010.ind/1000
 @
 
-<<reldist20032010, echo=FALSE, fig.cap='',fig.pos='H'>>=
+<<reldist20032010, echo=FALSE, fig.cap='Distribution change over time',fig.pos='H'>>=
 
 # Probability Density Function
 
@@ -317,7 +317,7 @@ pooled_i<-unlist(sapply(2:length(ival),function(i){
 
 @
 
-<<specialcases9394, fig.cap='',fig.pos='H'>>=
+<<specialcases9394, fig.cap='Comparison of normal and special cases 1993/94',fig.pos='H'>>=
 #plot relative distribution
 
 # Probability Density Function
@@ -455,7 +455,7 @@ pooled_i<-unlist(sapply(2:length(ival),function(i){
 #####
 @
 
-<<specialcases10, fig.cap='',fig.pos='H'>>=
+<<specialcases10, fig.cap='Comparison of normal and special cases 2010',fig.pos='H'>>=
 
 #Older Version of Relative Distribution plot
 ######## 
@@ -553,28 +553,27 @@ FTA-Tax statistics sometimes exlcude tax units, which reach below the treshold t
 
 % Beim Vergleich der Datensätze unterschieden nach nur besteuerten und unter berücksichtigung der nicht besteuerten, stellt sich die Frage wie die unteren Einkommen imputiert werden. Wir haben uns überlegt, dass dies vor allem singles (übrige) betrifft, weil Familien in den unteren Einkommenstabellen bereits sehr selten vorkommen. Deswegen reicht es nur die Untergrenze für singels zu berücksichtigen. Diese liegt 2010 bei 16'900 verändert sich aber über die Zeit
 
-%<<with_without_zeros_Gini,warning=FALSE, fig.cap='',fig.pos='H'>>=
-%df <- read.csv("../../data/ginis_und_perzentile_normal.csv",sep="\t")
-%#library(reshape)
-%dflong <- melt(df[,c("G_steink","G_steink0","G_steink_halb","kanton","steuerperiode")], id=c("kanton","steuerperiode"))
-%names(dflong)[3]<-"Type"
-%names(dflong)[4]<-"Gini"
-%levels(dflong$Type)<-c("without zeros","including zeros","imputed values for zeros")
-%ggplot(dflong[dflong$kanton=="CH" & dflong$steuerperiode>=1995.5,], 
-     %  aes(x=steuerperiode,y=Gini,shape=Type,linetype=Type))+
- % scale_y_continuous(limits=c(0.18,0.6))+
- % scale_x_continuous(limits=c(1994,2012),breaks=number_ticks(10)) +
- % geom_line(size=0.5)+
- % geom_point(aes(shape=Type),size=3)+
- % theme_bw()+
- % xlab("tax period")+
- % theme(legend.justification=c(0,1),legend.position=c(0, 1))
+<<with_without_zeros_Gini,warning=FALSE, fig.cap='Gini coefficients with, without and imputed non-taxed units',fig.pos='H'>>=
+df <- read.csv("../../data/ginis_und_perzentile_normal.csv",sep="\t")
+#library(reshape)
+dflong <- melt(df[,c("G_steink","G_steink0","G_steink_halb","kanton","steuerperiode")], id=c("kanton","steuerperiode"))
+names(dflong)[3]<-"Type"names(dflong)[4]<-"Gini"
+levels(dflong$Type)<-c("without zeros","including zeros","imputed values for zeros")
+ggplot(dflong[dflong$kanton=="CH" & dflong$steuerperiode>=1995.5,], 
+       aes(x=steuerperiode,y=Gini,shape=Type,linetype=Type))+
+  scale_y_continuous(limits=c(0.18,0.6))+
+  scale_x_continuous(limits=c(1994,2012),breaks=number_ticks(10)) +
+  geom_line(size=0.5)+
+  geom_point(aes(shape=Type),size=3)+
+  theme_bw()+
+  xlab("tax period")+
+  theme(legend.justification=c(0,1),legend.position=c(0, 1))
 
-%# Kantonale Unterschiede
-%#####
-%#ggplot(dflong[dflong$steuerperiode>=1995.5,], aes(x=steuerperiode,y=Gini,shape=Type,linetype=Type))+geom_line()+facet_wrap(~kanton)+theme_bw()+xlab("tax period")+theme(axis.text.x = element_text(angle = 60, hjust = 1))+theme(legend.justification=c(1,0),legend.position=c(1, 0))
-%#####
-%@
+# Kantonale Unterschiede
+#####
+#ggplot(dflong[dflong$steuerperiode>=1995.5,], aes(x=steuerperiode,y=Gini,shape=Type,linetype=Type))+geom_line()+facet_wrap(~kanton)+theme_bw()+xlab("tax period")+theme(axis.text.x = element_text(angle = 60, hjust = 1))+theme(legend.justification=c(1,0),legend.position=c(1, 0))
+#####
+@
 
 % Wenn wir annehmen, dass die Brülhart-Daten, sowohl die unteren als auch die oberen Perzentile angemessen abbildend, dann reicht der Vergleich. Etwas merkwürdig ist es jetzt, wenn wir die Gini-Reihe mit den ESTV Daten machen und dann den Vergleich mit den Brülhartdaten
 
@@ -638,7 +637,7 @@ FTA-Tax statistics sometimes exlcude tax units, which reach below the treshold t
 %abline(h=1,lty=2)
 
 %par(mfrow=c(1,1))
-@
+%@
 
 
 %<<polindexzeros, results='asis'>>=
@@ -706,7 +705,7 @@ habe10$inc_habe[habe10$inc_habe<0]<-0 # One values is -20'000
 @
 
 
-<<BruelhartvsHABE,warning=FALSE, fig.cap='',fig.pos='H'>>=
+<<BruelhartvsHABE,warning=FALSE, fig.cap='Comparison of tax and survey data',fig.pos='H'>>=
 #library(ggplot2)
 #library(reldist, quietly=TRUE, warn.conflicts = FALSE)
 
@@ -784,10 +783,10 @@ bd.2010.ind<-unlist(sapply(2:length(ival),function(i){
 }))
 
 bd.2010.ind<-bd.2010.ind/1000
+@
 
 
-
-
+<<BruelhartvsHABEmarried,warning=FALSE, fig.cap='Comparison of tax and survey data for married',fig.pos='H'>>=
 # Select married - HABE
 
 
@@ -832,12 +831,12 @@ gA0 <- reldist(y=habe10.married$inc_habe, yo=bd.2010.ind,
 title(main=paste("Effect of different shape"))
 abline(h=1,lty=2)
 par(mfrow=c(1,1))
+@
 
 
+<<BruelhartvsHABEunmarried,warning=FALSE, fig.cap='Comparison of tax and survey data for unmarried',fig.pos='H'>>=
 #################
 # Separate comparison for unmaried
-
-### Not corrected!!!
 
 
 bd.2010 <- filter(read.csv("../../data/data_Schweiz_mitNull.csv", header=TRUE,sep=";"),Veranlagungsperiode==2010,Einheit=="Unverheiratet / non-mariés")
@@ -919,7 +918,7 @@ abline(h=1,lty=2)
 par(mfrow=c(1,1))
 @
 
-From the discussion in the data section we would expect differences between the income distributions from survey and tax data. Within the FTA data we observe zeros for incomes below the threshold to be liable for federal tax while survey data might cover this range. On the other hand we expect underreporting from both lowest percentiles and highest percentiles (middle class bias) within the survey data. Figure \ref{fig:BruelhartvsHABE1} (left) however reveals a more critical issue related to tax data, that is the median location of income compared to survey data. Although we try to measure similar concepts of income, survey data shows a median (93.000 CHF) more than twice as big as tax data (44.600 CHF). The issue here is clearly the assumptions of household composition. While survey data is likely to capture the correct household composition, tax data can only approximate households by using marital status. Splitting the data in married and unmarried tax units underpins this argument. From figure \ref{fig:BruelhartvsHABE2} we can see that married tax units (FTA data) and household with married couples (survey data) are better (but still not perfectly) comparable. Figure \ref{fig:BruelhartvsHABE2} (right) shows the expected shape difference between the two distributions:  survey data has a bias towards the (median-adjusted) 80\% to 90\% percentile (of the FTA data distribution). Top percentiles are badly covered by survey data, suggesting that inequality measures based on survey data might underestimate inequality development that arises from changes in the incomes of the rich. Though, survey data can be of interest if one is interested in the lower 20\% of the income distribution. 
+From the discussion in the data section we would expect differences between the income distributions from survey and tax data. Within the FTA data we observe zeros for incomes below the threshold to be liable for federal tax while survey data might cover this range. On the other hand we expect underreporting from both lowest percentiles and highest percentiles (middle class bias) within the survey data. Figure \ref{fig:BruelhartvsHABE} (left) however reveals a more critical issue related to tax data, that is the median location of income compared to survey data. Although we try to measure similar concepts of income, survey data shows a median (93.000 CHF) more than twice as big as tax data (44.600 CHF). The issue here is clearly the assumptions of household composition. While survey data is likely to capture the correct household composition, tax data can only approximate households by using marital status. Splitting the data in married and unmarried tax units underpins this argument. From figure \ref{fig:BruelhartvsHABEmarried} we can see that married tax units (FTA data) and household with married couples (survey data) are better (but still not perfectly) comparable. Figure \ref{fig:BruelhartvsHABEmarried} (right) shows the expected shape difference between the two distributions:  survey data has a bias towards the (median-adjusted) 80\% to 90\% percentile (of the FTA data distribution). Top percentiles are badly covered by survey data, suggesting that inequality measures based on survey data might underestimate inequality development that arises from changes in the incomes of the rich. Though, survey data can be of interest if one is interested in the lower 20\% of the income distribution. 
 
 The bad household approximation within tax data needs to be addressed in further research. One possible way would be to link tax data to household ID's from the residential register.
 
@@ -928,7 +927,7 @@ The bad household approximation within tax data needs to be addressed in further
 
 
 
-<<benplot, fig.cap='',fig.pos='H'>>=
+<<benplot, fig.cap='Gini coefficients over time',fig.pos='H'>>=
  ### libs
 #library(reshape, quietly=TRUE, warn.conflicts = FALSE)
 
