@@ -917,20 +917,18 @@ estv <- read.dta("../../data/steuerdaten20140522_stata12.dta")
 
 #1918 fixen
 estv <- within(estv, {
-    steink[steuerperiode==1918]<-(eink_ll[steuerperiode==1918]+eink_ul[steuerperiode==1918])/2*anz_pflichtige[steuerperiode==1918]
+    steink[bemessungsjahre==1917]<-(eink_ll[bemessungsjahre==1917]+eink_ul[bemessungsjahre==1917])/2*anz_pflichtige[bemessungsjahre==1917]
 })
 
 estv_gini <- estv %.% 
   filter(kanton=="CH",eink_art=="Nach steuerbarem Einkommen",fall=="Normalfälle",anz_pflichtige>0,steuerperiode!=1945.5) %.% 
-  select(steuerperiode, steink, kanton, eink_ll, eink_ul,anz_pflichtige) %.%
-  group_by(factor(steuerperiode)) %.%
+  select(bemessungsjahre, steink, kanton, eink_ll, eink_ul,anz_pflichtige) %.%
+  group_by(factor(bemessungsjahre)) %.%
   mutate(mean_steink=steink/anz_pflichtige) %.%
   summarise(gini(mean_steink,weights=anz_pflichtige))
 
 names(estv_gini) <- c("Year","FTA")
 estv_gini$Year<-as.numeric(as.character(estv_gini$Year))
-estv_gini$Year[estv_gini$Year<2003] <- estv_gini$Year[estv_gini$Year<2003]-2
-
 
 all_gini <- data.frame("Year"=seq(1916,2012,by=0.5))
 all_gini$FTA <- estv_gini$FTA[match(all_gini$Year,estv_gini$Year)]
@@ -943,11 +941,20 @@ all_gini_long<-melt(all_gini,id="Year")
 
 names(all_gini_long) <- c("Year","Data","Gini")
 
-all_gini_long$annotation<-""
-all_gini_long$annotation[all_gini_long$Year==1939.5] <- "Tolle\nSteuererhöhung"
-all_gini_long$annotation[all_gini_long$Year==1955.5] <- "Tolle\nSteuersenkung"
+all_gini_long$annotation=""
+all_gini_long$ypos=-1
 
-annotations <- data.frame("Year"=c(1939.5,1955.5),"label"=c("Tolle\nSteuererhöhung","Tolle\nSteuersenkung"))
+all_gini_long<-within(all_gini_long, {
+annotation[Year==1921] <- "different data source: cantonal registers"
+annotation[Year==1940] <- "increased taxation"
+annotation[Year==1945.5] <- "increased effort to fight tax evasion"
+annotation[Year==1967.5] <- "wide-ranging tax amnesty"
+ypos[Year==1921] <- 0.27
+ypos[Year==1940] <- 0.305
+ypos[Year==1945.5] <- 0.29
+ypos[Year==1967.5] <- 0.285
+
+})
 
 ggplot(data=na.omit(all_gini_long),
   aes(y=Gini,x=Year,shape=Data,linetype=Data))+
@@ -956,11 +963,18 @@ ggplot(data=na.omit(all_gini_long),
   scale_x_continuous(limits=c(1915,2012),breaks=number_ticks(10)) +
   geom_point(size=3)+
   geom_line()+
-  geom_text(aes(label=annotation,y=0.29),color="#555555",size=3)+
-  geom_segment(aes(x = 1939.5, y = 0.295, xend = 1939.5, yend = Gini[Year==1939.5]),color="#aaaaaa") +
-  geom_segment(aes(x = 1955.5, y = 0.295, xend = 1955.5, yend = Gini[Year==1955.5]),color="#aaaaaa") +
+  geom_text(aes(label=annotation,y=ypos),color="#555555",size=3)+
+  geom_segment(aes(x = 1921, y = 0.27, xend = 1921, yend = Gini[Year==1921]),color="#aaaaaa") +
+  geom_segment(aes(x = 1940, y = 0.305, xend = 1940, yend = Gini[Year==1940]),color="#aaaaaa") +
+  geom_segment(aes(x = 1945.5, y = 0.29, xend = 1945.5, yend = Gini[Year==1945.5]),color="#aaaaaa") +
+  geom_segment(aes(x = 1967.5, y = 0.285, xend = 1967.5, yend = Gini[Year==1967.5]),color="#aaaaaa") +
   theme_bw()+
   theme(legend.justification=c(0,1),legend.position=c(0, 1))
 
-
 @
+
+Figure\ref{fig:benplot} displays the most relevant Gini-coefficients that can be calculated for Switzerland. Although we can not adjust the Gini-coefficients to be perfectly valid, we can discuss the picture against the background of our analyses. For the periods before the second world war it is difficult to draw secure conclusions because these data points are based on unreliable data. 1933 only 13.7\% of the population filled in a tax form \citep{dell_income_2005}. During the war we see a tendency towards lower income inequality. This might be attributable to a changed data base as the amount of non-fillers decreased during the war and shortly after. The period after the world war is characterized by strong economic growth as well as an increase in inequality. Our interpretation is that high income percentiles disproportionately profited from the economic upturn. After the oil crises there were alternating phases of social welfare expansion and economic upturns.
+
+The more interesting part of the picture are the years around and past the millennium. Between 1997/98 and 2003 we see a gap in the FTA series caused by the change in the tax system. Our approach to impute the gap is to interpolate the income sums of all FTA-reported income brackets. This is fruitful because cantons switched the tax system in different years so we gain at least some information about the trend within the gap. The spike 2001 can be explained by tax tricks: within the period the tax system changed, individuals were able to save taxes by shifting parts of their incomes into this period. 
+
+After the financial crisis most of the data sources (except EU SILC) state decreasing inequality. Our interpretation is that top percentiles lost relevant parts of their incomes from capital investments. 
