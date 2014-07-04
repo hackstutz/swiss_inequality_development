@@ -557,7 +557,8 @@ FTA-Tax statistics sometimes exlcude tax units, which reach below the treshold t
 df <- read.csv("../../data/ginis_und_perzentile_normal.csv",sep="\t")
 #library(reshape)
 dflong <- melt(df[,c("G_steink","G_steink0","G_steink_halb","kanton","steuerperiode")], id=c("kanton","steuerperiode"))
-names(dflong)[3]<-"Type"names(dflong)[4]<-"Gini"
+names(dflong)[3]<-"Type"
+names(dflong)[4]<-"Gini"
 levels(dflong$Type)<-c("without zeros","including zeros","imputed values for zeros")
 ggplot(dflong[dflong$kanton=="CH" & dflong$steuerperiode>=1995.5,], 
        aes(x=steuerperiode,y=Gini,shape=Type,linetype=Type))+
@@ -946,12 +947,14 @@ estv <- within(estv, {
     steink[bemessungsjahre==1917]<-(eink_ll[bemessungsjahre==1917]+eink_ul[bemessungsjahre==1917])/2*anz_pflichtige[bemessungsjahre==1917]
 })
 
-estv_gini <- estv %.% 
-  filter(kanton=="CH",eink_art=="Nach steuerbarem Einkommen",fall=="Normalfälle",anz_pflichtige>0,steuerperiode!=1945.5) %.% 
-  select(bemessungsjahre, steink, kanton, eink_ll, eink_ul,anz_pflichtige) %.%
-  group_by(factor(bemessungsjahre)) %.%
-  mutate(mean_steink=steink/anz_pflichtige) %.%
-  summarise(gini(mean_steink,weights=anz_pflichtige))
+#estv_gini <- estv %.% 
+#  filter(kanton=="CH",eink_art=="Nach steuerbarem Einkommen",fall=="Normalfälle",anz_pflichtige>0,steuerperiode!=1945.5) %.% 
+#  select(bemessungsjahre, steink, kanton, eink_ll, eink_ul,anz_pflichtige) %.%
+#  group_by(factor(bemessungsjahre)) %.%
+#  mutate(mean_steink=steink/anz_pflichtige) %.%
+#  summarise(gini(mean_steink,weights=anz_pflichtige))
+
+load("estv_gini.RData")
 
 names(estv_gini) <- c("Year","FTA")
 estv_gini$Year<-as.numeric(as.character(estv_gini$Year))
