@@ -57,10 +57,14 @@ ggplot(dflong[dflong$kanton=="CH",], aes(x=steuerperiode,y=Gini,shape=Income))+
 #ggplot(dflong, aes(x=steuerperiode,y=Gini,colour=Type))+geom_line()+facet_wrap(~kanton)+theme_bw()+xlab("tax period")
 @
 
-As \ref{fig:different_ginis shows, the development for the three defined measures of income is quit parallel except for the 1980s. In this time periode the Gini-coefficent for net income veers. This has probably to do with a change in regulations of deductions and shows that interpretation over time has to be very carefull, becauses changes in taxation or regulation systems can affect the outcome. In generall inequality assesst with taxable income is higher than inequality assesst with net income or taxable income after federal taxes. While it is not surprising that federal taxes reduces inequality slightly because of the progressivity of the taxes and it is somehow astonishing that adding deductions (from net income to taxable income) increases inequality slightly.
+As \ref{fig:different_ginis} shows, the development for the three defined measures of income is quit parallel except for the 1980s. In this time periode the Gini-coefficent for net income veers. This has probably to do with a change in regulations of deductions and shows that interpretation over time has to be very carefull, becauses changes in taxation or regulation systems can affect the outcome. In generall inequality assesst with taxable income is higher than inequality assesst with net income or taxable income after federal taxes. While it is not surprising that federal taxes reduces inequality slightly because of the progressivity of the taxes and it is somehow astonishing that adding deductions (from net income to taxable income) increases inequality.
 
 
 \subsection{Statistical units -- Equivalence scale}
+
+The main issue concerning the unit of analysis is not easy solved with tax-data, because the concepts of tax-units and households are not perfectly congruent (we will take up this issue, when comparing survey data and the FTA tax data later on.) But we can examine, how the assessment of inequality is affected by the implementation of equivalence scale. We do this by looking and Gini-time series for net income with and without implementation of a equivalence scale. The scale is constructed by using information out of tax data. The income of single household/tax unit are divided by 1 (no change), for married the equivalence-factor is 1.5. For every child or other by the tax-unit supported person a value of 0.3 is added. This measures are provided directly by the FTA and are not calculated by us. Because excluding the group of not-taxed leads to a longer time-series we provide four time-series in total (two possibilities to compare the effect of a equivalence scale)
+
+
 
 <<setup_data_Brühlhart with and without taxed>>=
 # Ohne Nuller
@@ -107,9 +111,17 @@ ggplot(bdlong, aes(x=Jahr,y=Gini,shape=Income))+
   theme(legend.justification=c(0,1),legend.position=c(0, 1))
 @
 
+
+The implementation of a equivalence scale does not have a major impact on the assessment of inequality. (see \ref{fig:equivalencescale}). Over the whole observed time period the two lines, which can be compared, move more or less parallel. Because tax units only approximately depict households, it has to be said, that the implemented equivalence scale automatically has it's drawbacks. This hinders a pure assessment of the effect of a equivalence scale.
+
+
+
 \subsection{Measuring inequality}
 
-% Vergleich über die Zeit da, wo zum ersten Mal Gesamtschweizerische Daten vorliegen bis zur neusten Reihe: 2003 vs 2010
+Here we examine how interpretation can change, when we expand the analysis by using relative distribution methods and not only look at Gini-Coefficients. We therefore use the published percentiles about the distribution of taxable income  on the FTA webpage . We prefer these measures over the calculates measures out of the published income brackets statistics, because they represent the distribution at both tails more accurate since they are based directly on the information about every single tax units\footnote{When calculating percentiles out of the income bracket statistic we loose relevant information at the edges. First, we don't have information about taxable income of tax-units falling below the income threshold for federal taxation. We only know how many persons fall in this category.However, the percentiles reported on the FTA webpage are based on the true taxable income (also for units below the threshold), which allows a more precise estimation of the lower percentiles. Secondly, it is especially hard to estimate the highest top income percentiles out of the aggregated tax statistics, leaving us with information only until the 95\%-percentiles, while the reported percentiles reach the 99.99\%-percentiles}. We use the reported Measures at the cost of time. The longest time-period we can compare out of these data reach from 2003 to 2010. Gini changed during this time from 0.47 to 0.50, which equals a moderate increase of inequality. The in-depth distributional analysis allows us to see, how this change translated into different shapes of the distributions. \\
+
+As described in the method section, the analysis includes a comparison of the density distribution of the log taxable income. We define the 2003 distribution as the reference group and compare it to the distribution of 2010. We then compare the relative density of the median adjusted distributions, to see where the two distributions differ. Finally, we calculate the median relative polarization index (MRP), to quantify the degree of polarization. We also show the decomposition into the upper and lower polarization index (URP and LRP).
+
 
 <<setup_data_Brülhart_2003>>=
 bd.0 <- read.csv("../../data/data_Schweiz_mitNull.csv", header=TRUE,sep=";")
@@ -252,7 +264,7 @@ polTable(bd.2010.ind,bd.2003.ind, tablabel="pol20032010")
 
 % Der Vergleich liesse sich auch mit den Perzentilen des Reineinkommens auf der Grundlage der aggregierten ESTV-Daten machen. Dies wäre ein Vorteil, falls die Nuller in den Individual-Daten der ESTV als Nuller geführt sind und nicht mit dem tatsächlichen steuerbaren Einkommen
 
-% FEHLT: Tabelle mit Median, lower und upper polaritätsindex plus Gini bzw. Differenz der Ginis
+While looking relative density of shape differences (see right part of \ref{fig:reldist20032010}) it gets clearly visible, how the two compared distributions differ. The pattern suggest that from 2003 to 2010 a moderate polarization occured, which is represented in a lower relative density in the middle seven deciles (d.30 to d.90), while the density ratio is higher in the top decile and the two lowest deciles. Comparing 2003 to 2010 tax unites moved to the tails. This pattern is quantifed with the inequality indices reported in table 2. Looking at the lower index and the upper index shows, that the polarization is slightly stronger driven by the downgrading process.
 
 
 \subsection{Population coverage}
