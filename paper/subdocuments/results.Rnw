@@ -118,7 +118,7 @@ The implementation of a equivalence scale does not have a major impact on the as
 
 \subsection{Measuring inequality}
 
-Here we examine how interpretation can change, when we expand the analysis by using relative distribution methods and not only look at Gini-Coefficients. We therefore use the published percentiles about the distribution of taxable income  on the FTA webpage . We prefer these measures over the calculates measures out of the published income brackets statistics, because they represent the distribution at both tails more accurate since they are based directly on the information about every single tax units\footnote{When calculating percentiles out of the income bracket statistic we loose relevant information at the edges. First, we don't have information about taxable income of tax-units falling below the income threshold for federal taxation. We only know how many persons fall in this category.However, the percentiles reported on the FTA webpage are based on the true taxable income (also for units below the threshold), which allows a more precise estimation of the lower percentiles. Secondly, it is especially hard to estimate the highest top income percentiles out of the aggregated tax statistics, leaving us with information only until the 95\%-percentiles, while the reported percentiles reach the 99.99\%-percentiles}. We use the reported Measures at the cost of time. The longest time-period we can compare out of these data reach from 2003 to 2010. Gini changed during this time from 0.47 to 0.50, which equals a moderate increase of inequality. The in-depth distributional analysis allows us to see, how this change translated into different shapes of the distributions. \\
+Here we examine how interpretation can change, when we expand the analysis by using relative distribution methods and not only look at Gini-Coefficients. We therefore use the published percentiles about the distribution of taxable income  on the FTA webpage . We prefer these measures over the calculates measures out of the published income brackets statistics, because they represent the distribution at both tails more accurate since they are based directly on the information about every single tax units\footnote{When calculating percentiles out of the income bracket statistic we loose relevant information at the edges. First, we don't have information about taxable income of tax-units falling below the income threshold for federal taxation. We only know how many persons fall in this category. However, the percentiles reported on the FTA webpage are based on the true taxable income (also for units below the threshold), which allows a more precise estimation of the lower percentiles. Secondly, it is especially hard to estimate the highest top income percentiles out of the aggregated tax statistics, leaving us with information only until the 95\%-percentiles, while the reported percentiles reach the 99.99\%-percentiles}. We use the reported Measures at the cost of time. The longest time-period we can compare out of these data reach from 2003 to 2010. Gini changed during this time from 0.47 to 0.50, which equals a moderate increase of inequality. The in-depth distributional analysis allows us to see, how this change translated into different shapes of the distributions. \\
 
 As described in the method section, the analysis includes a comparison of the density distribution of the log taxable income. We define the 2003 distribution as the reference group and compare it to the distribution of 2010. We then compare the relative density of the median adjusted distributions, to see where the two distributions differ. Finally, we calculate the median relative polarization index (MRP), to quantify the degree of polarization. We also show the decomposition into the upper and lower polarization index (URP and LRP).
 
@@ -264,7 +264,7 @@ polTable(bd.2010.ind,bd.2003.ind, tablabel="pol20032010")
 
 % Der Vergleich liesse sich auch mit den Perzentilen des Reineinkommens auf der Grundlage der aggregierten ESTV-Daten machen. Dies wäre ein Vorteil, falls die Nuller in den Individual-Daten der ESTV als Nuller geführt sind und nicht mit dem tatsächlichen steuerbaren Einkommen
 
-While looking relative density of shape differences (see right part of \ref{fig:reldist20032010}) it gets clearly visible, how the two compared distributions differ. The pattern suggest that from 2003 to 2010 a moderate polarization occured, which is represented in a lower relative density in the middle seven deciles (d.30 to d.90), while the density ratio is higher in the top decile and the two lowest deciles. Comparing 2003 to 2010 tax unites moved to the tails. This pattern is quantifed with the inequality indices reported in table 2. Looking at the lower index and the upper index shows, that the polarization is slightly stronger driven by the downgrading process.
+While looking relative density of shape differences (see right part of \ref{fig:reldist20032010}) it gets clearly visible, how the two compared distributions differ. The pattern suggest that from 2003 to 2010 a moderate polarization occurred, which is represented in a lower relative density in the middle seven deciles (d.30 to d.90), while the density ratio is higher in the top decile and the two lowest deciles. Comparing 2003 to 2010 tax unites moved to the tails. This pattern is quantified with the inequality indices reported in table 2. Comparing the lower and the upper index shows, that the polarization is slightly stronger driven by the downgrading process.
 
 
 \subsection{Population coverage}
@@ -549,106 +549,106 @@ polTable(pooled_i,normal_i,tablabel="pol2010spec")
 
 \emph{taxable income with and without non-taxed}
 
-
+FTA-Tax statistics sometimes exlcude tax units, which reach below the treshold to be taxed (let's call them zeros). We compare here three Gini-time-series \ref{fig:with_without_zeros_Gini}. Excluding zeros leads to a dramatical drop of the gini-coefficent, which is not realy surprising. On the other hand inequality is overestimated when assuming non-taxed tax units have zero taxable income. Rather we must assume taxable income for zeros lay between zero and the taxation treshold. We adress this by presenting a third time-series, where we assume non-taxed have a taxable income equal halve the threshold for single tax units (around CHF 8000). This results slightly lower Gini-coefficents.
 
 % Beim Vergleich der Datensätze unterschieden nach nur besteuerten und unter berücksichtigung der nicht besteuerten, stellt sich die Frage wie die unteren Einkommen imputiert werden. Wir haben uns überlegt, dass dies vor allem singles (übrige) betrifft, weil Familien in den unteren Einkommenstabellen bereits sehr selten vorkommen. Deswegen reicht es nur die Untergrenze für singels zu berücksichtigen. Diese liegt 2010 bei 16'900 verändert sich aber über die Zeit
 
-<<with_without_zeros_Gini,warning=FALSE, fig.cap='',fig.pos='H'>>=
-df <- read.csv("../../data/ginis_und_perzentile_normal.csv",sep="\t")
-#library(reshape)
-dflong <- melt(df[,c("G_steink","G_steink0","G_steink_halb","kanton","steuerperiode")], id=c("kanton","steuerperiode"))
-names(dflong)[3]<-"Type"
-names(dflong)[4]<-"Gini"
-levels(dflong$Type)<-c("without zeros","including zeros","imputed values for zeros")
-ggplot(dflong[dflong$kanton=="CH" & dflong$steuerperiode>=1995.5,], 
-       aes(x=steuerperiode,y=Gini,shape=Type,linetype=Type))+
-  scale_y_continuous(limits=c(0.18,0.6))+
-  scale_x_continuous(limits=c(1994,2012),breaks=number_ticks(10)) +
-  geom_line(size=0.5)+
-  geom_point(aes(shape=Type),size=3)+
-  theme_bw()+
-  xlab("tax period")+
-  theme(legend.justification=c(0,1),legend.position=c(0, 1))
+%<<with_without_zeros_Gini,warning=FALSE, fig.cap='',fig.pos='H'>>=
+%df <- read.csv("../../data/ginis_und_perzentile_normal.csv",sep="\t")
+%#library(reshape)
+%dflong <- melt(df[,c("G_steink","G_steink0","G_steink_halb","kanton","steuerperiode")], id=c("kanton","steuerperiode"))
+%names(dflong)[3]<-"Type"
+%names(dflong)[4]<-"Gini"
+%levels(dflong$Type)<-c("without zeros","including zeros","imputed values for zeros")
+%ggplot(dflong[dflong$kanton=="CH" & dflong$steuerperiode>=1995.5,], 
+     %  aes(x=steuerperiode,y=Gini,shape=Type,linetype=Type))+
+ % scale_y_continuous(limits=c(0.18,0.6))+
+ % scale_x_continuous(limits=c(1994,2012),breaks=number_ticks(10)) +
+ % geom_line(size=0.5)+
+ % geom_point(aes(shape=Type),size=3)+
+ % theme_bw()+
+ % xlab("tax period")+
+ % theme(legend.justification=c(0,1),legend.position=c(0, 1))
 
-# Kantonale Unterschiede
-#####
-#ggplot(dflong[dflong$steuerperiode>=1995.5,], aes(x=steuerperiode,y=Gini,shape=Type,linetype=Type))+geom_line()+facet_wrap(~kanton)+theme_bw()+xlab("tax period")+theme(axis.text.x = element_text(angle = 60, hjust = 1))+theme(legend.justification=c(1,0),legend.position=c(1, 0))
-#####
-@
+%# Kantonale Unterschiede
+%#####
+%#ggplot(dflong[dflong$steuerperiode>=1995.5,], aes(x=steuerperiode,y=Gini,shape=Type,linetype=Type))+geom_line()+facet_wrap(~kanton)+theme_bw()+xlab("tax period")+theme(axis.text.x = element_text(angle = 60, hjust = 1))+theme(legend.justification=c(1,0),legend.position=c(1, 0))
+%#####
+%@
 
 % Wenn wir annehmen, dass die Brülhart-Daten, sowohl die unteren als auch die oberen Perzentile angemessen abbildend, dann reicht der Vergleich. Etwas merkwürdig ist es jetzt, wenn wir die Gini-Reihe mit den ESTV Daten machen und dann den Vergleich mit den Brülhartdaten
 
-<<with_without_zeros_RelDist_mitBruelhart,warning=FALSE, fig.cap='',fig.pos='H'>>=
-bd.2010 <- filter(read.csv("../../data/data_Schweiz.csv", header=TRUE,sep=";"),Veranlagungsperiode==2010,Einheit=="Total")
-bd.0.2010 <- filter(read.csv("../../data/data_Schweiz_mitNull.csv", header=TRUE,sep=";"),Veranlagungsperiode==2010,Einheit=="Total")
-start <- which(names(bd.2010)=="p1")
-end <- which(names(bd.2010)=="p99_99")
-percentile <- c(1,5,10,20,25,30,40,50,60,70,75,80,90,95,96,97,98,99,99.5,99.9,99.99)
-bd.2010<- data.frame(t(bd.2010[1,start:end]),percentile)
-names(bd.2010)[1]=c("inc")
-bd.0.2010<- data.frame(t(bd.0.2010[1,start:end]),percentile)
-names(bd.0.2010)[1]=c("inc")
+%<<with_without_zeros_RelDist_mitBruelhart,warning=FALSE, fig.cap='',fig.pos='H'>>=
+%bd.2010 <- filter(read.csv("../../data/data_Schweiz.csv", header=TRUE,sep=";"),Veranlagungsperiode==2010,Einheit=="Total")
+%bd.0.2010 <- filter(read.csv("../../data/data_Schweiz_mitNull.csv", header=TRUE,sep=";"),Veranlagungsperiode==2010,Einheit=="Total")
+%start <- which(names(bd.2010)=="p1")
+%end <- which(names(bd.2010)=="p99_99")
+%percentile <- c(1,5,10,20,25,30,40,50,60,70,75,80,90,95,96,97,98,99,99.5,99.9,99.99)
+%bd.2010<- data.frame(t(bd.2010[1,start:end]),percentile)
+%names(bd.2010)[1]=c("inc")
+%bd.0.2010<- data.frame(t(bd.0.2010[1,start:end]),percentile)
+%names(bd.0.2010)[1]=c("inc")
 
-bd.0.2010 <- rbind(c(0,0),bd.0.2010)
-ival<-bd.0.2010$inc
-perval<-bd.0.2010$percentile
-bd.0.2010.ind<-unlist(sapply(2:length(ival),function(i){
-  len=(perval[i]-perval[i-1])*100
-  seq(ival[i-1],ival[i],length.out=len)
-}))
+%bd.0.2010 <- rbind(c(0,0),bd.0.2010)
+%ival<-bd.0.2010$inc
+%perval<-bd.0.2010$percentile
+%bd.0.2010.ind<-unlist(sapply(2:length(ival),function(i){
+ % len=(perval[i]-perval[i-1])*100
+%  seq(ival[i-1],ival[i],length.out=len)
+%}))
 
-bd.2010 <- rbind(c(0,0),bd.2010)
-ival<-bd.2010$inc
-perval<-bd.2010$percentile
-bd.2010.ind<-unlist(sapply(2:length(ival),function(i){
-  len=(perval[i]-perval[i-1])*100
-  seq(ival[i-1],ival[i],length.out=len)
-}))
+%bd.2010 <- rbind(c(0,0),bd.2010)
+%ival<-bd.2010$inc
+%perval<-bd.2010$percentile
+%bd.2010.ind<-unlist(sapply(2:length(ival),function(i){
+%  len=(perval[i]-perval[i-1])*100
+%  seq(ival[i-1],ival[i],length.out=len)
+%}))
 
 
-par(mfrow=c(1,2))
-# Prop-Density Plot
-density1 <- density(log(bd.2010.ind))
-plot(x = (density1$x), y = density1$y, type = "l",
-     xlab = "taxable income", ylab = "density"
-     #axes = FALSE,
-     #xlim = c(-50, 200),
-     #ylim=c(0,0.0116031)
+%par(mfrow=c(1,2))
+%# Prop-Density Plot
+%density1 <- density(log(bd.2010.ind))
+%plot(x = (density1$x), y = density1$y, type = "l",
+%     xlab = "taxable income", ylab = "density"
+%     #axes = FALSE,
+%     #xlim = c(-50, 200),
+%     #ylim=c(0,0.0116031)
      )
-title(main="all tax units vs without non-taxed",cex=0.6)
-axis(side = 1)
-axis(side = 2)
-fig1legend <- list(x=c(6,6),y=c(0.6,0.6))
-legend(fig1legend,lty=1:2, bty="n",
-       legend=c("without non-taxed","all tax units"))
-density2 <- density(log(bd.0.2010.ind))
-lines(x = (density2$x), y = density2$y, type = "l",lty=2)
+%title(main="all tax units vs without non-taxed",cex=0.6)
+%axis(side = 1)
+%axis(side = 2)
+%fig1legend <- list(x=c(6,6),y=c(0.6,0.6))
+%legend(fig1legend,lty=1:2, bty="n",
+%       legend=c("without non-taxed","all tax units"))
+%density2 <- density(log(bd.0.2010.ind))
+%lines(x = (density2$x), y = density2$y, type = "l",lty=2)
 
 
-# Relative Distribution
+%# Relative Distribution
 
-gA0 <- reldist(y=bd.2010.ind, yo=bd.0.2010.ind,
-               smooth=0.4, ci=FALSE,
-               show="residual",
-               bar=TRUE, quiet=FALSE,
-               ylim=c(0.5,2), ylab="",
-               discrete=FALSE,
-               xlab="Proportion of 2010 Distribution (including non-taxed)")
-title(main=paste("Effect of different shape"))
-abline(h=1,lty=2)
+%gA0 <- reldist(y=bd.2010.ind, yo=bd.0.2010.ind,
+%               smooth=0.4, ci=FALSE,
+%               show="residual",
+%               bar=TRUE, quiet=FALSE,
+%               ylim=c(0.5,2), ylab="",
+%               discrete=FALSE,
+%               xlab="Proportion of 2010 Distribution (including non-taxed)")
+%title(main=paste("Effect of different shape"))
+%abline(h=1,lty=2)
 
-par(mfrow=c(1,1))
+%par(mfrow=c(1,1))
 @
 
 
-<<polindexzeros, results='asis'>>=
-polTable(bd.2010.ind,bd.0.2010.ind,tablabel="polzeros")
-@
+%<<polindexzeros, results='asis'>>=
+%polTable(bd.2010.ind,bd.0.2010.ind,tablabel="polzeros")
+%@
 
 % Wenn etwas bei den unteren Perzentilen nicht stimmt (nicht Besteuerte als Null gewertet), dann müsste der Vergleich mit den ESTV-Nullern gemacht werden.
 % Es ist mir aktuell unklar bei welchem Datensazt jetzt die Perzentile mit imputierten Nullern vorliegt.
 
-Including zeros leads to significantly higher gini coefficients. However we must keep in mind, that these might be artificially high values as we assume zero income for everyone in the zero group. We can conclude more from the graphic: the ratio between both measures seems to be quite constant although for aggregate Switzerland but there are minor deviations for multiple cantons as well as strong deviations for the cantons Geneva and Ticino. However the problems seem not to result from a shift in the zero-share over time but they are specific for the time-period when the tax system changed. 
+%Including zeros leads to significantly higher gini coefficients. However we must keep in mind, that these might be artificially high values as we assume zero income for everyone in the zero group. We can conclude more from the graphic: the ratio between both measures seems to be quite constant although for aggregate Switzerland but there are minor deviations for multiple cantons as well as strong deviations for the cantons Geneva and Ticino. However the problems seem not to result from a shift in the zero-share over time but they are specific for the time-period when the tax system changed. 
 
 \emph{comparison of tax-data and survey data distribution}
 
