@@ -782,8 +782,8 @@ title(main=paste("Effect of different shape"))
 abline(h=1,lty=2)
 par(mfrow=c(1,1))
 
-# Export data to use with Stata
-habe_bd_2010 <- rbind(data.frame(cbind("income" = habe10$psteink,"group"=0,"weight"=habe10$gew)),data.frame("income" = bd.2010.ind,"group"=1,"weight"=1))
+# Export data to use with Stata (psteink durch VerfuegbaresEinkommen08 ersetzt)
+habe_bd_2010 <- rbind(data.frame(cbind("income" = habe10$VerfuegbaresEinkommen08,"group"=0,"weight"=habe10$gew)),data.frame("income" = bd.2010.ind,"group"=1,"weight"=1))
 habe_bd_2010$group <- factor(habe_bd_2010$group,labels=c("habe","bd"))
 write.dta(habe_bd_2010, file="../../data/stata_data/habe_bd_2010.dta")
 
@@ -891,9 +891,11 @@ bd.2010.ind<-bd.2010.ind/1000
 habe10<-habe0911 %.% 
   filter(Jahr08==2010)
 habe10.unmarried<-habe0911 %.% 
-  filter(Familientyp08<140,Jahr08==2010)
-habe10.unmarried<-data.frame(habe10.unmarried$VerfuegbaresEinkommen08)
-names(habe10.unmarried)<-"inc_habe"
+  filter(Familientyp08<140,Jahr08==2010) %.%
+  select(VerfuegbaresEinkommen08,jahresgewicht)
+#habe10.unmarried<-data.frame(habe10.unmarried$VerfuegbaresEinkommen08)
+
+names(habe10.unmarried)<-c("inc_habe","gew")
 habe10.unmarried$inc_habe[habe10.unmarried$inc_habe<0]<-0 # One values is -20'000
 habe10.unmarried$inc_habe<-habe10.unmarried$inc_habe*12/1000 # transform from monthly income to income per year
 
@@ -948,8 +950,8 @@ title(main=paste("Effect of different shape"))
 abline(h=1,lty=2)
 par(mfrow=c(1,1))
 
-# Export data to use with Stata
-habe_bd_2010_unmarried <- rbind(data.frame(cbind("income" = habe10.unmarried$inc_habe,"group"=0)),data.frame("income" = bd.2010.ind,"group"=1))
+# Export data to use with Stata (gewicht hinzugefügt)
+habe_bd_2010_unmarried <- rbind(data.frame(cbind("income" = habe10.unmarried$inc_habe,"group"=0,"weight"=habe10.unmarried$gew)),data.frame("income" = bd.2010.ind,"group"=1,"weight"=1))
 habe_bd_2010_unmarried$group <- factor(habe_bd_2010_unmarried$group,labels=c("habe","bd"))
 write.dta(habe_bd_2010_unmarried, file="../../data/stata_data/habe_bd_2010_unmarried.dta")
 
