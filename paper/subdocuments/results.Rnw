@@ -782,8 +782,8 @@ title(main=paste("Effect of different shape"))
 abline(h=1,lty=2)
 par(mfrow=c(1,1))
 
-# Export data to use with Stata (psteink durch VerfuegbaresEinkommen08 ersetzt)
-habe_bd_2010 <- rbind(data.frame(cbind("income" = habe10$VerfuegbaresEinkommen08,"group"=0,"weight"=habe10$gew)),data.frame("income" = bd.2010.ind,"group"=1,"weight"=1))
+# Export data to use with Stata (psteink durch VerfuegbaresEinkommen08 (inc_habe) ersetzt)
+habe_bd_2010 <- rbind(data.frame(cbind("income" = habe10$inc_habe,"group"=0,"weight"=habe10$gew)),data.frame("income" = bd.2010.ind,"group"=1,"weight"=1))
 habe_bd_2010$group <- factor(habe_bd_2010$group,labels=c("habe","bd"))
 write.dta(habe_bd_2010, file="../../data/stata_data/habe_bd_2010.dta")
 
