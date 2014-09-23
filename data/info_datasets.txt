@@ -1,4 +1,4 @@
-# estv-gini-kt.dta
+﻿# estv-gini-kt.dta
 Bens file with interpolations by cantons and brackets
 
 # ginis_und_perzentile_normal.csv
@@ -22,3 +22,7 @@ Brülhart-Data (ergänzt mit Zahlen für 2010)
 # data_Schweiz_mitNull.csv
 Brülhart-data (ergänzt mit Zahlen für 2010)
 - no information from 1994-2002
+
+# stata-data/
+enthält exporte aus R für die Daten die mit reldist() Vergleichen wurden, d.h.
+y und y0 mit Gruppierungsvariable versehen und zeilenweise untereinander
