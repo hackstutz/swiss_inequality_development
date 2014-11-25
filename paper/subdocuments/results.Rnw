@@ -72,7 +72,7 @@ bd <- read.csv("../../data/data_Schweiz.csv", header=TRUE,sep=";")
 #Veranlagungsperiode -> Jahre
 bd$Jahr <- as.numeric(substr(bd$Veranlagungsperiode,1,4))
 bd$Jahr[nchar(as.character(bd$Veranlagungsperiode))>4] <- bd$Jahr[nchar(as.character(bd$Veranlagungsperiode))>4] - 2
-bd<-bd %.% 
+bd<-bd %>% 
   filter(Einheit=="Total")
 bd<-subset(bd,Jahr<1995 | Jahr >2002)
 bd.long<-reshape(bd,
@@ -86,7 +86,7 @@ bd.0 <- read.csv("../../data/data_Schweiz_mitNull.csv", header=TRUE,sep=";")
 #Veranlagungsperiode -> Jahre
 bd.0$Jahr <- as.numeric(substr(bd.0$Veranlagungsperiode,1,4))
 bd.0$Jahr[nchar(as.character(bd.0$Veranlagungsperiode))>4] <- bd.0$Jahr[nchar(as.character(bd.0$Veranlagungsperiode))>4] - 2
-bd.0<-bd.0 %.% 
+bd.0<-bd.0 %>% 
   filter(Einheit=="Total")
 bd.0<-subset(bd.0,Jahr<1993 | Jahr >2002)
 bd.0.long<-reshape(bd.0,
@@ -128,7 +128,7 @@ bd.0 <- read.csv("../../data/data_Schweiz_mitNull.csv", header=TRUE,sep=";")
 #Veranlagungsperiode -> Jahre
 bd.0$Jahr <- as.numeric(substr(bd.0$Veranlagungsperiode,1,4))
 bd.0$Jahr[nchar(as.character(bd.0$Veranlagungsperiode))>4] <- bd.0$Jahr[nchar(as.character(bd.0$Veranlagungsperiode))>4] - 2
-bd.2003<-bd.0 %.% 
+bd.2003<-bd.0 %>% 
   filter(Jahr==2003,Einheit=="Total")
 start <- which(names(bd.2003)=="p1")
 end <- which(names(bd.2003)=="p99_99")
@@ -169,7 +169,7 @@ bd.0 <- read.csv("../../data/data_Schweiz_mitNull.csv", header=TRUE,sep=";")
 #Veranlagungsperiode -> Jahre
 bd.0$Jahr <- as.numeric(substr(bd.0$Veranlagungsperiode,1,4))
 bd.0$Jahr[nchar(as.character(bd.0$Veranlagungsperiode))>4] <- bd.0$Jahr[nchar(as.character(bd.0$Veranlagungsperiode))>4] - 2
-bd.2010<-bd.0 %.% 
+bd.2010<-bd.0 %>% 
   filter(Jahr==2010,Einheit=="Total")
 start <- which(names(bd.2010)=="p1")
 end <- which(names(bd.2010)=="p99_99")
@@ -284,7 +284,7 @@ The FTA distinguishes normal from special cases as described in the data section
 
 normal <- read.csv("../../data/ginis_und_perzentile_normal.csv",sep="\t")
 normal <- select(normal, p1:p99, kanton, steuerperiode, -p96,-p97,-p98)
-#normal <- normal %.% select(-G_reink, -G_taxed, -ppop0, -G_steink0)
+#normal <- normal %>% select(-G_reink, -G_taxed, -ppop0, -G_steink0)
 pooled <- read.csv("../../data/ginis_und_perzentile_beides.csv",sep="\t")
 pooled <- select(pooled, kanton, steuerperiode, p1:p99)
 #special <- read.csv("data/ginis_und_perzentile_sonder.csv",segep="\t")
@@ -292,7 +292,7 @@ normal$case <- "normal case"
 #special$case <- "special case"
 pooled$case <- "pooled, normal and special cases"
 d<-rbind(normal,pooled)
-d<-d %.% 
+d<-d %>% 
   filter(kanton=="CH",steuerperiode==1993.5)
 
 start <- which(names(d)=="p1")
@@ -816,7 +816,7 @@ bd.2010.ind<-bd.2010.ind/1000
 
 
 
-habe10.married<-habe0911 %.% 
+habe10.married<-habe0911 %>% 
   filter(Familientyp08>130,Jahr08==2010)
 habe10.married$psteink<-habe10.married$Bruttoeinkommen08+habe10.married$A31m+habe10.married$A35m
 # Wir brauchen (a) verfügbares Einkommen (b) Bruttoeinkommen und c(Bruttoeinkommen nach Soziversicherungsbeiträgen(A31m) und Monetäre Trasnferausgaben an andere HaushalteA35m)
@@ -888,10 +888,10 @@ bd.2010.ind<-bd.2010.ind/1000
 
 
 # Select unmarried - HABE
-habe10<-habe0911 %.% 
+habe10<-habe0911 %>% 
   filter(Jahr08==2010)
-habe10.unmarried<-habe0911 %.% 
-  filter(Familientyp08<140,Jahr08==2010) %.%
+habe10.unmarried<-habe0911 %>% 
+  filter(Familientyp08<140,Jahr08==2010) %>%
   select(VerfuegbaresEinkommen08,jahresgewicht)
 #habe10.unmarried<-data.frame(habe10.unmarried$VerfuegbaresEinkommen08)
 
@@ -955,6 +955,36 @@ habe_bd_2010_unmarried <- rbind(data.frame(cbind("income" = habe10.unmarried$inc
 habe_bd_2010_unmarried$group <- factor(habe_bd_2010_unmarried$group,labels=c("habe","bd"))
 write.dta(habe_bd_2010_unmarried, file="../../data/stata_data/habe_bd_2010_unmarried.dta")
 
+#bern kantonal (liegt lokal wegen datenschutz)
+bern_kt <- read.dta("H:/Assessing Inequalty/taxDataBE2012.dta")
+bern_kt2012 <- bern_kt %>% filter(stj==2012) %>% group_by(hh_id) %>% select(tot_erwerbeink,tot_vermeink,primeink,tot_transeink,TOTEINK,hh_id)
+#summarise(bern_kt2012, n=n()) %>% arrange(desc(n))
+#habe0911 %>%mutate(anzahl_personen=Anzahl1524Personen08+Anzahl2534Personen08+Anzahl3544Personen08+Anzahl4554Personen08+Anzahl5564Personen08+Anzahl6574Personen08+Anzahl7599Personen08) %>% group_by(anzahl_personen) %>% summarise(n=n())%>%arrange(desc(n))
+# gr??ter haushalt 7 personen gross (>=15jahre)
+# dort machen wir einen schnitt bei den kantonalen daten um wohnheime etc auszuschlie?en (wie es HABE auch gemacht hat)
+bern_kt2012_plain <- bern_kt2012  %>% filter(n()<=7) #5% werden gefiltert
+bern_kt2012 <- bern_kt2012_plain %>% mutate(TOTEINK_hh=sum(TOTEINK)) %>% filter(!duplicated(hh_id)) #nimmt die erste unique beobachtung und droppt 2. bis x. 
+
+# f?r habe (bern) abz?glich sozialversicherungsbeitr?ge
+habe11_bern <- habe0911 %>% filter(Kanton08==2) %>% 
+  mutate(income=(Bruttoeinkommen08+A31m)*12/1000,weight=jahresgewicht,group=0) %>% 
+  select(income, weight,group)
+
+# export nach stata (ungewichtet)
+bern_habe <- rbind(habe11_bern,data.frame("income" = bern_kt2012$TOTEINK_hh/1000,"group"=1,"weight"=1))
+bern_habe$group <- factor(bern_habe$group,labels=c("habe","tax"))
+bern_habe <- bern_habe %>% mutate(income=ifelse(income<0,0,income))
+write.dta(bern_habe, file="../../data/stata_data/bern_habe.dta")
+
+
+# vergleich innerhalb von bern tax data: haushalte vs. plain
+# oben wurde plain und nicht plain definiert, das fügen wir jetzt zusammen
+# export nach stata (ungewichtet)
+bern_plain_hh <- rbind(data.frame("income" = bern_kt2012_plain$TOTEINK/1000,"group"=0,"weight"=1),data.frame("income" = bern_kt2012$TOTEINK_hh/1000,"group"=1,"weight"=1))
+bern_plain_hh$group <- factor(bern_plain_hh$group,labels=c("tax units","households"))
+bern_plain_hh <- bern_plain_hh %>% mutate(income=ifelse(income<0,0,income))
+write.dta(bern_plain_hh, file="../../data/stata_data/bern_plain_hh.dta")
+
 @
 
 From the discussion in the data section we would expect differences between the income distributions from survey and tax data. Within the FTA data we observe zeros for incomes below the threshold to be liable for federal tax while survey data might cover this range. On the other hand we expect underreporting from both lowest percentiles and highest percentiles (middle class bias) within the survey data. Figure \ref{fig:BruelhartvsHABE} (left) however reveals a more critical issue related to tax data, that is the median location of income compared to survey data. Although we try to measure similar concepts of income, survey data shows a median (93.000 CHF) more than twice as big as tax data (44.600 CHF). The issue here is clearly the assumptions of household composition. While survey data is likely to capture the correct household composition, tax data can only approximate households by using marital status. Splitting the data in married and unmarried tax units underpins this argument. From figure \ref{fig:BruelhartvsHABEmarried} we can see that married tax units (FTA data) and household with married couples (survey data) are better (but still not perfectly) comparable. Figure \ref{fig:BruelhartvsHABEmarried} (right) shows the expected shape difference between the two distributions:  survey data has a bias towards the (median-adjusted) 80\% to 90\% percentile (of the FTA data distribution). Top percentiles are badly covered by survey data, suggesting that inequality measures based on survey data might underestimate inequality development that arises from changes in the incomes of the rich. Though, survey data can be of interest if one is interested in the lower 20\% of the income distribution. 
@@ -978,18 +1008,18 @@ swissGini<-read.csv("../../data/swissGini.csv",header=TRUE,sep=";")
 ben <- filter(read.dta("../../data/estv-gini-kt.dta"),kanton=="CH2")
 
 ### and for the rest of Ginis:
-estv <- read.dta("../../data/steuerdaten20140522_stata12.dta")
+estv <- read.dta("../../data/steuerdaten20141118_stata12.dta")
 
 #1918 fixen
 estv <- within(estv, {
     steink[bemessungsjahre==1917]<-(eink_ll[bemessungsjahre==1917]+eink_ul[bemessungsjahre==1917])/2*anz_pflichtige[bemessungsjahre==1917]
 })
 
-#estv_gini <- estv %.% 
-#  filter(kanton=="CH",eink_art=="Nach steuerbarem Einkommen",fall=="Normalfälle",anz_pflichtige>0,steuerperiode!=1945.5) %.% 
-#  select(bemessungsjahre, steink, kanton, eink_ll, eink_ul,anz_pflichtige) %.%
-#  group_by(factor(bemessungsjahre)) %.%
-#  mutate(mean_steink=steink/anz_pflichtige) %.%
+#estv_gini <- estv %>% 
+#  filter(kanton=="CH",eink_art=="Nach steuerbarem Einkommen",fall=="Normalfälle",anz_pflichtige>0,steuerperiode!=1945.5) %>% 
+#  select(bemessungsjahre, steink, kanton, eink_ll, eink_ul,anz_pflichtige) %>%
+#  group_by(factor(bemessungsjahre)) %>%
+#  mutate(mean_steink=steink/anz_pflichtige) %>%
 #  summarise(gini(mean_steink,weights=anz_pflichtige))
 
 load("estv_gini.RData")
