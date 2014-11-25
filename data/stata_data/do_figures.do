@@ -4,6 +4,14 @@ cd "C:\Users\Hackstutz\Dropbox\Git\swiss_inequality_development\data\stata_data\
 * Black/White Theme
 set scheme rudi
 
+* Bern tax data vergleich
+use "C:\Users\rudi\Dropbox\Git\swiss_inequality_development\data\stata_data\bern_habe.dta", clear
+* Perzentilsgrenzen anschaune
+su income, det
+reldist income, by(group) title("HBS vs Bern tax data") xtitle("Proportion of Reference Group (HBS)") olabel(8.9 47.8 85.5) otitle("primary income (in 1000 CHF)") 
+graph save figure_bern_habe, replace
+
+
 * Figure 7:Distribution change over time
 use "C:\Users\Hackstutz\Dropbox\Git\swiss_inequality_development\data\stata_data\bd2010_2003.dta", clear
 * Perzentilsgrenzen anschaune

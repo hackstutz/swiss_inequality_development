@@ -2,7 +2,7 @@ capture cd C:/Users/Hackstutz/Dropbox/Git/swiss_inequality_development/data
 capture cd C:/Users/rudi/Dropbox/Git/swiss_inequality_development/data
 //add more paths; using capture -> no need to comment out
 
-use steuerdaten20140522_stata12.dta, clear
+use steuerdaten20141118_stata12.dta, clear
 
 sort steuerperiode kanton eink_ll
 replace steink = steink[_n+481]-steink_diff if steuerperiode ==1945.5
