@@ -38,7 +38,6 @@ df$zeros <- df$null_norm/df$cpop # i only use normal cases here
 @
 
 <<different_ginis, fig.cap='Gini coefficients for different income measures',fig.pos='H'>>=
-df$G_reink[df$G_reink==1]<-NA
 df$G_taxed[df$G_taxed==1]<-NA
 library(reshape)
 number_ticks <- function(n) {function(limits) pretty(limits, n)}
@@ -46,14 +45,16 @@ dflong <- melt(df[,c("G_steink","G_reink","G_taxed","kanton","steuerperiode")], 
 names(dflong)[3]<-"Income"
 names(dflong)[4]<-"Gini"
 levels(dflong$Income)<-c("taxable income","net income","taxable income after federal tax")
-ggplot(dflong[dflong$kanton=="CH",], aes(x=steuerperiode,y=Gini,shape=Income))+
-  scale_y_continuous(limits=c(0.3,0.55))+
-  scale_x_continuous(limits=c(1982,2012),breaks=number_ticks(10)) +
+fig_incomes <- ggplot(dflong[dflong$kanton=="CH",], aes(x=steuerperiode,y=Gini,shape=Income))+
+  scale_y_continuous(limits=c(0.28,0.55))+
+  scale_x_continuous(limits=c(1941,2011),breaks=number_ticks(10)) +
   geom_point(aes(shape=Income),size=3)+
   geom_line(data=dflong[dflong$kanton=="CH",],aes(linetype=Income))+
   theme_bw()+
-  xlab("tax period")+
-  theme(legend.justification=c(0,1),legend.position=c(0, 1))
+  xlab("Year")+
+  theme(legend.justification=c(0,1),legend.position=c(0, 1))+
+  ggtitle("Using net, taxable or taxed income")
+fig_incomes
 #ggplot(dflong, aes(x=steuerperiode,y=Gini,colour=Type))+geom_line()+facet_wrap(~kanton)+theme_bw()+xlab("tax period")
 @
 
@@ -101,14 +102,17 @@ names(bdlong)[61]<-"Income"
 
 <<equivalencescale, fig.cap='Gini coefficients with and without equivalization',fig.pos='H'>>=
 number_ticks <- function(n) {function(limits) pretty(limits, n)}
-ggplot(bdlong, aes(x=Jahr,y=Gini,shape=Income))+
-  scale_y_continuous(limits=c(0.3,0.55))+
-  scale_x_continuous(limits=c(1970,2012),breaks=number_ticks(10)) +
+fig_equiv <- ggplot(bdlong, aes(x=Jahr,y=Gini,shape=Income))+
+  scale_y_continuous(limits=c(0.28,0.55))+
+  #scale_x_continuous(limits=c(1970,2012),breaks=number_ticks(10)) +
+  scale_x_continuous(limits=c(1970,2011),breaks=number_ticks(10)) +
   geom_point(aes(shape=Income),size=3)+
   geom_line(data=bdlong,aes(linetype=Income))+
   theme_bw()+
-  xlab("tax period")+
-  theme(legend.justification=c(0,1),legend.position=c(0, 1))
+  xlab("Year")+
+  theme(legend.justification=c(0,1),legend.position=c(0, 1))+
+  ggtitle("Using (pseudo) equivalence scales")
+fig_equiv
 @
 
 
@@ -578,15 +582,17 @@ dflong <- melt(df[,c("G_steink","G_steink0","G_steink_halb","kanton","steuerperi
 names(dflong)[3]<-"Type"
 names(dflong)[4]<-"Gini"
 levels(dflong$Type)<-c("without zeros","including zeros","imputed values for zeros")
-ggplot(dflong[dflong$kanton=="CH" & dflong$steuerperiode>=1995.5,], 
+fig_zeros <- ggplot(dflong[dflong$kanton=="CH",], 
        aes(x=steuerperiode,y=Gini,shape=Type,linetype=Type))+
-  scale_y_continuous(limits=c(0.18,0.6))+
-  scale_x_continuous(limits=c(1994,2012),breaks=number_ticks(10)) +
+  scale_y_continuous(limits=c(0.28,0.55))+
+  scale_x_continuous(limits=c(2003,2012),breaks=number_ticks(10)) +
   geom_line(size=0.5)+
   geom_point(aes(shape=Type),size=3)+
   theme_bw()+
   xlab("tax period")+
-  theme(legend.justification=c(0,1),legend.position=c(0, 1))
+  theme(legend.justification=c(0,1),legend.position=c(0, 1))+
+  ggtitle("How to treat non-taxed")
+fig_zeros
 
 # Kantonale Unterschiede
 #####
@@ -963,7 +969,8 @@ bern_kt2012 <- bern_kt %>% filter(stj==2012) %>% group_by(hh_id) %>% select(tot_
 # gr??ter haushalt 7 personen gross (>=15jahre)
 # dort machen wir einen schnitt bei den kantonalen daten um wohnheime etc auszuschlie?en (wie es HABE auch gemacht hat)
 bern_kt2012_plain <- bern_kt2012  %>% filter(n()<=7) #5% werden gefiltert
-bern_kt2012 <- bern_kt2012_plain %>% mutate(TOTEINK_hh=sum(TOTEINK)) %>% filter(!duplicated(hh_id)) #nimmt die erste unique beobachtung und droppt 2. bis x. 
+#bern_kt2012 <- bern_kt2012_plain %>% mutate(TOTEINK_hh=sum(TOTEINK)) %>% filter(!duplicated(hh_id))
+bern_kt2012 <- bern_kt2012_plain %>% mutate(primeink_hh=sum(primeink)) %>% filter(!duplicated(hh_id)) #nimmt die erste unique beobachtung und droppt 2. bis x. 
 
 # f?r habe (bern) abz?glich sozialversicherungsbeitr?ge
 habe11_bern <- habe0911 %>% filter(Kanton08==2) %>% 
@@ -971,7 +978,7 @@ habe11_bern <- habe0911 %>% filter(Kanton08==2) %>%
   select(income, weight,group)
 
 # export nach stata (ungewichtet)
-bern_habe <- rbind(habe11_bern,data.frame("income" = bern_kt2012$TOTEINK_hh/1000,"group"=1,"weight"=1))
+bern_habe <- rbind(habe11_bern,data.frame("income" = bern_kt2012$primeink_hh/1000,"group"=1,"weight"=1))
 bern_habe$group <- factor(bern_habe$group,labels=c("habe","tax"))
 bern_habe <- bern_habe %>% mutate(income=ifelse(income<0,0,income))
 write.dta(bern_habe, file="../../data/stata_data/bern_habe.dta")
@@ -980,7 +987,7 @@ write.dta(bern_habe, file="../../data/stata_data/bern_habe.dta")
 # vergleich innerhalb von bern tax data: haushalte vs. plain
 # oben wurde plain und nicht plain definiert, das fügen wir jetzt zusammen
 # export nach stata (ungewichtet)
-bern_plain_hh <- rbind(data.frame("income" = bern_kt2012_plain$TOTEINK/1000,"group"=0,"weight"=1),data.frame("income" = bern_kt2012$TOTEINK_hh/1000,"group"=1,"weight"=1))
+bern_plain_hh <- rbind(data.frame("income" = bern_kt2012_plain$primeink/1000,"group"=0,"weight"=1),data.frame("income" = bern_kt2012$primeink_hh/1000,"group"=1,"weight"=1))
 bern_plain_hh$group <- factor(bern_plain_hh$group,labels=c("tax units","households"))
 bern_plain_hh <- bern_plain_hh %>% mutate(income=ifelse(income<0,0,income))
 write.dta(bern_plain_hh, file="../../data/stata_data/bern_plain_hh.dta")
@@ -1008,21 +1015,25 @@ swissGini<-read.csv("../../data/swissGini.csv",header=TRUE,sep=";")
 ben <- filter(read.dta("../../data/estv-gini-kt.dta"),kanton=="CH2")
 
 ### and for the rest of Ginis:
-estv <- read.dta("../../data/steuerdaten20141118_stata12.dta")
+estv <- read.dta("../../data/steuerdaten20141126_stata12.dta")
 
 #1918 fixen
 estv <- within(estv, {
     steink[bemessungsjahre==1917]<-(eink_ll[bemessungsjahre==1917]+eink_ul[bemessungsjahre==1917])/2*anz_pflichtige[bemessungsjahre==1917]
 })
 
-#estv_gini <- estv %>% 
-#  filter(kanton=="CH",eink_art=="Nach steuerbarem Einkommen",fall=="Normalfälle",anz_pflichtige>0,steuerperiode!=1945.5) %>% 
-#  select(bemessungsjahre, steink, kanton, eink_ll, eink_ul,anz_pflichtige) %>%
-#  group_by(factor(bemessungsjahre)) %>%
-#  mutate(mean_steink=steink/anz_pflichtige) %>%
-#  summarise(gini(mean_steink,weights=anz_pflichtige))
+estv_gini <- estv %>% 
+  filter(kanton=="CH",
+         eink_art=="Nach steuerbarem Einkommen",
+         fall=="Normalfälle",
+         anz_pflichtige>0) %>%
+        # steuerperiode!=1945.5) %>% 
+  select(bemessungsjahre, steink, kanton, eink_ll, eink_ul,anz_pflichtige) %>%
+  group_by(factor(bemessungsjahre)) %>%
+  mutate(mean_steink=steink/anz_pflichtige) %>%
+  summarise(gini(mean_steink,weights=anz_pflichtige))
 
-load("estv_gini.RData")
+#load("estv_gini.RData")
 
 names(estv_gini) <- c("Year","FTA")
 estv_gini$Year<-as.numeric(as.character(estv_gini$Year))
@@ -1068,6 +1079,49 @@ ggplot(data=na.omit(all_gini_long),
   theme_bw()+
   theme(legend.justification=c(0,1),legend.position=c(0, 1))
 
+# kleiner einschub: verschiedene masse
+library(IC2)
+getAtkinson <- function(x,w){
+  calcAtkinson(x,w=w)$ineq$index
+}
+getTheil <- function(x,w){
+  calcGEI(x,w=w,alpha=1)$ineq$index
+}
+
+estv_masse <- estv %>% 
+  filter(kanton=="CH",
+         eink_art=="Nach steuerbarem Einkommen",
+         fall=="Normalfälle",
+         anz_pflichtige>0) %>%
+        # steuerperiode!=1945.5) %>% 
+  select(bemessungsjahre, steink, kanton, eink_ll, eink_ul,anz_pflichtige) %>%
+  group_by(factor(bemessungsjahre)) %>%
+  mutate(mean_steink=steink/anz_pflichtige) %>%
+  summarise(Gini=gini(mean_steink,weights=anz_pflichtige),Atkinson=getAtkinson(mean_steink,w=anz_pflichtige),Theil=getTheil(mean_steink,w=anz_pflichtige))
+estv_masse$id<-1
+names(estv_masse)<-c("Year","Gini","Atkinson","Theil","id")
+try(detach("package:reshape", unload=TRUE))
+library(reshape2)
+estv_masse_long <- melt(estv_masse,id=c("id","Year"))
+
+estv_masse_long$measure <- factor(estv_masse_long$variable)
+estv_masse_long$Year <- as.double(as.character(estv_masse_long$Year))
+fig_measures <- ggplot(estv_masse_long, aes(x=Year,y=log(value),shape=measure))+
+  #scale_y_continuous(limits=c(0,0.55))+
+  scale_x_continuous(limits=c(1918,2011),breaks=number_ticks(10)) +
+  geom_point(aes(shape=measure),size=3)+
+  geom_line(aes(linetype=measure))+
+  theme_bw()+
+  xlab("Year")+
+  theme(legend.justification=c(0,1),legend.position=c(0, 1))+
+  ggtitle("Using different inequality measures")
+fig_measures
+
+# output als 4er grafik
+library(gridExtra)
+png("../figure/figure1234.png",width=1200,height=675)
+grid.arrange(fig_measures,fig_equiv,fig_incomes,fig_zeros)
+dev.off()
 @
 
 Figure\ref{fig:benplot} displays the most relevant Gini-coefficients that can be calculated for Switzerland. Although we can not adjust the Gini-coefficients to be perfectly valid, we can discuss the picture against the background of our analyses. For the periods before the second world war it is difficult to draw secure conclusions because these data points are based on unreliable data. 1933 only 13.7\% of the population filled in a tax form \citep{dell_income_2005}. During the war we see a tendency towards lower income inequality. This might be attributable to a changed data base as the amount of non-fillers decreased during the war and shortly after. The period after the world war is characterized by strong economic growth as well as an increase in inequality. Our interpretation is that high income percentiles disproportionately profited from the economic upturn. After the oil crises there were alternating phases of social welfare expansion and economic upturns.
