@@ -55,6 +55,10 @@ fig_incomes <- ggplot(dflong[dflong$kanton=="CH",], aes(x=steuerperiode,y=Gini,s
   theme(legend.justification=c(0,1),legend.position=c(0, 1))+
   ggtitle("Using net, taxable or taxed income")
 fig_incomes
+# was ist die maximale Bandbreite zwischen den Punkten?
+max(filter(df,kanton=="CH") %>% mutate(d_steink_reink=abs(G_steink-G_reink),d_steink_taxed=abs(G_steink-G_taxed),d_reink_taxed=abs(G_reink-G_taxed)) %>% select(starts_with("d_")),na.rm=TRUE)
+# 0.026
+
 #ggplot(dflong, aes(x=steuerperiode,y=Gini,colour=Type))+geom_line()+facet_wrap(~kanton)+theme_bw()+xlab("tax period")
 @
 
@@ -113,6 +117,9 @@ fig_equiv <- ggplot(bdlong, aes(x=Jahr,y=Gini,shape=Income))+
   theme(legend.justification=c(0,1),legend.position=c(0, 1))+
   ggtitle("Using (pseudo) equivalence scales")
 fig_equiv
+# Gini Range
+max(bd %>% mutate(d_steink=abs(gini_steink-gini_steinka),d_reink=abs(gini_reink-gini_reinka)) %>% select(starts_with("d_")),na.rm=TRUE)
+# 0.011
 @
 
 
@@ -585,7 +592,7 @@ levels(dflong$Type)<-c("without zeros","including zeros","imputed values for zer
 fig_zeros <- ggplot(dflong[dflong$kanton=="CH",], 
        aes(x=steuerperiode,y=Gini,shape=Type,linetype=Type))+
   scale_y_continuous(limits=c(0.28,0.55))+
-  scale_x_continuous(limits=c(2003,2012),breaks=number_ticks(10)) +
+  scale_x_continuous(limits=c(2003,2011),breaks=number_ticks(10)) +
   geom_line(size=0.5)+
   geom_point(aes(shape=Type),size=3)+
   theme_bw()+
@@ -593,6 +600,10 @@ fig_zeros <- ggplot(dflong[dflong$kanton=="CH",],
   theme(legend.justification=c(0,1),legend.position=c(0, 1))+
   ggtitle("How to treat non-taxed")
 fig_zeros
+
+# Gini range
+max(filter(df,kanton=="CH") %>% mutate(d_with_without=abs(G_steink-G_steink0)) %>% select(starts_with("d_")),na.rm=TRUE)
+# 0.18
 
 # Kantonale Unterschiede
 #####
@@ -963,14 +974,14 @@ write.dta(habe_bd_2010_unmarried, file="../../data/stata_data/habe_bd_2010_unmar
 
 #bern kantonal (liegt lokal wegen datenschutz)
 bern_kt <- read.dta("H:/Assessing Inequalty/taxDataBE2012.dta")
-bern_kt2012 <- bern_kt %>% filter(stj==2012) %>% group_by(hh_id) %>% select(tot_erwerbeink,tot_vermeink,primeink,tot_transeink,TOTEINK,hh_id)
+bern_kt2012 <- bern_kt %>% filter(stj==2012) %>% group_by(hh_id) %>% select(tot_erwerbeink,tot_vermeink,primeink,tot_transeink,TOTEINK,Satzeink_BUND,hh_id)
 #summarise(bern_kt2012, n=n()) %>% arrange(desc(n))
 #habe0911 %>%mutate(anzahl_personen=Anzahl1524Personen08+Anzahl2534Personen08+Anzahl3544Personen08+Anzahl4554Personen08+Anzahl5564Personen08+Anzahl6574Personen08+Anzahl7599Personen08) %>% group_by(anzahl_personen) %>% summarise(n=n())%>%arrange(desc(n))
 # gr??ter haushalt 7 personen gross (>=15jahre)
 # dort machen wir einen schnitt bei den kantonalen daten um wohnheime etc auszuschlie?en (wie es HABE auch gemacht hat)
 bern_kt2012_plain <- bern_kt2012  %>% filter(n()<=7) #5% werden gefiltert
 #bern_kt2012 <- bern_kt2012_plain %>% mutate(TOTEINK_hh=sum(TOTEINK)) %>% filter(!duplicated(hh_id))
-bern_kt2012 <- bern_kt2012_plain %>% mutate(primeink_hh=sum(primeink)) %>% filter(!duplicated(hh_id)) #nimmt die erste unique beobachtung und droppt 2. bis x. 
+bern_kt2012 <- bern_kt2012_plain %>% mutate(primeink_hh=sum(primeink),Satzeink_BUND_hh=sum(Satzeink_BUND)) %>% filter(!duplicated(hh_id)) #nimmt die erste unique beobachtung und droppt 2. bis x. 
 
 # f?r habe (bern) abz?glich sozialversicherungsbeitr?ge
 habe11_bern <- habe0911 %>% filter(Kanton08==2) %>% 
@@ -982,15 +993,22 @@ bern_habe <- rbind(habe11_bern,data.frame("income" = bern_kt2012$primeink_hh/100
 bern_habe$group <- factor(bern_habe$group,labels=c("habe","tax"))
 bern_habe <- bern_habe %>% mutate(income=ifelse(income<0,0,income))
 write.dta(bern_habe, file="../../data/stata_data/bern_habe.dta")
-
+# Ginis berechnen
+gini_habe <- gini(bern_habe$income[bern_habe$group=="habe"],weights=bern_habe$weight[bern_habe$group=="habe"]); gini_habe
+gini_tax <- gini(bern_habe$income[bern_habe$group=="tax"]); gini_tax
+round(gini_habe-gini_tax,3)
 
 # vergleich innerhalb von bern tax data: haushalte vs. plain
 # oben wurde plain und nicht plain definiert, das fügen wir jetzt zusammen
 # export nach stata (ungewichtet)
-bern_plain_hh <- rbind(data.frame("income" = bern_kt2012_plain$primeink/1000,"group"=0,"weight"=1),data.frame("income" = bern_kt2012$primeink_hh/1000,"group"=1,"weight"=1))
+bern_plain_hh <- rbind(data.frame("income" = bern_kt2012_plain$Satzeink_BUND/1000,"group"=0,"weight"=1),data.frame("income" = bern_kt2012$Satzeink_BUND_hh/1000,"group"=1,"weight"=1))
 bern_plain_hh$group <- factor(bern_plain_hh$group,labels=c("tax units","households"))
 bern_plain_hh <- bern_plain_hh %>% mutate(income=ifelse(income<0,0,income))
 write.dta(bern_plain_hh, file="../../data/stata_data/bern_plain_hh.dta")
+# Ginis berechnen
+gini_taxunits <- gini(bern_plain_hh$income[bern_plain_hh$group=="tax units"]); gini_taxunits
+gini_hh <- gini(bern_plain_hh$income[bern_plain_hh$group=="households"]); gini_hh
+round(gini_taxunits-gini_hh,3)
 
 @
 
@@ -1043,7 +1061,7 @@ all_gini$FTA <- estv_gini$FTA[match(all_gini$Year,estv_gini$Year)]
 all_gini$HBS <- swissGini$HABE[match(all_gini$Year,swissGini$Year)]
 all_gini$EU.SILC <- swissGini$EU.SILC[match(all_gini$Year,swissGini$Year)]
 all_gini$LIS <- swissGini$LIS[match(all_gini$Year,swissGini$Year)]
-all_gini$FTA_imp <- ben$gini[match(all_gini$Year,ben$jahr)]
+#all_gini$FTA_imp <- ben$gini[match(all_gini$Year,ben$jahr)]
 
 all_gini_long<-melt(all_gini,id="Year")
 
@@ -1064,20 +1082,24 @@ ypos[Year==1967.5] <- 0.285
 
 })
 
-ggplot(data=na.omit(all_gini_long),
+benplot <- ggplot(data=na.omit(all_gini_long),
   aes(y=Gini,x=Year,shape=Data,linetype=Data))+
   ylab("Gini from different sources") +
-  scale_y_continuous(limits=c(0.18,0.4)) +
-  scale_x_continuous(limits=c(1915,2012),breaks=number_ticks(10)) +
+  scale_y_continuous(limits=c(0.18,0.45)) +
+  scale_x_continuous(limits=c(1945,2012),breaks=number_ticks(10)) +
   geom_point(size=3)+
   geom_line()+
-  geom_text(aes(label=annotation,y=ypos),color="#555555",size=3)+
-  geom_segment(aes(x = 1921, y = 0.27, xend = 1921, yend = Gini[Year==1921]),color="#aaaaaa") +
-  geom_segment(aes(x = 1940, y = 0.305, xend = 1940, yend = Gini[Year==1940]),color="#aaaaaa") +
-  geom_segment(aes(x = 1945.5, y = 0.29, xend = 1945.5, yend = Gini[Year==1945.5]),color="#aaaaaa") +
-  geom_segment(aes(x = 1967.5, y = 0.285, xend = 1967.5, yend = Gini[Year==1967.5]),color="#aaaaaa") +
+  #geom_text(aes(label=annotation,y=ypos),color="#555555",size=3)+
+  #geom_segment(aes(x = 1921, y = 0.27, xend = 1921, yend = Gini[Year==1921]),color="#aaaaaa") +
+  #geom_segment(aes(x = 1940, y = 0.305, xend = 1940, yend = Gini[Year==1940]),color="#aaaaaa") +
+  #geom_segment(aes(x = 1945.5, y = 0.29, xend = 1945.5, yend = Gini[Year==1945.5]),color="#aaaaaa") +
+  #geom_segment(aes(x = 1967.5, y = 0.285, xend = 1967.5, yend = Gini[Year==1967.5]),color="#aaaaaa") +
   theme_bw()+
   theme(legend.justification=c(0,1),legend.position=c(0, 1))
+
+png("../figure/ben_plot.png",width=800,height=450)
+benplot
+dev.off()
 
 # kleiner einschub: verschiedene masse
 library(IC2)
@@ -1106,9 +1128,10 @@ estv_masse_long <- melt(estv_masse,id=c("id","Year"))
 
 estv_masse_long$measure <- factor(estv_masse_long$variable)
 estv_masse_long$Year <- as.double(as.character(estv_masse_long$Year))
-fig_measures <- ggplot(estv_masse_long, aes(x=Year,y=log(value),shape=measure))+
+estv_masse_long <- estv_masse_long %>% group_by(measure) %>% mutate(log_value=log(value)-log(value)[1])
+fig_measures <- ggplot(estv_masse_long, aes(x=Year,y=log_value,shape=measure))+
   #scale_y_continuous(limits=c(0,0.55))+
-  scale_x_continuous(limits=c(1918,2011),breaks=number_ticks(10)) +
+  scale_x_continuous(limits=c(1917,2011),breaks=number_ticks(10)) +
   geom_point(aes(shape=measure),size=3)+
   geom_line(aes(linetype=measure))+
   theme_bw()+
@@ -1120,7 +1143,7 @@ fig_measures
 # output als 4er grafik
 library(gridExtra)
 png("../figure/figure1234.png",width=1200,height=675)
-grid.arrange(fig_measures,fig_equiv,fig_incomes,fig_zeros)
+grid.arrange(fig_incomes,fig_equiv,fig_measures,fig_zeros)
 dev.off()
 @
 

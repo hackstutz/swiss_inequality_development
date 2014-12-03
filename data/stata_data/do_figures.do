@@ -19,29 +19,33 @@ su bd if group==2003, det
 local p25=round(r(p25))
 local p50=round(r(p50))
 local p75=round(r(p75))
-reldist bd, by(group) title("2003 vs. 2010") xtitle("% of ref. group (2003)") olabel(`p25' `p50' `p75') otitle("taxable income (in 1000 CHF)")  yscale(range(0 3))  ylabel(0 1 2 3 4 6 8)
+reldist bd, by(group) title("2003 vs. 2010") xtitle("% of ref. group (2003)") olabel(`p25' `p50' `p75') otitle("taxable income (in 1000 CHF)") ylabel(0 0.5 1 1.5 2 2.5)
 graph save figure1_2010_2003, replace
 
 
 * Figure 2:Comparison of normal and special cases 1993/94
 use "C:\Users\Hackstutz\Dropbox\Git\swiss_inequality_development\data\stata_data\ns1993_94.dta", clear
+* Gruppen tauschen
+replace group = 3-group
 * Perzentilsgrenzen anschaune
 su income if group==1, det
 local p25=round(r(p25))
 local p50=round(r(p50))
 local p75=round(r(p75))
-reldist income, by(group) title("normal vs. all cases 93/94") xtitle("% of ref. group (all cases)") ytitle("") olabel(`p25' `p50' `p75') otitle("taxable income (in 1000 CHF)")  yscale(range(0 3))  ylabel(0 1 2 3 4 6 8)
+reldist income, by(group) title("including special cases 93/94") xtitle("% of ref. group (only normal cases)") ytitle("") olabel(`p25' `p50' `p75') otitle("taxable income (in 1000 CHF)") ylabel(0 0.5 1 1.5 2 2.5)
 graph save figure2_ns_1993_94, replace
 
 
 * Figure 3:Comparison of normal and special cases 2010
 use "C:\Users\Hackstutz\Dropbox\Git\swiss_inequality_development\data\stata_data\ns2010.dta", clear
+* Gruppen tauschen
+replace group = 3-group
 * Perzentilsgrenzen anschaune
 su income if group==1, det
 local p25=round(r(p25))
 local p50=round(r(p50))
 local p75=round(r(p75))
-reldist income, by(group) title("normal vs. all cases 2010") xtitle("% of ref. group (all cases)") ytitle("") olabel(`p25' `p50' `p75') otitle("taxable income (in 1000 CHF)")  yscale(range(0 3))  ylabel(0 1 2 3 4 6 8)
+reldist income, by(group) title("including special cases 2010") xtitle("% of ref. group (only normal cases)") ytitle("") olabel(`p25' `p50' `p75') otitle("taxable income (in 1000 CHF)")  ylabel(0 0.5 1 1.5 2 2.5)
 graph save figure3_ns_2010, replace
 
 
@@ -55,11 +59,13 @@ graph save figure3_ns_2010, replace
 
 * Figure 4:Comparison of tax and survey data for married
 use "C:\Users\Hackstutz\Dropbox\Git\swiss_inequality_development\data\stata_data\habe_bd_2010_married.dta", clear
+* Gruppen tauschen
+replace group = 3-group
 su income if group==1, det
 local p25=round(r(p25))
 local p50=round(r(p50))
 local p75=round(r(p75))
-reldist income [pweight=weight], by(group) title("FTA vs HBS data - married")  xtitle("% of ref. group (Survey)") olabel(`p25' `p50' `p75') otitle("taxable income (in 1000 CHF)")  yscale(range(0 3)) ylabel(0 1 2 3 4 6 8)
+reldist income [pweight=weight], by(group) title("FTA vs HBS data (married)")  xtitle("% of ref. group (tax data)") olabel(`p25' `p50' `p75') otitle("taxable income (in 1000 CHF)")  shape mean mult  ylabel(0 0.5 1 1.5 2 2.5)
 graph save figure4_habe_bd_married, replace
 
 
@@ -80,12 +86,14 @@ graph save figure4_habe_bd_married, replace
 
 * Figure 5: Bern tax data vs HBS
 use "C:\Users\Hackstutz\Dropbox\Git\swiss_inequality_development\data\stata_data\bern_habe.dta", clear
-* Perzentilsgrenzen anschaune
+* Gruppen tauschen
+replace group = 3-group
+* Perzentilsgrenzen anschauen
 su income if group==1, det
 local p25=round(r(p25))
 local p50=round(r(p50))
 local p75=round(r(p75))
-reldist income, by(group) title("HBS vs Bern tax data") xtitle("% of ref. group (HBS households)") ytitle("") olabel(`p25' `p50' `p75') otitle("primary income (in 1000 CHF)")  yscale(range(0 3)) ylabel(0 1 2 3 4 6 8)
+reldist income, by(group) title("Bern tax data vs HBS") xtitle("% of ref. group (tax data)") ytitle("") olabel(`p25' `p50' `p75') otitle("primary income (in 1000 CHF)")  ylabel(0 0.5 1 1.5 2 2.5)
 graph save figure5_bern_habe, replace
 
 * Figure 6: Bern tax data: tax units vs households
@@ -95,7 +103,7 @@ su income if group==1, det
 local p25=round(r(p25))
 local p50=round(r(p50))
 local p75=round(r(p75))
-reldist income [pweight=weight], by(group) title("Bern: tax units vs households") xtitle("% of ref. group (tax units)") ytitle("") olabel(`p25' `p50' `p75') otitle("primary income (in 1000 CHF)")  yscale(range(0 3)) ylabel(0 1 2 3 4 6 8)
+reldist income [pweight=weight], by(group) title("Bern: tax units vs households") xtitle("% of ref. group (tax units)") ytitle("") olabel(`p25' `p50' `p75') otitle("taxable income (in 1000 CHF)")  ylabel(0 0.5 1 1.5 2 2.5)
 graph save figure6_bern_plain_hh, replace
 
 
