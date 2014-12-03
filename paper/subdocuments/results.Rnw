@@ -557,10 +557,10 @@ ns2010$group <- factor(ns2010$group,labels=c("pooled","normal"))
 write.dta(ns2010, file="../../data/stata_data/ns2010.dta")
 
 #Gini Range
-gini_allcases <- gini(ns2010$income[ns1993_94$group=="pooled"]); gini_allcases
-gini_normal <- gini(ns2010$income[ns1993_94$group=="normal"]); gini_normal
+gini_allcases <- gini(ns2010$income[ns2010$group=="pooled"]); gini_allcases
+gini_normal <- gini(ns2010$income[ns2010$group=="normal"]); gini_normal
 round(gini_allcases-gini_normal,3)
-# 0.025
+# 0.02
 
 @
 
