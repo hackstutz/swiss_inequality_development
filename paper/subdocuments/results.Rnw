@@ -393,7 +393,11 @@ par(mfrow=c(1,1))
 ns1993_94 <- rbind(data.frame(cbind("income" = pooled_i,"group"=0)),data.frame("income" = normal_i,"group"=1))
 ns1993_94$group <- factor(ns1993_94$group,labels=c("pooled","normal"))
 write.dta(ns1993_94, file="../../data/stata_data/ns1993_94.dta")
-
+# Ginis berechnen
+gini_allcases <- gini(ns1993_94$income[ns1993_94$group=="pooled"]); gini_allcases
+gini_normal <- gini(ns1993_94$income[ns1993_94$group=="normal"]); gini_normal
+round(gini_allcases-gini_normal,3)
+# 0.013
 
 # Older Versions Rel-Dist-Plots (1993/1994)
 ########
@@ -552,6 +556,11 @@ ns2010 <- rbind(data.frame(cbind("income" = pooled_i,"group"=0)),data.frame("inc
 ns2010$group <- factor(ns2010$group,labels=c("pooled","normal"))
 write.dta(ns2010, file="../../data/stata_data/ns2010.dta")
 
+#Gini Range
+gini_allcases <- gini(ns2010$income[ns1993_94$group=="pooled"]); gini_allcases
+gini_normal <- gini(ns2010$income[ns1993_94$group=="normal"]); gini_normal
+round(gini_allcases-gini_normal,3)
+# 0.025
 
 @
 
