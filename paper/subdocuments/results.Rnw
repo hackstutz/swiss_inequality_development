@@ -994,7 +994,7 @@ bern_kt2012 <- bern_kt2012_plain %>% mutate(primeink_hh=sum(primeink),Satzeink_B
 
 # f?r habe (bern) abz?glich sozialversicherungsbeitr?ge
 habe11_bern <- habe0911 %>% filter(Kanton08==2) %>% 
-  mutate(income=(Bruttoeinkommen08+A31m)*12/1000,weight=jahresgewicht,group=0) %>% 
+  mutate(income=(Primaereinkommen08)*12/1000,weight=jahresgewicht,group=0) %>% 
   select(income, weight,group)
 
 # export nach stata (ungewichtet)
