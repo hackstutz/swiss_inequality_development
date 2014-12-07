@@ -5,22 +5,22 @@ cd "C:\Users\Hackstutz\Dropbox\Git\swiss_inequality_development\data\stata_data\
 set scheme rudi
 
 * Wir wollen 6 Grafiken: 
-	* 1: reldist Beispiel 2003 vs 2010
+	* 1: reldist Beispiel 2003 vs 2011
 	* 2: special vs normal 1993/94
-	* 3: special vs normal 2010
+	* 3: special vs normal 2011
 	* 4: married HBS vs ESTV
 	* 5: Bern Tax Data vs. HBS
 	* 6: Bern Tax Data: tax units vs households
 
 * Figure 1:Distribution change over time
-use "C:\Users\Hackstutz\Dropbox\Git\swiss_inequality_development\data\stata_data\bd2010_2003.dta", clear
+use "C:\Users\Hackstutz\Dropbox\Git\swiss_inequality_development\data\stata_data\bd2011_2003.dta", clear
 * Perzentilsgrenzen anschaune
 su bd if group==2003, det
 local p25=round(r(p25))
 local p50=round(r(p50))
 local p75=round(r(p75))
-reldist bd, by(group) title("2003 vs. 2010") xtitle("% of ref. group (2003)") olabel(`p25' `p50' `p75') otitle("taxable income (in 1000 CHF)") ylabel(0 0.5 1 1.5 2 2.5)
-graph save figure1_2010_2003, replace
+reldist bd, by(group) title("2003 vs. 2011") xtitle("% of ref. group (2003)") olabel(`p25' `p50' `p75') otitle("taxable income (in 1000 CHF)") ylabel(0 0.5 1 1.5 2 2.5)
+graph save figure1_2011_2003, replace
 
 
 * Figure 2:Comparison of normal and special cases 1993/94
@@ -36,8 +36,8 @@ reldist income, by(group) title("including special cases 93/94") xtitle("% of re
 graph save figure2_ns_1993_94, replace
 
 
-* Figure 3:Comparison of normal and special cases 2010
-use "C:\Users\Hackstutz\Dropbox\Git\swiss_inequality_development\data\stata_data\ns2010.dta", clear
+* Figure 3:Comparison of normal and special cases 2011
+use "C:\Users\Hackstutz\Dropbox\Git\swiss_inequality_development\data\stata_data\ns2011.dta", clear
 * Gruppen tauschen
 replace group = 3-group
 * Perzentilsgrenzen anschaune
@@ -45,8 +45,8 @@ su income if group==1, det
 local p25=round(r(p25))
 local p50=round(r(p50))
 local p75=round(r(p75))
-reldist income, by(group) title("including special cases 2010") xtitle("% of ref. group (only normal cases)") ytitle("") olabel(`p25' `p50' `p75') otitle("taxable income (in 1000 CHF)")  ylabel(0 0.5 1 1.5 2 2.5)
-graph save figure3_ns_2010, replace
+reldist income, by(group) title("including special cases 2011") xtitle("% of ref. group (only normal cases)") ytitle("") olabel(`p25' `p50' `p75') otitle("taxable income (in 1000 CHF)")  ylabel(0 0.5 1 1.5 2 2.5)
+graph save figure3_ns_2011, replace
 
 
 * Comparison of tax and survey data
@@ -58,7 +58,7 @@ graph save figure3_ns_2010, replace
 
 
 * Figure 4:Comparison of tax and survey data for married
-use "C:\Users\Hackstutz\Dropbox\Git\swiss_inequality_development\data\stata_data\habe_bd_2010_married.dta", clear
+use "C:\Users\Hackstutz\Dropbox\Git\swiss_inequality_development\data\stata_data\habe_bd_2011_married.dta", clear
 * Gruppen tauschen
 replace group = 3-group
 su income if group==1, det
@@ -93,7 +93,7 @@ su income if group==1, det
 local p25=round(r(p25))
 local p50=round(r(p50))
 local p75=round(r(p75))
-reldist income, by(group) title("Bern tax data vs HBS") xtitle("% of ref. group (tax data)") ytitle("") olabel(`p25' `p50' `p75') otitle("primary income (in 1000 CHF)")  ylabel(0 0.5 1 1.5 2 2.5)
+reldist income, by(group) title("Bern tax data vs HBS") xtitle("% of ref. group (tax data)") ytitle("") olabel(`p25' `p50' `p75') otitle("primary income (in 1000 CHF)")  ylabel(0 0.5 1 1.5 2 2.5) bw(0.2)
 graph save figure5_bern_habe, replace
 
 * Figure 6: Bern tax data: tax units vs households
@@ -107,6 +107,6 @@ reldist income [pweight=weight], by(group) title("Bern: tax units vs households"
 graph save figure6_bern_plain_hh, replace
 
 
-graph combine figure1_2010_2003.gph figure2_ns_1993_94.gph figure3_ns_2010.gph figure4_habe_bd_married.gph figure5_bern_habe.gph figure6_bern_plain_hh.gph, title("Relative distributions over time, population and data source")
+graph combine figure1_2011_2003.gph figure2_ns_1993_94.gph figure3_ns_2011.gph figure4_habe_bd_married.gph figure5_bern_habe.gph figure6_bern_plain_hh.gph, title("Relative distributions over time, population and data source")
 graph export combined_figures.png, replace
 

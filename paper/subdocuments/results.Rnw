@@ -78,8 +78,12 @@ bd <- read.csv("../../data/data_Schweiz.csv", header=TRUE,sep=";")
 bd$Jahr <- as.numeric(substr(bd$Veranlagungsperiode,1,4))
 bd$Jahr[nchar(as.character(bd$Veranlagungsperiode))>4] <- bd$Jahr[nchar(as.character(bd$Veranlagungsperiode))>4] - 2
 bd<-bd %>% 
-  filter(Einheit=="Total")
+  filter(Einheit=="Total") %>% select(Veranlagungsperiode,Jahr,gini_reink,gini_reinka)
 bd<-subset(bd,Jahr<1995 | Jahr >2002)
+# 2011 zufügen
+bd.2011 <- read.csv("../../data/NP_2011.csv",dec=",") %>% filter(Einheit=="Total") %>% mutate(Veranlagungsperiode=2011,Jahr=2011)
+levels(bd.0$Veranlagungsperiode)<- c(levels(bd.0$Veranlagungsperiode),"2011")
+bd <- rbind(bd,bd.2011[,names(bd)])
 bd.long<-reshape(bd,
 varying = c("gini_reink","gini_reinka"),
 v.names = "Gini",
@@ -92,8 +96,12 @@ bd.0 <- read.csv("../../data/data_Schweiz_mitNull.csv", header=TRUE,sep=";")
 bd.0$Jahr <- as.numeric(substr(bd.0$Veranlagungsperiode,1,4))
 bd.0$Jahr[nchar(as.character(bd.0$Veranlagungsperiode))>4] <- bd.0$Jahr[nchar(as.character(bd.0$Veranlagungsperiode))>4] - 2
 bd.0<-bd.0 %>% 
-  filter(Einheit=="Total")
+  filter(Einheit=="Total") %>% select(Veranlagungsperiode,Jahr,gini_reink,gini_reinka)
 bd.0<-subset(bd.0,Jahr<1993 | Jahr >2002)
+# 2011 zufügen
+bd.0.2011 <- read.csv("../../data/NP_2011_mitnull.csv",dec=",") %>% filter(Einheit=="Total") %>% mutate(Veranlagungsperiode=2011,Jahr=2011)
+levels(bd.0$Veranlagungsperiode)<- c(levels(bd.0$Veranlagungsperiode),"2011")
+bd.0 <- rbind(bd.0,bd.0.2011[,names(bd.0)])
 bd.0.long<-reshape(bd.0,
 varying = c("gini_reink","gini_reinka"),
 v.names = "Gini",
@@ -101,7 +109,7 @@ timevar = "inc_def",
 times = c("Net income","Equivalised net income"),
 direction ="long")
 bdlong<-rbind(bd.0.long,bd.long)
-names(bdlong)[61]<-"Income"
+names(bdlong)[3]<-"Income"
 @
 
 <<equivalencescale, fig.cap='Gini coefficients with and without equivalization',fig.pos='H'>>=
@@ -118,8 +126,9 @@ fig_equiv <- ggplot(bdlong, aes(x=Jahr,y=Gini,shape=Income))+
   ggtitle("Using (pseudo) equivalence scales")
 fig_equiv
 # Gini Range
-max(bd %>% mutate(d_steink=abs(gini_steink-gini_steinka),d_reink=abs(gini_reink-gini_reinka)) %>% select(starts_with("d_")),na.rm=TRUE)
-# 0.011
+max(bd %>% mutate(d_reink=abs(gini_reink-gini_reinka)) %>% select(starts_with("d_")),na.rm=TRUE)
+max(bd.0 %>% mutate(d_reink=abs(gini_reink-gini_reinka)) %>% select(starts_with("d_")),na.rm=TRUE)
+# 0.012
 @
 
 
@@ -180,21 +189,36 @@ bd.0 <- read.csv("../../data/data_Schweiz_mitNull.csv", header=TRUE,sep=";")
 #Veranlagungsperiode -> Jahre
 bd.0$Jahr <- as.numeric(substr(bd.0$Veranlagungsperiode,1,4))
 bd.0$Jahr[nchar(as.character(bd.0$Veranlagungsperiode))>4] <- bd.0$Jahr[nchar(as.character(bd.0$Veranlagungsperiode))>4] - 2
-bd.2010<-bd.0 %>% 
-  filter(Jahr==2010,Einheit=="Total")
-start <- which(names(bd.2010)=="p1")
-end <- which(names(bd.2010)=="p99_99")
+bd.2011 <- read.csv("../../data/NP_2011_mitnull.csv",dec=",") %>% filter(Einheit=="Total")
+#bd.2010<-bd.0 %>% 
+#  filter(Jahr==2010,Einheit=="Total")
+#start <- which(names(bd.2010)=="p1")
+#end <- which(names(bd.2010)=="p99_99")
+#percentile <- c(1,5,10,20,25,30,40,50,60,70,75,80,90,95,96,97,98,99,99.5,99.9,99.99)
+#bd.2010<- data.frame(t(bd.2010[1,start:end]),percentile)
+#names(bd.2010)[1]=c("inc")
+#bd.2010 <- rbind(c(0,0),bd.2010)
+#ival<-bd.2010$inc
+#perval<-bd.2010$percentile
+#bd.2010.ind<-unlist(sapply(2:length(ival),function(i){
+#  len=(perval[i]-perval[i-1])*100
+#  seq(ival[i-1],ival[i],length.out=len)
+#}))
+#bd.2010.ind<-bd.2010.ind/1000
+
+start <- which(names(bd.2011)=="p1")
+end <- which(names(bd.2011)=="p99_99")
 percentile <- c(1,5,10,20,25,30,40,50,60,70,75,80,90,95,96,97,98,99,99.5,99.9,99.99)
-bd.2010<- data.frame(t(bd.2010[1,start:end]),percentile)
-names(bd.2010)[1]=c("inc")
-bd.2010 <- rbind(c(0,0),bd.2010)
-ival<-bd.2010$inc
-perval<-bd.2010$percentile
-bd.2010.ind<-unlist(sapply(2:length(ival),function(i){
+bd.2011<- data.frame(t(bd.2011[1,start:end]),percentile)
+names(bd.2011)[1]=c("inc")
+bd.2011 <- rbind(c(0,0),bd.2011)
+ival<-bd.2011$inc
+perval<-bd.2011$percentile
+bd.2011.ind<-unlist(sapply(2:length(ival),function(i){
   len=(perval[i]-perval[i-1])*100
   seq(ival[i-1],ival[i],length.out=len)
 }))
-bd.2010.ind<-bd.2010.ind/1000
+bd.2011.ind<-bd.2011.ind/1000
 @
 
 <<reldist20032010, echo=FALSE, fig.cap='Distribution change over time',fig.pos='H'>>=
@@ -247,8 +271,8 @@ abline(h=1,lty=2)
 par(mfrow=c(1,1))
 
 # Export data to use with Stata
-bd2010_2003 <- rbind(data.frame(cbind("bd" = bd.2010.ind,"group"=2010)),data.frame("bd" = bd.2003.ind,"group"=2003))
-write.dta(bd2010_2003, file="../../data/stata_data/bd2010_2003.dta")
+bd2011_2003 <- rbind(data.frame(cbind("bd" = bd.2011.ind,"group"=2011)),data.frame("bd" = bd.2003.ind,"group"=2003))
+write.dta(bd2011_2003, file="../../data/stata_data/bd2011_2003.dta")
 @
 
 <<poltable>>=
@@ -426,12 +450,12 @@ polTable(pooled_i,normal_i,tablabel="pol9394spec")
 1993/94 a pooled data set of normal and special cases has a slightly higher density at both ends compared to data based in normal cases only (see figure \ref{fig:specialcases9394}). Special cases appear to have a slightly lower median income and their distribution is more skewed. Therefore special cases are more polarized than normal cases (see table \ref{pol9394spec}), i.e. striving away from the median (positive Median Index of 0.02). This tendency is more pronounced in the lower than upper part  of the distribution (Lower Index of 0.029 compared to Upper Index if 0.01). 
 As the special cases consist of a broad mix of individuals it remains unclear which factor explains the differences of both distributions. Possible explanations can be immigrants partly concentrating in lower income percentiles, low income artists who belong to the special cases or a more technical selection effect: tax units not liable for taxation throughout the whole year are special cases; those cases might have lower incomes, e.g. if they moved and stopped working. To get a more complete picture we can look how the two distributions relate to each other in 2010 (see figure \ref{fig:specialcases10}).
 
-% Variante 2010
-<<setup_data_specialcases10>>=
+% Variante 2011
+<<setup_data_specialcases11>>=
 #library(foreign)
 #library(ggplot2)
 #library(reldist)
-normal <- filter(read.csv("../../data/ginis_und_perzentile_normal.csv",sep="\t"),kanton=="CH",steuerperiode==2010)
+normal <- filter(read.csv("../../data/ginis_und_perzentile_normal.csv",sep="\t"),kanton=="CH",steuerperiode==2011)
 normal <- select(normal, p1:p99, kanton, steuerperiode, -p96,-p97,-p98)
 start <- which(names(normal)=="p1")
 end <- which(names(normal)=="p99")
@@ -440,7 +464,8 @@ normal <- data.frame(t(normal[1,start:end]),percentile)
 names(normal)[1]=c("inc")
 
 #bruelhart data
-pooled <- filter(read.csv("../../data/data_Schweiz.csv",sep=";"), Veranlagungsperiode==2010, Einheit=="Total")
+#pooled <- filter(read.csv("../../data/data_Schweiz.csv",sep=";"), Veranlagungsperiode==2010, Einheit=="Total")
+pooled <- read.csv("../../data/NP_2011.csv",dec=",") %>% filter(Einheit=="Total")
 start <- which(names(pooled)=="p1")
 p95 <- which(names(pooled)=="p95")
 end <- which(names(pooled)=="p99")
@@ -481,7 +506,7 @@ pooled_i<-unlist(sapply(2:length(ival),function(i){
 #####
 @
 
-<<specialcases10, fig.cap='Comparison of normal and special cases 2010',fig.pos='H'>>=
+<<specialcases11, fig.cap='Comparison of normal and special cases 2011',fig.pos='H'>>=
 
 #Older Version of Relative Distribution plot
 ######## 
@@ -552,16 +577,18 @@ abline(h=1,lty=2)
 par(mfrow=c(1,1))
 
 # Export data to use with Stata
-ns2010 <- rbind(data.frame(cbind("income" = pooled_i,"group"=0)),data.frame("income" = normal_i,"group"=1))
-ns2010$group <- factor(ns2010$group,labels=c("pooled","normal"))
-write.dta(ns2010, file="../../data/stata_data/ns2010.dta")
+ns2011 <- rbind(data.frame(cbind("income" = pooled_i,"group"=0)),data.frame("income" = normal_i,"group"=1))
+ns2011$group <- factor(ns2011$group,labels=c("pooled","normal"))
+write.dta(ns2011, file="../../data/stata_data/ns2011.dta")
 
 #Gini Range
-gini_allcases <- gini(ns2010$income[ns2010$group=="pooled"]); gini_allcases
-gini_normal <- gini(ns2010$income[ns2010$group=="normal"]); gini_normal
-round(gini_allcases-gini_normal,3)
+#gini_allcases <- gini(ns2011$income[ns2011$group=="pooled"]); gini_allcases
+#gini_normal <- gini(ns2011$income[ns2011$group=="normal"]); gini_normal
+#round(gini_allcases-gini_normal,3)
 # 0.02
-
+# Es ist quatsch hier die interpolierten Reihen zu nehmen
+# Gini 2011 Pooled (BH-Daten): 0.408
+# Gini 2011 Normal (unsere ESTV Daten): 0.366
 @
 
 <<polindexspecialcases10, results='asis'>>=
@@ -884,9 +911,37 @@ abline(h=1,lty=2)
 par(mfrow=c(1,1))
 
 # Export data to use with Stata
-habe_bd_2010_married <- rbind(data.frame(cbind("income" = habe10.married$inc_habe,"group"=0,"weight"=habe10.married$gew)),data.frame("income" = bd.2010.ind,"group"=1,"weight"=1))
-habe_bd_2010_married$group <- factor(habe_bd_2010_married$group,labels=c("habe","bd"))
-write.dta(habe_bd_2010_married, file="../../data/stata_data/habe_bd_2010_married.dta")
+#habe_bd_2010_married <- rbind(data.frame(cbind("income" = habe10.married$inc_habe,"group"=0,"weight"=habe10.married$gew)),data.frame("income" = bd.2010.ind,"group"=1,"weight"=1))
+#habe_bd_2010_married$group <- factor(habe_bd_2010_married$group,labels=c("habe","bd"))
+#write.dta(habe_bd_2010_married, file="../../data/stata_data/habe_bd_2010_married.dta")
+
+# 2011
+habe11.married<-habe0911 %>% 
+  filter(Familientyp08>130,Jahr08==2011) %>% 
+  mutate(psteink=Bruttoeinkommen08+A31m+A35m) 
+# Wir brauchen (a) verfügbares Einkommen (b) Bruttoeinkommen und c(Bruttoeinkommen nach Soziversicherungsbeiträgen(A31m) und Monetäre Trasnferausgaben an andere HaushalteA35m)
+habe11.married<-data.frame(habe11.married$VerfuegbaresEinkommen08*12/1000,habe11.married$Bruttoeinkommen08*12/1000,habe11.married$psteink*12/1000,habe11.married$jahresgewicht)
+names(habe11.married)<-c("inc_habe","brutto","psteink","gew")
+habe11.married$inc_habe[habe11.married$inc_habe<0]<-0 # One values is -500
+
+bd.2011 <- read.csv("../../data/NP_2011_mitnull.csv",dec=",") %>% filter(grepl("Verheiratet",Einheit))
+start <- which(names(bd.2011)=="p1")
+end <- which(names(bd.2011)=="p99_99")
+percentile <- c(1,5,10,20,25,30,40,50,60,70,75,80,90,95,96,97,98,99,99.5,99.9,99.99)
+bd.2011<- data.frame(t(bd.2011[1,start:end]),percentile)
+names(bd.2011)[1]=c("inc")
+bd.2011 <- rbind(c(0,0),bd.2011)
+ival<-bd.2011$inc
+perval<-bd.2011$percentile
+bd.2011.ind<-unlist(sapply(2:length(ival),function(i){
+  len=(perval[i]-perval[i-1])*100
+  seq(ival[i-1],ival[i],length.out=len)
+}))
+bd.2011.ind<-bd.2011.ind/1000
+
+habe_bd_2011_married <- rbind(data.frame(cbind("income" = habe11.married$inc_habe,"group"=0,"weight"=habe11.married$gew)),data.frame("income" = bd.2011.ind,"group"=1,"weight"=1))
+habe_bd_2011_married$group <- factor(habe_bd_2011_married$group,labels=c("habe","bd"))
+write.dta(habe_bd_2011_married, file="../../data/stata_data/habe_bd_2011_married.dta")
 
 @
 
@@ -1140,7 +1195,7 @@ estv_masse_long$Year <- as.double(as.character(estv_masse_long$Year))
 estv_masse_long <- estv_masse_long %>% group_by(measure) %>% mutate(log_value=log(value)-log(value)[1])
 fig_measures <- ggplot(estv_masse_long, aes(x=Year,y=log_value,shape=measure))+
   #scale_y_continuous(limits=c(0,0.55))+
-  scale_x_continuous(limits=c(1917,2011),breaks=number_ticks(10)) +
+  scale_x_continuous(limits=c(1941,2011),breaks=number_ticks(10)) +
   geom_point(aes(shape=measure),size=3)+
   geom_line(aes(linetype=measure))+
   theme_bw()+
