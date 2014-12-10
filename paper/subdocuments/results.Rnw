@@ -1038,14 +1038,16 @@ write.dta(habe_bd_2010_unmarried, file="../../data/stata_data/habe_bd_2010_unmar
 
 #bern kantonal (liegt lokal wegen datenschutz)
 bern_kt <- read.dta("H:/Assessing Inequalty/taxDataBE2012.dta")
-bern_kt2012 <- bern_kt %>% filter(stj==2012) %>% group_by(hh_id) %>% select(tot_erwerbeink,tot_vermeink,primeink,tot_transeink,TOTEINK,Satzeink_BUND,hh_id)
+set0 <- function(x) ifelse(x<0,0,x)
+bern_kt <- bern_kt %>% mutate(primeink2 = set0(hem)+set0(nem)+set0(esm)+set0(sgm)+set0(hef)+set0(nef)+set0(esf)+set0(sgf)+set0(erfolg_s)+set0(erfolg_l)+set0(kk_ertrag)+set0(bg_ertrag)+ set0(wsert)+set0(eink_lieg)+set0(eg_ertrag)+set0(stm)+set0(stf)+set0(lov)+set0(lmv)+set0(lng))
+bern_kt2012 <- bern_kt %>% filter(stj==2012) %>% group_by(hh_id) %>% select(tot_erwerbeink,tot_vermeink,primeink,primeink2,tot_transeink,TOTEINK,Satzeink_BUND,hh_id)
 #summarise(bern_kt2012, n=n()) %>% arrange(desc(n))
 #habe0911 %>%mutate(anzahl_personen=Anzahl1524Personen08+Anzahl2534Personen08+Anzahl3544Personen08+Anzahl4554Personen08+Anzahl5564Personen08+Anzahl6574Personen08+Anzahl7599Personen08) %>% group_by(anzahl_personen) %>% summarise(n=n())%>%arrange(desc(n))
 # gr??ter haushalt 7 personen gross (>=15jahre)
 # dort machen wir einen schnitt bei den kantonalen daten um wohnheime etc auszuschlie?en (wie es HABE auch gemacht hat)
 bern_kt2012_plain <- bern_kt2012  %>% filter(n()<=7) #5% werden gefiltert
 #bern_kt2012 <- bern_kt2012_plain %>% mutate(TOTEINK_hh=sum(TOTEINK)) %>% filter(!duplicated(hh_id))
-bern_kt2012 <- bern_kt2012_plain %>% mutate(primeink_hh=sum(primeink),Satzeink_BUND_hh=sum(Satzeink_BUND)) %>% filter(!duplicated(hh_id)) #nimmt die erste unique beobachtung und droppt 2. bis x. 
+bern_kt2012 <- bern_kt2012_plain %>% mutate(primeink_hh=sum(primeink),primeink2_hh=sum(primeink2),Satzeink_BUND_hh=sum(Satzeink_BUND)) %>% filter(!duplicated(hh_id)) #nimmt die erste unique beobachtung und droppt 2. bis x. 
 
 # f?r habe (bern) abz?glich sozialversicherungsbeitr?ge
 habe11_bern <- habe0911 %>% filter(Kanton08==2) %>% 
@@ -1053,7 +1055,7 @@ habe11_bern <- habe0911 %>% filter(Kanton08==2) %>%
   select(income, weight,group)
 
 # export nach stata (ungewichtet)
-bern_habe <- rbind(habe11_bern,data.frame("income" = bern_kt2012$primeink_hh/1000,"group"=1,"weight"=1))
+bern_habe <- rbind(habe11_bern,data.frame("income" = bern_kt2012$primeink2_hh/1000,"group"=1,"weight"=1))
 bern_habe$group <- factor(bern_habe$group,labels=c("habe","tax"))
 bern_habe <- bern_habe %>% mutate(income=ifelse(income<0,0,income))
 write.dta(bern_habe, file="../../data/stata_data/bern_habe.dta")
@@ -1061,6 +1063,7 @@ write.dta(bern_habe, file="../../data/stata_data/bern_habe.dta")
 gini_habe <- gini(bern_habe$income[bern_habe$group=="habe"],weights=bern_habe$weight[bern_habe$group=="habe"]); gini_habe
 gini_tax <- gini(bern_habe$income[bern_habe$group=="tax"]); gini_tax
 round(gini_habe-gini_tax,3)
+# 0.457 0.519 diff=-0.061
 
 # vergleich innerhalb von bern tax data: haushalte vs. plain
 # oben wurde plain und nicht plain definiert, das fügen wir jetzt zusammen
