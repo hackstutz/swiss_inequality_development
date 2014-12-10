@@ -1037,7 +1037,8 @@ habe_bd_2010_unmarried$group <- factor(habe_bd_2010_unmarried$group,labels=c("ha
 write.dta(habe_bd_2010_unmarried, file="../../data/stata_data/habe_bd_2010_unmarried.dta")
 
 #bern kantonal (liegt lokal wegen datenschutz)
-bern_kt <- read.dta("H:/Assessing Inequalty/taxDataBE2012.dta")
+try(bern_kt <- read.dta("H:/Assessing Inequalty/taxDataBE2012.dta"))
+try(bern_kt<-read.dta("U:/Persönlich/Forschung/Uni Bern/taxDataBE2012.dta"))
 set0 <- function(x) ifelse(x<0,0,x)
 bern_kt <- bern_kt %>% mutate(primeink2 = set0(hem)+set0(nem)+set0(esm)+set0(sgm)+set0(hef)+set0(nef)+set0(esf)+set0(sgf)+set0(erfolg_s)+set0(erfolg_l)+set0(kk_ertrag)+set0(bg_ertrag)+ set0(wsert)+set0(eink_lieg)+set0(eg_ertrag)+set0(stm)+set0(stf)+set0(lov)+set0(lmv)+set0(lng))
 bern_kt2012 <- bern_kt %>% filter(stj==2012) %>% group_by(hh_id) %>% select(tot_erwerbeink,tot_vermeink,primeink,primeink2,tot_transeink,TOTEINK,Satzeink_BUND,hh_id)
