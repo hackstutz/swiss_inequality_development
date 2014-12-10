@@ -78,17 +78,17 @@ bd <- read.csv("../../data/data_Schweiz.csv", header=TRUE,sep=";")
 bd$Jahr <- as.numeric(substr(bd$Veranlagungsperiode,1,4))
 bd$Jahr[nchar(as.character(bd$Veranlagungsperiode))>4] <- bd$Jahr[nchar(as.character(bd$Veranlagungsperiode))>4] - 2
 bd<-bd %>% 
-  filter(Einheit=="Total") %>% select(Veranlagungsperiode,Jahr,gini_reink,gini_reinka)
+  filter(Einheit=="Total") %>% select(Veranlagungsperiode,Jahr,gini_steink,gini_steinka)
 bd<-subset(bd,Jahr<1995 | Jahr >2002)
 # 2011 zufügen
-bd.2011 <- read.csv("../../data/NP_2011.csv",dec=",") %>% filter(Einheit=="Total") %>% mutate(Veranlagungsperiode=2011,Jahr=2011)
-levels(bd.0$Veranlagungsperiode)<- c(levels(bd.0$Veranlagungsperiode),"2011")
+bd.2011 <- read.csv("../../data/NP_2011.csv",dec=",") %>% filter(Einheit=="Total") %>% mutate(Veranlagungsperiode=2011,Jahr=2011)%>% select(Veranlagungsperiode,Jahr,gini_steink,gini_steinka)
+levels(bd$Veranlagungsperiode)<- c(levels(bd$Veranlagungsperiode),"2011")
 bd <- rbind(bd,bd.2011[,names(bd)])
 bd.long<-reshape(bd,
-varying = c("gini_reink","gini_reinka"),
+varying = c("gini_steink","gini_steinka"),
 v.names = "Gini",
 timevar = "inc_def",
-times = c("Net income (only taxed)","Equivalised net income (only taxed)"),
+times = c("taxable income (only taxed)","Equivalised taxable income (only taxed)"),
 direction ="long")
 # mit Nuller
 bd.0 <- read.csv("../../data/data_Schweiz_mitNull.csv", header=TRUE,sep=";")
@@ -96,17 +96,17 @@ bd.0 <- read.csv("../../data/data_Schweiz_mitNull.csv", header=TRUE,sep=";")
 bd.0$Jahr <- as.numeric(substr(bd.0$Veranlagungsperiode,1,4))
 bd.0$Jahr[nchar(as.character(bd.0$Veranlagungsperiode))>4] <- bd.0$Jahr[nchar(as.character(bd.0$Veranlagungsperiode))>4] - 2
 bd.0<-bd.0 %>% 
-  filter(Einheit=="Total") %>% select(Veranlagungsperiode,Jahr,gini_reink,gini_reinka)
+  filter(Einheit=="Total") %>% select(Veranlagungsperiode,Jahr,gini_steink,gini_steinka)
 bd.0<-subset(bd.0,Jahr<1993 | Jahr >2002)
 # 2011 zufügen
-bd.0.2011 <- read.csv("../../data/NP_2011_mitnull.csv",dec=",") %>% filter(Einheit=="Total") %>% mutate(Veranlagungsperiode=2011,Jahr=2011)
+bd.0.2011 <- read.csv("../../data/NP_2011_mitnull.csv",dec=",") %>% filter(Einheit=="Total") %>% mutate(Veranlagungsperiode=2011,Jahr=2011) %>% select(Veranlagungsperiode,Jahr,gini_steink,gini_steinka)
 levels(bd.0$Veranlagungsperiode)<- c(levels(bd.0$Veranlagungsperiode),"2011")
 bd.0 <- rbind(bd.0,bd.0.2011[,names(bd.0)])
 bd.0.long<-reshape(bd.0,
-varying = c("gini_reink","gini_reinka"),
+varying = c("gini_steink","gini_steinka"),
 v.names = "Gini",
 timevar = "inc_def",
-times = c("Net income","Equivalised net income"),
+times = c("taxable income","Equivalised taxable income"),
 direction ="long")
 bdlong<-rbind(bd.0.long,bd.long)
 names(bdlong)[3]<-"Income"
@@ -126,9 +126,9 @@ fig_equiv <- ggplot(bdlong, aes(x=Jahr,y=Gini,shape=Income))+
   ggtitle("Using (pseudo) equivalence scales")
 fig_equiv
 # Gini Range
-max(bd %>% mutate(d_reink=abs(gini_reink-gini_reinka)) %>% select(starts_with("d_")),na.rm=TRUE)
-max(bd.0 %>% mutate(d_reink=abs(gini_reink-gini_reinka)) %>% select(starts_with("d_")),na.rm=TRUE)
-# 0.012
+max(bd %>% mutate(d_reink=abs(gini_steink-gini_steinka)) %>% select(starts_with("d_")),na.rm=TRUE)
+max(bd.0 %>% mutate(d_reink=abs(gini_steink-gini_steinka)) %>% select(starts_with("d_")),na.rm=TRUE)
+# 0.011
 @
 
 
