@@ -19,7 +19,7 @@ su bd if group==2003, det
 local p25=round(r(p25))
 local p50=round(r(p50))
 local p75=round(r(p75))
-reldist bd, by(group) title("2003 vs. 2011") xtitle("% of ref. group (2003)") olabel(`p25' `p50' `p75') otitle("taxable income (in 1000 CHF)") ylabel(0 0.5 1 1.5 2 2.5)
+reldist bd, by(group) title("2003 vs. 2011") xtitle("% of ref. group (2003)") olabel(`p25' `p50' `p75') otitle("taxable income (in 1000 CHF)") ylabel(0 0.5 1 1.5 2)
 graph save figure1_2011_2003, replace
 
 
@@ -32,7 +32,7 @@ su income if group==1, det
 local p25=round(r(p25))
 local p50=round(r(p50))
 local p75=round(r(p75))
-reldist income, by(group) title("including special cases 93/94") xtitle("% of ref. group (only normal cases)") ytitle("") olabel(`p25' `p50' `p75') otitle("taxable income (in 1000 CHF)") ylabel(0 0.5 1 1.5 2 2.5)
+reldist income, by(group) title("including special cases 93/94") xtitle("% of ref. group (only normal cases)") ytitle("") olabel(`p25' `p50' `p75') otitle("taxable income (in 1000 CHF)") ylabel(0 0.5 1 1.5 2)
 graph save figure2_ns_1993_94, replace
 
 
@@ -45,7 +45,7 @@ su income if group==1, det
 local p25=round(r(p25))
 local p50=round(r(p50))
 local p75=round(r(p75))
-reldist income, by(group) title("including special cases 2011") xtitle("% of ref. group (only normal cases)") ytitle("") olabel(`p25' `p50' `p75') otitle("taxable income (in 1000 CHF)")  ylabel(0 0.5 1 1.5 2 2.5)
+reldist income, by(group) title("including special cases 2011") xtitle("% of ref. group (only normal cases)") ytitle("") olabel(`p25' `p50' `p75') otitle("taxable income (in 1000 CHF)")  ylabel(0 0.5 1 1.5 2)
 graph save figure3_ns_2011, replace
 
 
@@ -65,7 +65,7 @@ su income if group==1, det
 local p25=round(r(p25))
 local p50=round(r(p50))
 local p75=round(r(p75))
-reldist income [pweight=weight], by(group) title("FTA vs HBS data (married)")  xtitle("% of ref. group (tax data)") olabel(`p25' `p50' `p75') otitle("taxable income (in 1000 CHF)")  shape mean mult  ylabel(0 0.5 1 1.5 2 2.5)
+reldist income [pweight=weight], by(group) title("FTA vs HBS data (married)")  xtitle("% of ref. group (tax data)") olabel(`p25' `p50' `p75') otitle("taxable income (in 1000 CHF)")  shape mean mult  ylabel(0 0.5 1 1.5 2)
 graph save figure4_habe_bd_married, replace
 
 
@@ -93,7 +93,7 @@ su income if group==1, det
 local p25=round(r(p25))
 local p50=round(r(p50))
 local p75=round(r(p75))
-reldist income, by(group) title("Bern tax data vs HBS") xtitle("% of ref. group (tax data)") ytitle("") olabel(`p25' `p50' `p75') otitle("primary income (in 1000 CHF)")  ylabel(0 0.5 1 1.5 2 2.5) bw(0.2)
+reldist income, by(group) title("Bern tax data vs HBS") xtitle("% of ref. group (tax data)") ytitle("") olabel(`p25' `p50' `p75') otitle("primary income (in 1000 CHF)")  ylabel(0 0.5 1 1.5 2)
 graph save figure5_bern_habe, replace
 
 * Figure 6: Bern tax data: tax units vs households
@@ -103,7 +103,7 @@ su income if group==1, det
 local p25=round(r(p25))
 local p50=round(r(p50))
 local p75=round(r(p75))
-reldist income [pweight=weight], by(group) title("Bern: tax units vs households") xtitle("% of ref. group (tax units)") ytitle("") olabel(`p25' `p50' `p75') otitle("taxable income (in 1000 CHF)")  ylabel(0 0.5 1 1.5 2 2.5) bw(0.4)
+reldist income [pweight=weight], by(group) title("Bern: tax units vs households") xtitle("% of ref. group (tax units)") ytitle("") olabel(`p25' `p50' `p75') otitle("taxable income (in 1000 CHF)")  ylabel(0 0.5 1 1.5 2) bw(0.4)
 graph save figure6_bern_plain_hh, replace
 
 
