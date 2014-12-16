@@ -1211,6 +1211,8 @@ estv_masse <- estv %>%
   mutate(mean_steink=steink/anz_pflichtige) %>%
   summarise(Gini=gini(mean_steink,weights=anz_pflichtige),Atkinson=getAtkinson(mean_steink,w=anz_pflichtige),Theil=getTheil(mean_steink,w=anz_pflichtige))
 estv_masse$id<-1
+estv_masse<-estv_masse[as.numeric(estv_masse$Year)>4,]
+
 names(estv_masse)<-c("Year","Gini","Atkinson","Theil","id")
 try(detach("package:reshape", unload=TRUE))
 library(reshape2)
