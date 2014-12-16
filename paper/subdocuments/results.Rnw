@@ -41,19 +41,19 @@ df$zeros <- df$null_norm/df$cpop # i only use normal cases here
 df$G_taxed[df$G_taxed==1]<-NA
 library(reshape)
 number_ticks <- function(n) {function(limits) pretty(limits, n)}
-dflong <- melt(df[,c("G_steink","G_reink","G_taxed","kanton","steuerperiode")], id=c("kanton","steuerperiode"))
+dflong <- melt(df[,c("G_steink","G_reink","G_taxed","kanton","bemessungsjahre")], id=c("kanton","bemessungsjahre"))
 names(dflong)[3]<-"Income"
 names(dflong)[4]<-"Gini"
 levels(dflong$Income)<-c("taxable income","net income","taxable income after federal tax")
-fig_incomes <- ggplot(dflong[dflong$kanton=="CH",], aes(x=steuerperiode,y=Gini,shape=Income))+
+fig_incomes <- ggplot(dflong[dflong$kanton=="CH",], aes(x=bemessungsjahre,y=Gini,shape=Income))+
   scale_y_continuous(limits=c(0.28,0.55))+
-  scale_x_continuous(limits=c(1941,2011),breaks=number_ticks(10)) +
+  scale_x_continuous(limits=c(1945,2011),breaks=number_ticks(10)) +
   geom_point(aes(shape=Income),size=3)+
   geom_line(data=dflong[dflong$kanton=="CH",],aes(linetype=Income))+
   theme_bw()+
   xlab("Year")+
   theme(legend.justification=c(0,1),legend.position=c(0, 1))+
-  ggtitle("Using net, taxable or taxed income")
+  ggtitle("Income definitions within tax data")
 fig_incomes
 # was ist die maximale Bandbreite zwischen den Punkten?
 max(filter(df,kanton=="CH") %>% mutate(d_steink_reink=abs(G_steink-G_reink),d_steink_taxed=abs(G_steink-G_taxed),d_reink_taxed=abs(G_reink-G_taxed)) %>% select(starts_with("d_")),na.rm=TRUE)
@@ -88,7 +88,7 @@ bd.long<-reshape(bd,
 varying = c("gini_steink","gini_steinka"),
 v.names = "Gini",
 timevar = "inc_def",
-times = c("taxable income (only taxed)","Equivalised taxable income (only taxed)"),
+times = c("taxable income (only taxed)","equivalised taxable income (only taxed)"),
 direction ="long")
 # mit Nuller
 bd.0 <- read.csv("../../data/data_Schweiz_mitNull.csv", header=TRUE,sep=";")
@@ -106,7 +106,7 @@ bd.0.long<-reshape(bd.0,
 varying = c("gini_steink","gini_steinka"),
 v.names = "Gini",
 timevar = "inc_def",
-times = c("taxable income","Equivalised taxable income"),
+times = c("taxable income","equivalised taxable income"),
 direction ="long")
 bdlong<-rbind(bd.0.long,bd.long)
 names(bdlong)[3]<-"Income"
@@ -164,6 +164,23 @@ bd.2003.ind<-unlist(sapply(2:length(ival),function(i){
   seq(ival[i-1],ival[i],length.out=len)
 }))
 bd.2003.ind<-bd.2003.ind/1000
+
+bd.2010<-bd.0 %>% 
+  filter(Jahr==2010,Einheit=="Total")
+start <- which(names(bd.2010)=="p1")
+end <- which(names(bd.2010)=="p99_99")
+percentile <- c(1,5,10,20,25,30,40,50,60,70,75,80,90,95,96,97,98,99,99.5,99.9,99.99)
+bd.2010<- data.frame(t(bd.2010[1,start:end]),percentile)
+names(bd.2010)[1]=c("inc")
+cum.p<-c(1,5,10,20,25,30,40,50,60,70,75,80,90,95,96,97,98,99,99.5,99.9,99.99)/100
+bd.2010 <- rbind(c(0,0),bd.2010)
+ival<-bd.2010$inc
+perval<-bd.2010$percentile
+bd.2010.ind<-unlist(sapply(2:length(ival),function(i){
+  len=(perval[i]-perval[i-1])*100
+  seq(ival[i-1],ival[i],length.out=len)
+}))
+bd.2010.ind<-bd.2010.ind/1000
 
 # Alt
 #####
@@ -273,6 +290,9 @@ par(mfrow=c(1,1))
 # Export data to use with Stata
 bd2011_2003 <- rbind(data.frame(cbind("bd" = bd.2011.ind,"group"=2011)),data.frame("bd" = bd.2003.ind,"group"=2003))
 write.dta(bd2011_2003, file="../../data/stata_data/bd2011_2003.dta")
+
+bd2011_2010 <- rbind(data.frame(cbind("bd" = bd.2011.ind,"group"=2011)),data.frame("bd" = bd.2010.ind,"group"=2010))
+write.dta(bd2011_2010, file="../../data/stata_data/bd2011_2010.dta")
 @
 
 <<poltable>>=
@@ -621,20 +641,20 @@ FTA-Tax statistics sometimes exlcude tax units, which reach below the treshold t
 <<with_without_zeros_Gini,warning=FALSE, fig.cap='Gini coefficients with, without and imputed non-taxed units',fig.pos='H'>>=
 df <- read.csv("../../data/ginis_und_perzentile_normal.csv",sep="\t")
 #library(reshape)
-dflong <- melt(df[,c("G_steink","G_steink0","G_steink_halb","kanton","steuerperiode")], id=c("kanton","steuerperiode"))
+dflong <- melt(df[,c("G_steink","G_steink0","G_steink_halb","kanton","bemessungsjahre")], id=c("kanton","bemessungsjahre"))
 names(dflong)[3]<-"Type"
 names(dflong)[4]<-"Gini"
-levels(dflong$Type)<-c("without zeros","including zeros","imputed values for zeros")
-fig_zeros <- ggplot(dflong[dflong$kanton=="CH",], 
-       aes(x=steuerperiode,y=Gini,shape=Type,linetype=Type))+
+levels(dflong$Type)<-c("without non-taxed","including non-taxed","imputed values for non-taxed")
+fig_zeros <- ggplot(dflong[dflong$kanton=="CH"&dflong$bemessungsjahre>=2003,], 
+       aes(x=bemessungsjahre,y=Gini,shape=Type,linetype=Type))+
   scale_y_continuous(limits=c(0.28,0.55))+
-  scale_x_continuous(limits=c(2003,2011),breaks=number_ticks(10)) +
+  scale_x_continuous(limits=c(1970,2011),breaks=number_ticks(10)) +
   geom_line(size=0.5)+
   geom_point(aes(shape=Type),size=3)+
   theme_bw()+
-  xlab("tax period")+
+  xlab("Year")+
   theme(legend.justification=c(0,1),legend.position=c(0, 1))+
-  ggtitle("How to treat non-taxed")
+  ggtitle("Influence of non-taxed")
 fig_zeros
 
 # Gini range
@@ -1199,7 +1219,7 @@ estv_masse_long$Year <- as.double(as.character(estv_masse_long$Year))
 estv_masse_long <- estv_masse_long %>% group_by(measure) %>% mutate(log_value=log(value)-log(value)[1])
 fig_measures <- ggplot(estv_masse_long, aes(x=Year,y=log_value,shape=measure))+
   #scale_y_continuous(limits=c(0,0.55))+
-  scale_x_continuous(limits=c(1941,2011),breaks=number_ticks(10)) +
+  scale_x_continuous(limits=c(1945,2011),breaks=number_ticks(10)) +
   geom_point(aes(shape=measure),size=3)+
   geom_line(aes(linetype=measure))+
   theme_bw()+

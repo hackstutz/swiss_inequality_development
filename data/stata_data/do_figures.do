@@ -1,8 +1,10 @@
 * Pfad
-cd "C:\Users\Hackstutz\Dropbox\Git\swiss_inequality_development\data\stata_data\figures\"
+capture cd "C:\Users\Hackstutz\Dropbox\Git\swiss_inequality_development\data\stata_data\figures\"
+capture cd "C:\Users\rudi\Dropbox\Git\swiss_inequality_development\data\stata_data\figures\"
 
 * Black/White Theme
 set scheme rudi
+*set scheme s2mono
 
 * Wir wollen 6 Grafiken: 
 	* 1: reldist Beispiel 2003 vs 2011
@@ -13,7 +15,7 @@ set scheme rudi
 	* 6: Bern Tax Data: tax units vs households
 
 * Figure 1:Distribution change over time
-use "C:\Users\Hackstutz\Dropbox\Git\swiss_inequality_development\data\stata_data\bd2011_2003.dta", clear
+use "..\bd2011_2003.dta", clear
 * Perzentilsgrenzen anschaune
 su bd if group==2003, det
 local p25=round(r(p25))
@@ -24,7 +26,7 @@ graph save figure1_2011_2003, replace
 
 
 * Figure 2:Comparison of normal and special cases 1993/94
-use "C:\Users\Hackstutz\Dropbox\Git\swiss_inequality_development\data\stata_data\ns1993_94.dta", clear
+use "..\ns1993_94.dta", clear
 * Gruppen tauschen
 replace group = 3-group
 * Perzentilsgrenzen anschaune
@@ -37,7 +39,7 @@ graph save figure2_ns_1993_94, replace
 
 
 * Figure 3:Comparison of normal and special cases 2011
-use "C:\Users\Hackstutz\Dropbox\Git\swiss_inequality_development\data\stata_data\ns2011.dta", clear
+use "..\ns2011.dta", clear
 * Gruppen tauschen
 replace group = 3-group
 * Perzentilsgrenzen anschaune
@@ -58,14 +60,14 @@ graph save figure3_ns_2011, replace
 
 
 * Figure 4:Comparison of tax and survey data for married
-use "C:\Users\Hackstutz\Dropbox\Git\swiss_inequality_development\data\stata_data\habe_bd_2011_married.dta", clear
+use "..\habe_bd_2011_married.dta", clear
 * Gruppen tauschen
 replace group = 3-group
 su income if group==1, det
 local p25=round(r(p25))
 local p50=round(r(p50))
 local p75=round(r(p75))
-reldist income [pweight=weight], by(group) title("FTA vs HBS data (married)")  xtitle("% of ref. group (tax data)") olabel(`p25' `p50' `p75') otitle("taxable income (in 1000 CHF)")  shape mean mult  ylabel(0 0.5 1 1.5 2)
+reldist income [pweight=weight], by(group) title("Married: tax data vs HBS")  xtitle("% of ref. group (tax data)") olabel(`p25' `p50' `p75') otitle("taxable income (in 1000 CHF)")  shape mean mult  ylabel(0 0.5 1 1.5 2)
 graph save figure4_habe_bd_married, replace
 
 
@@ -85,7 +87,7 @@ graph save figure4_habe_bd_married, replace
 
 
 * Figure 5: Bern tax data vs HBS
-use "C:\Users\Hackstutz\Dropbox\Git\swiss_inequality_development\data\stata_data\bern_habe.dta", clear
+use "..\bern_habe.dta", clear
 * Gruppen tauschen
 replace group = 3-group
 * Perzentilsgrenzen anschauen
@@ -93,11 +95,11 @@ su income if group==1, det
 local p25=round(r(p25))
 local p50=round(r(p50))
 local p75=round(r(p75))
-reldist income, by(group) title("Bern tax data vs HBS") xtitle("% of ref. group (tax data)") ytitle("") olabel(`p25' `p50' `p75') otitle("primary income (in 1000 CHF)")  ylabel(0 0.5 1 1.5 2)
+reldist income, by(group) title("Bern: tax data vs HBS") xtitle("% of ref. group (tax data)") ytitle("") olabel(`p25' `p50' `p75') otitle("primary income (in 1000 CHF)")  ylabel(0 0.5 1 1.5 2)
 graph save figure5_bern_habe, replace
 
 * Figure 6: Bern tax data: tax units vs households
-use "C:\Users\Hackstutz\Dropbox\Git\swiss_inequality_development\data\stata_data\bern_plain_hh.dta", clear
+use "..\bern_plain_hh.dta", clear
 * Perzentilsgrenzen anschaune
 su income if group==1, det
 local p25=round(r(p25))
