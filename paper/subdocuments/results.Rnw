@@ -645,7 +645,9 @@ dflong <- melt(df[,c("G_steink","G_steink0","G_steink_halb","kanton","bemessungs
 names(dflong)[3]<-"Type"
 names(dflong)[4]<-"Gini"
 levels(dflong$Type)<-c("without non-taxed","including non-taxed","imputed values for non-taxed")
-fig_zeros <- ggplot(dflong[dflong$kanton=="CH"&dflong$bemessungsjahre>=2003,], 
+dflong$Gini[dflong$kanton=="CH"&dflong$bemessungsjahre<2003&dflong$Type=="including non-taxed"]<-NA
+dflong$Gini[dflong$kanton=="CH"&dflong$bemessungsjahre<2003&dflong$Type=="imputed values for non-taxed"]<-NA
+fig_zeros <- ggplot(dflong[dflong$kanton=="CH",], 
        aes(x=bemessungsjahre,y=Gini,shape=Type,linetype=Type))+
   scale_y_continuous(limits=c(0.28,0.55))+
   scale_x_continuous(limits=c(1970,2011),breaks=number_ticks(10)) +
@@ -1218,7 +1220,7 @@ estv_masse_long$measure <- factor(estv_masse_long$variable)
 estv_masse_long$Year <- as.double(as.character(estv_masse_long$Year))
 estv_masse_long <- estv_masse_long %>% group_by(measure) %>% mutate(log_value=log(value)-log(value)[1])
 fig_measures <- ggplot(estv_masse_long, aes(x=Year,y=log_value,shape=measure))+
-  #scale_y_continuous(limits=c(0,0.55))+
+  scale_y_continuous(limits=c(-0.7,0.45))+
   scale_x_continuous(limits=c(1945,2011),breaks=number_ticks(10)) +
   geom_point(aes(shape=measure),size=3)+
   geom_line(aes(linetype=measure))+
