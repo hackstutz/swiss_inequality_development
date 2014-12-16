@@ -4,7 +4,7 @@ capture cd "C:\Users\rudi\Dropbox\Git\swiss_inequality_development\data\stata_da
 
 * Black/White Theme
 set scheme rudi
-*set scheme s2mono
+*set scheme s1mono
 
 * Wir wollen 6 Grafiken: 
 	* 1: reldist Beispiel 2003 vs 2011
