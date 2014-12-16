@@ -78,6 +78,8 @@ replace untergrenze = 14.9 if steuerperiode>1996
 replace untergrenze = 16.1 if steuerperiode>2002
 *06-10 
 replace untergrenze = 16.9 if steuerperiode>2005
+
+replace untergrenze = 17.7 if steuerperiode>2010
 clonevar steink_halb = steink
 replace steink_halb = 0.5*untergrenze*anz_pflichtige if eink_ll==0 & eink_ul==0 & steink==0 & expanded==1
 by kanton steuerperiode: gen cinc0 = sum(steink)
@@ -161,7 +163,7 @@ replace `var' = . if `var'==1
 }
 
 
-keep steuerperiode G_* kanton p* mean sum_pflichtige cpop cinc null*
+keep steuerperiode bemessungsjahre G_* kanton p* mean sum_pflichtige cpop cinc null*
 drop ppop
 
 outsheet using "ginis_und_perzentile_normal.csv", replace

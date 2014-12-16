@@ -78,7 +78,7 @@ by kanton steuerperiode: gen mean = cinc[_N]/cpop[_N]
 
 drop if G_steink== . | G_steink==1
 
-keep steuerperiode G_* kanton p* mean anz_pflichtige cpop cinc null*
+keep steuerperiode bemessungsjahre G_* kanton p* mean anz_pflichtige cpop cinc null*
 drop ppop
 
 
