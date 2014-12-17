@@ -95,7 +95,7 @@ su income if group==1, det
 local p25=round(r(p25))
 local p50=round(r(p50))
 local p75=round(r(p75))
-reldist income, by(group) title("Bern: tax data vs HBS") xtitle("% of ref. group (tax data)") ytitle("") olabel(`p25' `p50' `p75') otitle("primary income (in 1000 CHF)")  ylabel(0 0.5 1 1.5 2)
+reldist income, by(group) title("Bern: tax data vs HBS") xtitle("% of ref. group (tax data)") ytitle("") olabel(`p25' `p50' `p75') otitle("primary income (in 1000 CHF)")  ylabel(0 0.5 1 1.5 2) bw(0.1)
 graph save figure5_bern_habe, replace
 
 * Figure 6: Bern tax data: tax units vs households

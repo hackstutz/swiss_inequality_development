@@ -1059,18 +1059,28 @@ habe_bd_2010_unmarried$group <- factor(habe_bd_2010_unmarried$group,labels=c("ha
 write.dta(habe_bd_2010_unmarried, file="../../data/stata_data/habe_bd_2010_unmarried.dta")
 
 #bern kantonal (liegt lokal wegen datenschutz)
-try(bern_kt <- read.dta("H:/Assessing Inequalty/taxDataBE2012.dta"))
-try(bern_kt<-read.dta("U:/Persönlich/Forschung/Uni Bern/taxDataBE2012.dta"))
-set0 <- function(x) ifelse(x<0,0,x)
+#try(bern_kt <- read.dta("H:/Assessing Inequalty/taxDataBE2012.dta"))
+#try(bern_kt<-read.dta("U:/Persönlich/Forschung/Uni Bern/taxDataBE2012.dta"))
+try(bern_kt <- read.csv("G:/stick/bern//BFH-Grunddaten 2012 Output V1.1.csv",sep=";"))
+#> nrow(bern_kt)
+#[1] 622368
+nrow(filter(bern_kt,VON=="2012-01-01",BIS=="2012-12-31"))
+#[1] 605975 wir filtern ca. 3% unterjährige
+bern_kt <- filter(bern_kt,VON=="2012-01-01",BIS=="2012-12-31")
+names(bern_kt)<-tolower(names(bern_kt))
+set0 <- function(x) ifelse(x<0 | is.na(x),0,x)
 bern_kt <- bern_kt %>% mutate(primeink2 = set0(hem)+set0(nem)+set0(esm)+set0(sgm)+set0(hef)+set0(nef)+set0(esf)+set0(sgf)+set0(erfolg_s)+set0(erfolg_l)+set0(kk_ertrag)+set0(bg_ertrag)+ set0(wsert)+set0(eink_lieg)+set0(eg_ertrag)+set0(stm)+set0(stf)+set0(lov)+set0(lmv)+set0(lng))
-bern_kt2012 <- bern_kt %>% filter(stj==2012) %>% group_by(hh_id) %>% select(tot_erwerbeink,tot_vermeink,primeink,primeink2,tot_transeink,TOTEINK,Satzeink_BUND,hh_id)
+
+#ALT aber evtl noch mal nüzlich nach der aufbereitung: bern_kt2012 <- bern_kt %>% filter(stj==2012) %>% group_by(hh_id) %>% select(tot_erwerbeink,tot_vermeink,primeink,primeink2,tot_transeink,TOTEINK,Satzeink_BUND,hh_id)
+
 #summarise(bern_kt2012, n=n()) %>% arrange(desc(n))
 #habe0911 %>%mutate(anzahl_personen=Anzahl1524Personen08+Anzahl2534Personen08+Anzahl3544Personen08+Anzahl4554Personen08+Anzahl5564Personen08+Anzahl6574Personen08+Anzahl7599Personen08) %>% group_by(anzahl_personen) %>% summarise(n=n())%>%arrange(desc(n))
 # gr??ter haushalt 7 personen gross (>=15jahre)
 # dort machen wir einen schnitt bei den kantonalen daten um wohnheime etc auszuschlie?en (wie es HABE auch gemacht hat)
-bern_kt2012_plain <- bern_kt2012  %>% filter(n()<=7) #5% werden gefiltert
+#alt: bern_kt2012_plain <- bern_kt2012  %>% filter(n()<=7) #5% werden gefiltert
+bern_kt2012_plain <- bern_kt  %>% group_by(hh_id) %>% filter(n()<=7) #5% werden gefiltert #neu
 #bern_kt2012 <- bern_kt2012_plain %>% mutate(TOTEINK_hh=sum(TOTEINK)) %>% filter(!duplicated(hh_id))
-bern_kt2012 <- bern_kt2012_plain %>% mutate(primeink_hh=sum(primeink),primeink2_hh=sum(primeink2),Satzeink_BUND_hh=sum(Satzeink_BUND)) %>% filter(!duplicated(hh_id)) #nimmt die erste unique beobachtung und droppt 2. bis x. 
+bern_kt2012 <- bern_kt2012_plain %>% mutate(primeink2_hh=sum(primeink2),eink_satz_dbs_hh=sum(eink_satz_dbs)) %>% filter(!duplicated(hh_id)) #nimmt die erste unique beobachtung und droppt 2. bis x. 
 
 # f?r habe (bern) abz?glich sozialversicherungsbeitr?ge
 habe11_bern <- habe0911 %>% filter(Kanton08==2) %>% 
@@ -1086,12 +1096,12 @@ write.dta(bern_habe, file="../../data/stata_data/bern_habe.dta")
 gini_habe <- gini(bern_habe$income[bern_habe$group=="habe"],weights=bern_habe$weight[bern_habe$group=="habe"]); gini_habe
 gini_tax <- gini(bern_habe$income[bern_habe$group=="tax"]); gini_tax
 round(gini_habe-gini_tax,3)
-# 0.457 0.519 diff=-0.061
+# gini_tax-gini_habe diff=-0.069
 
 # vergleich innerhalb von bern tax data: haushalte vs. plain
 # oben wurde plain und nicht plain definiert, das fügen wir jetzt zusammen
 # export nach stata (ungewichtet)
-bern_plain_hh <- rbind(data.frame("income" = bern_kt2012_plain$Satzeink_BUND/1000,"group"=0,"weight"=1),data.frame("income" = bern_kt2012$Satzeink_BUND_hh/1000,"group"=1,"weight"=1))
+bern_plain_hh <- rbind(data.frame("income" = bern_kt2012_plain$eink_satz_dbs/1000,"group"=0,"weight"=1),data.frame("income" = bern_kt2012$eink_satz_dbs_hh/1000,"group"=1,"weight"=1))
 bern_plain_hh$group <- factor(bern_plain_hh$group,labels=c("tax units","households"))
 bern_plain_hh <- bern_plain_hh %>% mutate(income=ifelse(income<0,0,income))
 write.dta(bern_plain_hh, file="../../data/stata_data/bern_plain_hh.dta")
@@ -1099,7 +1109,7 @@ write.dta(bern_plain_hh, file="../../data/stata_data/bern_plain_hh.dta")
 gini_taxunits <- gini(bern_plain_hh$income[bern_plain_hh$group=="tax units"]); gini_taxunits
 gini_hh <- gini(bern_plain_hh$income[bern_plain_hh$group=="households"]); gini_hh
 round(gini_taxunits-gini_hh,3)
-
+#diff: 0.059
 @
 
 From the discussion in the data section we would expect differences between the income distributions from survey and tax data. Within the FTA data we observe zeros for incomes below the threshold to be liable for federal tax while survey data might cover this range. On the other hand we expect underreporting from both lowest percentiles and highest percentiles (middle class bias) within the survey data. Figure \ref{fig:BruelhartvsHABE} (left) however reveals a more critical issue related to tax data, that is the median location of income compared to survey data. Although we try to measure similar concepts of income, survey data shows a median (93.000 CHF) more than twice as big as tax data (44.600 CHF). The issue here is clearly the assumptions of household composition. While survey data is likely to capture the correct household composition, tax data can only approximate households by using marital status. Splitting the data in married and unmarried tax units underpins this argument. From figure \ref{fig:BruelhartvsHABEmarried} we can see that married tax units (FTA data) and household with married couples (survey data) are better (but still not perfectly) comparable. Figure \ref{fig:BruelhartvsHABEmarried} (right) shows the expected shape difference between the two distributions:  survey data has a bias towards the (median-adjusted) 80\% to 90\% percentile (of the FTA data distribution). Top percentiles are badly covered by survey data, suggesting that inequality measures based on survey data might underestimate inequality development that arises from changes in the incomes of the rich. Though, survey data can be of interest if one is interested in the lower 20\% of the income distribution. 
