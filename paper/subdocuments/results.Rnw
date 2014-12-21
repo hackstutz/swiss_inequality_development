@@ -661,6 +661,7 @@ fig_zeros
 
 # Gini range
 max(filter(df,kanton=="CH") %>% mutate(d_with_without=abs(G_steink-G_steink0)) %>% select(starts_with("d_")),na.rm=TRUE)
+max(filter(df,kanton=="CH") %>% mutate(d_with_without=abs(G_steink-G_steink_halb)) %>% select(starts_with("d_")),na.rm=TRUE)
 # 0.18
 
 # Kantonale Unterschiede
