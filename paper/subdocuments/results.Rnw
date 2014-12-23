@@ -97,7 +97,7 @@ bd.0$Jahr <- as.numeric(substr(bd.0$Veranlagungsperiode,1,4))
 bd.0$Jahr[nchar(as.character(bd.0$Veranlagungsperiode))>4] <- bd.0$Jahr[nchar(as.character(bd.0$Veranlagungsperiode))>4] - 2
 bd.0<-bd.0 %>% 
   filter(Einheit=="Total") %>% select(Veranlagungsperiode,Jahr,gini_steink,gini_steinka)
-bd.0<-subset(bd.0,(Jahr<=1995 | Jahr >2002)&Veranlagungsperiode!=1995)
+bd.0<-subset(bd.0,(Jahr==1995|Jahr>=2003)&Veranlagungsperiode!=1995)
 # 2011 zufügen
 bd.0.2011 <- read.csv("../../data/NP_2011_mitnull.csv",dec=",") %>% filter(Einheit=="Total") %>% mutate(Veranlagungsperiode=2011,Jahr=2011) %>% select(Veranlagungsperiode,Jahr,gini_steink,gini_steinka)
 levels(bd.0$Veranlagungsperiode)<- c(levels(bd.0$Veranlagungsperiode),"2011")
@@ -1225,9 +1225,8 @@ estv_masse <- estv %>%
   mutate(mean_steink=steink/anz_pflichtige) %>%
   summarise(Gini=gini(mean_steink,weights=anz_pflichtige),Atkinson=getAtkinson(mean_steink,w=anz_pflichtige),Theil=getTheil(mean_steink,w=anz_pflichtige))
 estv_masse$id<-1
-estv_masse<-estv_masse[as.numeric(estv_masse$Year)>4,]
-
 names(estv_masse)<-c("Year","Gini","Atkinson","Theil","id")
+estv_masse<-estv_masse[as.numeric(estv_masse$Year)>4,]
 try(detach("package:reshape", unload=TRUE))
 library(reshape2)
 estv_masse_long <- melt(estv_masse,id=c("id","Year"))
