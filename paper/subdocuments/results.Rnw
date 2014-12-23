@@ -79,7 +79,7 @@ bd$Jahr <- as.numeric(substr(bd$Veranlagungsperiode,1,4))
 bd$Jahr[nchar(as.character(bd$Veranlagungsperiode))>4] <- bd$Jahr[nchar(as.character(bd$Veranlagungsperiode))>4] - 2
 bd<-bd %>% 
   filter(Einheit=="Total") %>% select(Veranlagungsperiode,Jahr,gini_steink,gini_steinka)
-bd<-subset(bd,Jahr<1995 | Jahr >2002)
+bd<-subset(bd,(Jahr<=1995 | Jahr >2002)&Veranlagungsperiode!=1995)
 # 2011 zufügen
 bd.2011 <- read.csv("../../data/NP_2011.csv",dec=",") %>% filter(Einheit=="Total") %>% mutate(Veranlagungsperiode=2011,Jahr=2011)%>% select(Veranlagungsperiode,Jahr,gini_steink,gini_steinka)
 levels(bd$Veranlagungsperiode)<- c(levels(bd$Veranlagungsperiode),"2011")
@@ -97,7 +97,7 @@ bd.0$Jahr <- as.numeric(substr(bd.0$Veranlagungsperiode,1,4))
 bd.0$Jahr[nchar(as.character(bd.0$Veranlagungsperiode))>4] <- bd.0$Jahr[nchar(as.character(bd.0$Veranlagungsperiode))>4] - 2
 bd.0<-bd.0 %>% 
   filter(Einheit=="Total") %>% select(Veranlagungsperiode,Jahr,gini_steink,gini_steinka)
-bd.0<-subset(bd.0,Jahr<1993 | Jahr >2002)
+bd.0<-subset(bd.0,(Jahr<=1995 | Jahr >2002)&Veranlagungsperiode!=1995)
 # 2011 zufügen
 bd.0.2011 <- read.csv("../../data/NP_2011_mitnull.csv",dec=",") %>% filter(Einheit=="Total") %>% mutate(Veranlagungsperiode=2011,Jahr=2011) %>% select(Veranlagungsperiode,Jahr,gini_steink,gini_steinka)
 levels(bd.0$Veranlagungsperiode)<- c(levels(bd.0$Veranlagungsperiode),"2011")
@@ -645,8 +645,8 @@ dflong <- melt(df[,c("G_steink","G_steink0","G_steink_halb","kanton","bemessungs
 names(dflong)[3]<-"Type"
 names(dflong)[4]<-"Gini"
 levels(dflong$Type)<-c("without non-taxed","including non-taxed","imputed values for non-taxed")
-dflong$Gini[dflong$kanton=="CH"&dflong$bemessungsjahre<2003&dflong$Type=="including non-taxed"]<-NA
-dflong$Gini[dflong$kanton=="CH"&dflong$bemessungsjahre<2003&dflong$Type=="imputed values for non-taxed"]<-NA
+dflong$Gini[dflong$kanton=="CH"&dflong$bemessungsjahre<1995&dflong$Type=="including non-taxed"]<-NA
+dflong$Gini[dflong$kanton=="CH"&dflong$bemessungsjahre<1995&dflong$Type=="imputed values for non-taxed"]<-NA
 fig_zeros <- ggplot(dflong[dflong$kanton=="CH",], 
        aes(x=bemessungsjahre,y=Gini,shape=Type,linetype=Type))+
   scale_y_continuous(limits=c(0.28,0.55))+
@@ -1102,7 +1102,10 @@ round(gini_habe-gini_tax,3)
 # vergleich innerhalb von bern tax data: haushalte vs. plain
 # oben wurde plain und nicht plain definiert, das fügen wir jetzt zusammen
 # export nach stata (ungewichtet)
-bern_plain_hh <- rbind(data.frame("income" = bern_kt2012_plain$eink_satz_dbs/1000,"group"=0,"weight"=1),data.frame("income" = bern_kt2012$eink_satz_dbs_hh/1000,"group"=1,"weight"=1))
+bern_kt2012_plain7 <- bern_kt  %>% group_by(hh_id)
+bern_kt2012_7 <- bern_kt2012_plain7 %>% mutate(primeink2_hh=sum(primeink2),eink_satz_dbs_hh=sum(eink_satz_dbs)) %>% filter(!duplicated(hh_id)) #nimmt die erste unique beobachtung und droppt 2. bis x. 
+
+bern_plain_hh <- rbind(data.frame("income" = bern_kt2012_plain7$eink_satz_dbs/1000,"group"=0,"weight"=1),data.frame("income" = bern_kt2012_7$eink_satz_dbs_hh/1000,"group"=1,"weight"=1))
 bern_plain_hh$group <- factor(bern_plain_hh$group,labels=c("tax units","households"))
 bern_plain_hh <- bern_plain_hh %>% mutate(income=ifelse(income<0,0,income))
 write.dta(bern_plain_hh, file="../../data/stata_data/bern_plain_hh.dta")
@@ -1110,7 +1113,7 @@ write.dta(bern_plain_hh, file="../../data/stata_data/bern_plain_hh.dta")
 gini_taxunits <- gini(bern_plain_hh$income[bern_plain_hh$group=="tax units"]); gini_taxunits
 gini_hh <- gini(bern_plain_hh$income[bern_plain_hh$group=="households"]); gini_hh
 round(gini_taxunits-gini_hh,3)
-#diff: 0.059
+#diff: 0.058
 @
 
 From the discussion in the data section we would expect differences between the income distributions from survey and tax data. Within the FTA data we observe zeros for incomes below the threshold to be liable for federal tax while survey data might cover this range. On the other hand we expect underreporting from both lowest percentiles and highest percentiles (middle class bias) within the survey data. Figure \ref{fig:BruelhartvsHABE} (left) however reveals a more critical issue related to tax data, that is the median location of income compared to survey data. Although we try to measure similar concepts of income, survey data shows a median (93.000 CHF) more than twice as big as tax data (44.600 CHF). The issue here is clearly the assumptions of household composition. While survey data is likely to capture the correct household composition, tax data can only approximate households by using marital status. Splitting the data in married and unmarried tax units underpins this argument. From figure \ref{fig:BruelhartvsHABEmarried} we can see that married tax units (FTA data) and household with married couples (survey data) are better (but still not perfectly) comparable. Figure \ref{fig:BruelhartvsHABEmarried} (right) shows the expected shape difference between the two distributions:  survey data has a bias towards the (median-adjusted) 80\% to 90\% percentile (of the FTA data distribution). Top percentiles are badly covered by survey data, suggesting that inequality measures based on survey data might underestimate inequality development that arises from changes in the incomes of the rich. Though, survey data can be of interest if one is interested in the lower 20\% of the income distribution. 
