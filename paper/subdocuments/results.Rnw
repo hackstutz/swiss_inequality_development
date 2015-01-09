@@ -40,6 +40,7 @@ df$zeros <- df$null_norm/df$cpop # i only use normal cases here
 <<different_ginis, fig.cap='Gini coefficients for different income measures',fig.pos='H'>>=
 df$G_taxed[df$G_taxed==1]<-NA
 library(reshape)
+df <- df %>% filter(kanton=="CH"&(bemessungsjahre<=1993.5|bemessungsjahre>=2003))
 number_ticks <- function(n) {function(limits) pretty(limits, n)}
 dflong <- melt(df[,c("G_steink","G_reink","G_taxed","kanton","bemessungsjahre")], id=c("kanton","bemessungsjahre"))
 names(dflong)[3]<-"Income"
@@ -79,7 +80,7 @@ bd$Jahr <- as.numeric(substr(bd$Veranlagungsperiode,1,4))
 bd$Jahr[nchar(as.character(bd$Veranlagungsperiode))>4] <- bd$Jahr[nchar(as.character(bd$Veranlagungsperiode))>4] - 2
 bd<-bd %>% 
   filter(Einheit=="Total") %>% select(Veranlagungsperiode,Jahr,gini_steink,gini_steinka)
-bd<-subset(bd,(Jahr<=1995 | Jahr >2002)&Veranlagungsperiode!=1995)
+bd<-subset(bd,(Jahr<=1993 | Jahr >2002)&Veranlagungsperiode!=1995)
 # 2011 zufügen
 bd.2011 <- read.csv("../../data/NP_2011.csv",dec=",") %>% filter(Einheit=="Total") %>% mutate(Veranlagungsperiode=2011,Jahr=2011)%>% select(Veranlagungsperiode,Jahr,gini_steink,gini_steinka)
 levels(bd$Veranlagungsperiode)<- c(levels(bd$Veranlagungsperiode),"2011")
@@ -97,7 +98,7 @@ bd.0$Jahr <- as.numeric(substr(bd.0$Veranlagungsperiode,1,4))
 bd.0$Jahr[nchar(as.character(bd.0$Veranlagungsperiode))>4] <- bd.0$Jahr[nchar(as.character(bd.0$Veranlagungsperiode))>4] - 2
 bd.0<-bd.0 %>% 
   filter(Einheit=="Total") %>% select(Veranlagungsperiode,Jahr,gini_steink,gini_steinka)
-bd.0<-subset(bd.0,(Jahr==1995|Jahr>=2003)&Veranlagungsperiode!=1995)
+bd.0<-subset(bd.0,(Jahr<=1993|Jahr>=2003)&Veranlagungsperiode!=1995)
 # 2011 zufügen
 bd.0.2011 <- read.csv("../../data/NP_2011_mitnull.csv",dec=",") %>% filter(Einheit=="Total") %>% mutate(Veranlagungsperiode=2011,Jahr=2011) %>% select(Veranlagungsperiode,Jahr,gini_steink,gini_steinka)
 levels(bd.0$Veranlagungsperiode)<- c(levels(bd.0$Veranlagungsperiode),"2011")
@@ -645,9 +646,11 @@ dflong <- melt(df[,c("G_steink","G_steink0","G_steink_halb","kanton","bemessungs
 names(dflong)[3]<-"Type"
 names(dflong)[4]<-"Gini"
 levels(dflong$Type)<-c("without non-taxed","including non-taxed","imputed values for non-taxed")
-dflong$Gini[dflong$kanton=="CH"&dflong$bemessungsjahre<1995&dflong$Type=="including non-taxed"]<-NA
-dflong$Gini[dflong$kanton=="CH"&dflong$bemessungsjahre<1995&dflong$Type=="imputed values for non-taxed"]<-NA
-fig_zeros <- ggplot(dflong[dflong$kanton=="CH",], 
+#dflong$Gini[dflong$kanton=="CH"&dflong$bemessungsjahre!=1993.5&dflong$bemessungsjahre<2003&dflong$Type=="including non-taxed"]<-NA
+#dflong$Gini[dflong$kanton=="CH"&dflong$bemessungsjahre!=1993.5&dflong$bemessungsjahre<2003&dflong$Type=="imputed values for non-taxed"]<-NA
+fig_zeros <- ggplot(filter(dflong,kanton=="CH"&
+  (((bemessungsjahre<=1993.5|bemessungsjahre>=2003)&Type=="without non-taxed")|
+  ((bemessungsjahre==1993.5|bemessungsjahre>=2003)&Type!="without non-taxed"))), 
        aes(x=bemessungsjahre,y=Gini,shape=Type,linetype=Type))+
   scale_y_continuous(limits=c(0.28,0.55))+
   scale_x_continuous(limits=c(1970,2011),breaks=number_ticks(10)) +
@@ -1217,6 +1220,7 @@ getTheil <- function(x,w){
 estv_masse <- estv %>% 
   filter(kanton=="CH",
          eink_art=="Nach steuerbarem Einkommen",
+         bemessungsjahre<=1993.5|bemessungsjahre>=2003,
          fall=="Normalfälle",
          anz_pflichtige>0) %>%
         # steuerperiode!=1945.5) %>% 
@@ -1231,14 +1235,14 @@ try(detach("package:reshape", unload=TRUE))
 library(reshape2)
 estv_masse_long <- melt(estv_masse,id=c("id","Year"))
 
-estv_masse_long$measure <- factor(estv_masse_long$variable)
+estv_masse_long$Measure <- factor(estv_masse_long$variable)
 estv_masse_long$Year <- as.double(as.character(estv_masse_long$Year))
-estv_masse_long <- estv_masse_long %>% group_by(measure) %>% mutate(log_value=log(value)-log(value)[1])
-fig_measures <- ggplot(estv_masse_long, aes(x=Year,y=log_value,shape=measure))+
+estv_masse_long <- estv_masse_long %>% group_by(Measure) %>% mutate(log_value=log(value)-log(value)[1])
+fig_measures <- ggplot(estv_masse_long, aes(x=Year,y=log_value,shape=Measure))+
   scale_y_continuous(limits=c(-0.7,0.45))+
   scale_x_continuous(limits=c(1945,2011),breaks=number_ticks(10)) +
-  geom_point(aes(shape=measure),size=3)+
-  geom_line(aes(linetype=measure))+
+  geom_point(aes(shape=Measure),size=3)+
+  geom_line(aes(linetype=Measure))+
   theme_bw()+
   xlab("Year")+
   theme(legend.justification=c(0,1),legend.position=c(0, 1))+
