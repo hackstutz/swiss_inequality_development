@@ -1151,7 +1151,8 @@ estv_gini <- estv %>%
   filter(kanton=="CH",
          eink_art=="Nach steuerbarem Einkommen",
          fall=="Normalfälle",
-         anz_pflichtige>0) %>%
+         anz_pflichtige>0,
+         bemessungsjahre<=1993.5|bemessungsjahre>=2003) %>%
         # steuerperiode!=1945.5) %>% 
   select(bemessungsjahre, steink, kanton, eink_ll, eink_ul,anz_pflichtige) %>%
   group_by(factor(bemessungsjahre)) %>%
