@@ -1064,7 +1064,7 @@ write.dta(habe_bd_2010_unmarried, file="../../data/stata_data/habe_bd_2010_unmar
 
 #bern kantonal (liegt lokal wegen datenschutz)
 #try(bern_kt <- read.dta("H:/Assessing Inequalty/taxDataBE2012.dta"))
-#try(bern_kt<-read.dta("U:/Persönlich/Forschung/Uni Bern/taxDataBE2012.dta"))
+try(bern_kt<-read.csv("U:/Persönlich/Forschung/Uni Bern/BFH-Grunddaten 2012 Output V1.1.csv",sep=";"))
 try(bern_kt <- read.csv("G:/stick/bern//BFH-Grunddaten 2012 Output V1.1.csv",sep=";"))
 #> nrow(bern_kt)
 #[1] 622368
