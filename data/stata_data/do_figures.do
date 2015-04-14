@@ -21,8 +21,9 @@ su bd if group==2003, det
 local p25=round(r(p25))
 local p50=round(r(p50))
 local p75=round(r(p75))
-reldist bd, by(group) title("2003 vs. 2011") xtitle("% of ref. group (2003)") olabel(`p25' `p50' `p75') otitle("taxable income (in 1000 CHF)") ylabel(0 0.5 1 1.5 2)
+reldist bd, by(group) title("Relative distribution - 2003 vs. 2011") xtitle("% of ref. group (2003)") olabel(`p25' `p50' `p75') otitle("taxable income (in 1000 CHF)") ylabel(0 0.5 1 1.5 2)
 graph save figure1_2011_2003, replace
+graph export figure1_2011_2003.pdf, replace
 
 
 * Figure 2:Comparison of normal and special cases 1993/94
@@ -34,8 +35,9 @@ su income if group==1, det
 local p25=round(r(p25))
 local p50=round(r(p50))
 local p75=round(r(p75))
-reldist income, by(group) title("including special cases 93/94") xtitle("% of ref. group (only normal cases)") ytitle("") olabel(`p25' `p50' `p75') otitle("taxable income (in 1000 CHF)") ylabel(0 0.5 1 1.5 2)
+reldist income, by(group) title("Relative dist. - without vs. including special cases 93/94") xtitle("% of ref. group (only normal cases)") ytitle("") olabel(`p25' `p50' `p75') otitle("taxable income (in 1000 CHF)") ylabel(0 0.5 1 1.5 2)
 graph save figure2_ns_1993_94, replace
+graph export figure2_ns_1993_94.pdf, replace
 
 
 * Figure 3:Comparison of normal and special cases 2011
@@ -47,8 +49,9 @@ su income if group==1, det
 local p25=round(r(p25))
 local p50=round(r(p50))
 local p75=round(r(p75))
-reldist income, by(group) title("including special cases 2011") xtitle("% of ref. group (only normal cases)") ytitle("") olabel(`p25' `p50' `p75') otitle("taxable income (in 1000 CHF)")  ylabel(0 0.5 1 1.5 2)
+reldist income, by(group) title("Relative dist. - without vs. including special cases 2011") xtitle("% of ref. group (only normal cases)") ytitle("") olabel(`p25' `p50' `p75') otitle("taxable income (in 1000 CHF)")  ylabel(0 0.5 1 1.5 2)
 graph save figure3_ns_2011, replace
+graph export figure3_ns_2011.pdf, replace
 
 
 * Comparison of tax and survey data
@@ -67,8 +70,21 @@ su income if group==1, det
 local p25=round(r(p25))
 local p50=round(r(p50))
 local p75=round(r(p75))
-reldist income [pweight=weight], by(group) title("Married: tax data vs HBS")  xtitle("% of ref. group (tax data)") olabel(`p25' `p50' `p75') otitle("taxable income (in 1000 CHF)")  shape mean mult  ylabel(0 0.5 1 1.5 2)
+reldist income [pweight=weight], by(group) title("Relative distribution - Married: tax data vs HBS")  xtitle("% of ref. group (tax data)") olabel(`p25' `p50' `p75') otitle("taxable income (in 1000 CHF)")  shape mean mult  ylabel(0 0.5 1 1.5 2)
 graph save figure4_habe_bd_married, replace
+graph export figure4_habe_bd_married.pdf, replace
+
+* Figure NEW:Comparison of tax and survey data for married (ohne Sozialhilfe)
+use "..\habe_bd_2011_married_ohne_soz.dta", clear
+* Gruppen tauschen
+replace group = 3-group
+su income if group==1, det
+local p25=round(r(p25))
+local p50=round(r(p50))
+local p75=round(r(p75))
+reldist income [pweight=weight], by(group) title("Without social benefits - Married: tax data vs HBS")  xtitle("% of ref. group (tax data)") olabel(`p25' `p50' `p75') otitle("taxable income (in 1000 CHF)")  shape mean mult  ylabel(0 0.5 1 1.5 2)
+graph save figure4_habe_bd_married_ohne_soz, replace
+graph export figure4_habe_bd_married_ohne_soz.pdf, replace
 
 
 * Figure 4:Comparison of tax and survey data for married
@@ -95,8 +111,9 @@ su income if group==1, det
 local p25=round(r(p25))
 local p50=round(r(p50))
 local p75=round(r(p75))
-reldist income, by(group) title("Bern: tax data vs HBS") xtitle("% of ref. group (tax data)") ytitle("") olabel(`p25' `p50' `p75') otitle("primary income (in 1000 CHF)")  ylabel(0 0.5 1 1.5 2) bw(0.1)
+reldist income, by(group) title("Relative distribution - Bern: tax data vs HBS") xtitle("% of ref. group (tax data)") ytitle("") olabel(`p25' `p50' `p75') otitle("primary income (in 1000 CHF)")  ylabel(0 0.5 1 1.5 2) bw(0.1)
 graph save figure5_bern_habe, replace
+graph export figure5_bern_habe.pdf, replace
 
 * Figure 6: Bern tax data: tax units vs households
 use "..\bern_plain_hh.dta", clear
@@ -105,8 +122,9 @@ su income if group==1, det
 local p25=round(r(p25))
 local p50=round(r(p50))
 local p75=round(r(p75))
-reldist income [pweight=weight], by(group) title("Bern: tax units vs households") xtitle("% of ref. group (tax units)") ytitle("") olabel(`p25' `p50' `p75') otitle("taxable income (in 1000 CHF)")  ylabel(0 0.5 1 1.5 2) bw(0.4)
+reldist income [pweight=weight], by(group) title("Relative distribution - Bern: tax units vs households") xtitle("% of ref. group (tax units)") ytitle("") olabel(`p25' `p50' `p75') otitle("taxable income (in 1000 CHF)")  ylabel(0 0.5 1 1.5 2) bw(0.4)
 graph save figure6_bern_plain_hh, replace
+graph export figure6_bern_plain_hh.pdf, replace
 
 
 graph combine figure1_2011_2003.gph figure2_ns_1993_94.gph figure3_ns_2011.gph figure4_habe_bd_married.gph figure5_bern_habe.gph figure6_bern_plain_hh.gph, title("Relative distributions over time, population and data source")

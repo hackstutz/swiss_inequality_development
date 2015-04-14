@@ -37,6 +37,16 @@ df <- read.csv("../../data/ginis_und_perzentile_normal.csv",sep="\t")
 df$zeros <- df$null_norm/df$cpop # i only use normal cases here
 @
 
+<<graphic_options>>=
+## Graphic Options ----------------------------------------
+pointsize = 3
+linesize = 0.7
+theme_set(theme_bw(base_size = 16)+
+  theme(legend.justification=c(0,1),legend.position=c(0, 1))
+		)
+@
+
+
 <<different_ginis, fig.cap='Gini coefficients for different income measures',fig.pos='H'>>=
 df$G_taxed[df$G_taxed==1]<-NA
 library(reshape)
@@ -46,11 +56,12 @@ dflong <- melt(df[,c("G_steink","G_reink","G_taxed","kanton","bemessungsjahre")]
 names(dflong)[3]<-"Income"
 names(dflong)[4]<-"Gini"
 levels(dflong$Income)<-c("taxable income","net income","taxable income after federal tax")
+dflong$Income <- factor(dflong$Income,levels=c("taxable income","taxable income after federal tax","net income"))
 fig_incomes <- ggplot(dflong[dflong$kanton=="CH",], aes(x=bemessungsjahre,y=Gini,shape=Income))+
   scale_y_continuous(limits=c(0.28,0.55))+
   scale_x_continuous(limits=c(1945,2011),breaks=number_ticks(10)) +
-  geom_point(aes(shape=Income),size=3)+
-  geom_line(data=dflong[dflong$kanton=="CH",],aes(linetype=Income))+
+  geom_point(aes(shape=Income),size=pointsize)+
+  geom_line(data=dflong[dflong$kanton=="CH",],aes(linetype=Income),size=linesize)+
   theme_bw()+
   xlab("Year")+
   theme(legend.justification=c(0,1),legend.position=c(0, 1))+
@@ -111,6 +122,7 @@ times = c("taxable income","equivalised taxable income"),
 direction ="long")
 bdlong<-rbind(bd.0.long,bd.long)
 names(bdlong)[3]<-"Income"
+bdlong$Income <- factor(bdlong$Income,levels=c("equivalised taxable income","taxable income","equivalised taxable income (only taxed)","taxable income (only taxed)"))
 @
 
 <<equivalencescale, fig.cap='Gini coefficients with and without equivalization',fig.pos='H'>>=
@@ -119,8 +131,8 @@ fig_equiv <- ggplot(bdlong, aes(x=Jahr,y=Gini,shape=Income))+
   scale_y_continuous(limits=c(0.28,0.55))+
   #scale_x_continuous(limits=c(1970,2012),breaks=number_ticks(10)) +
   scale_x_continuous(limits=c(1970,2011),breaks=number_ticks(10)) +
-  geom_point(aes(shape=Income),size=3)+
-  geom_line(data=bdlong,aes(linetype=Income))+
+  geom_point(aes(shape=Income),size=pointsize)+
+  geom_line(data=bdlong,aes(linetype=Income),size=linesize)+
   theme_bw()+
   xlab("Year")+
   theme(legend.justification=c(0,1),legend.position=c(0, 1))+
@@ -646,6 +658,7 @@ dflong <- melt(df[,c("G_steink","G_steink0","G_steink_halb","kanton","bemessungs
 names(dflong)[3]<-"Type"
 names(dflong)[4]<-"Gini"
 levels(dflong$Type)<-c("without non-taxed","including non-taxed","imputed values for non-taxed")
+dflong$Type <- factor(dflong$Type, levels=c("including non-taxed","imputed values for non-taxed","without non-taxed"))
 #dflong$Gini[dflong$kanton=="CH"&dflong$bemessungsjahre!=1993.5&dflong$bemessungsjahre<2003&dflong$Type=="including non-taxed"]<-NA
 #dflong$Gini[dflong$kanton=="CH"&dflong$bemessungsjahre!=1993.5&dflong$bemessungsjahre<2003&dflong$Type=="imputed values for non-taxed"]<-NA
 fig_zeros <- ggplot(filter(dflong,kanton=="CH"&
@@ -654,8 +667,8 @@ fig_zeros <- ggplot(filter(dflong,kanton=="CH"&
        aes(x=bemessungsjahre,y=Gini,shape=Type,linetype=Type))+
   scale_y_continuous(limits=c(0.28,0.55))+
   scale_x_continuous(limits=c(1970,2011),breaks=number_ticks(10)) +
-  geom_line(size=0.5)+
-  geom_point(aes(shape=Type),size=3)+
+  geom_line(size=linesize)+
+  geom_point(aes(shape=Type),size=pointsize)+
   theme_bw()+
   xlab("Year")+
   theme(legend.justification=c(0,1),legend.position=c(0, 1))+
@@ -897,8 +910,19 @@ bd.2010.ind<-bd.2010.ind/1000
 
 habe10.married<-habe0911 %>% 
   filter(Familientyp08>130,Jahr08==2010)
-habe10.married$psteink<-habe10.married$Bruttoeinkommen08+habe10.married$A31m+habe10.married$A35m
+
 # Wir brauchen (a) verfügbares Einkommen (b) Bruttoeinkommen und c(Bruttoeinkommen nach Soziversicherungsbeiträgen(A31m) und Monetäre Trasnferausgaben an andere HaushalteA35m)
+habe10.married$psteink<-habe10.married$Bruttoeinkommen08+habe10.married$A31m+habe10.married$A35m
+
+# Dann noch eine extra Version wo die Sozialhilfe abgezogen wird
+habe10.married$psteink_ohne_soz<-habe10.married$Bruttoeinkommen08+habe10.married$A31m+habe10.married$A35m- habe10.married$E23
+
+# data-select für "ohne soz"
+habe10.married_ohne_soz<-data.frame(habe10.married$VerfuegbaresEinkommen08*12/1000,habe10.married$Bruttoeinkommen08*12/1000,habe10.married$psteink_ohne_soz*12/1000,habe10.married$jahresgewicht)
+names(habe10.married_ohne_soz)<-c("inc_habe","brutto","psteink","gew")
+habe10.married_ohne_soz$inc_habe[habe10.married_ohne_soz$inc_habe<0]<-0 # One values is -20'000
+
+# data-select für "mit soz"
 habe10.married<-data.frame(habe10.married$VerfuegbaresEinkommen08*12/1000,habe10.married$Bruttoeinkommen08*12/1000,habe10.married$psteink*12/1000,habe10.married$jahresgewicht)
 names(habe10.married)<-c("inc_habe","brutto","psteink","gew")
 habe10.married$inc_habe[habe10.married$inc_habe<0]<-0 # One values is -20'000
@@ -942,13 +966,26 @@ par(mfrow=c(1,1))
 #write.dta(habe_bd_2010_married, file="../../data/stata_data/habe_bd_2010_married.dta")
 
 # 2011
+
+# Wir brauchen (a) verfügbares Einkommen (b) Bruttoeinkommen und c(Bruttoeinkommen nach Soziversicherungsbeiträgen(A31m) und Monetäre Trasnferausgaben an andere HaushalteA35m)
 habe11.married<-habe0911 %>% 
   filter(Familientyp08>130,Jahr08==2011) %>% 
   mutate(psteink=Bruttoeinkommen08+A31m+A35m) 
-# Wir brauchen (a) verfügbares Einkommen (b) Bruttoeinkommen und c(Bruttoeinkommen nach Soziversicherungsbeiträgen(A31m) und Monetäre Trasnferausgaben an andere HaushalteA35m)
+
+# und nochmal ohne Sozialhilfe
+habe11.married_ohne_soz<-habe0911 %>% 
+  filter(Familientyp08>130,Jahr08==2011) %>% 
+  mutate(psteink=Bruttoeinkommen08+A31m+A35m-E23) 
+
 habe11.married<-data.frame(habe11.married$VerfuegbaresEinkommen08*12/1000,habe11.married$Bruttoeinkommen08*12/1000,habe11.married$psteink*12/1000,habe11.married$jahresgewicht)
 names(habe11.married)<-c("inc_habe","brutto","psteink","gew")
 habe11.married$inc_habe[habe11.married$inc_habe<0]<-0 # One values is -500
+
+# und nochmal für ohne_soz
+habe11.married_ohne_soz<-data.frame(habe11.married_ohne_soz$VerfuegbaresEinkommen08*12/1000,habe11.married_ohne_soz$Bruttoeinkommen08*12/1000,habe11.married_ohne_soz$psteink*12/1000,habe11.married_ohne_soz$jahresgewicht)
+names(habe11.married_ohne_soz)<-c("inc_habe","brutto","psteink","gew")
+habe11.married_ohne_soz$inc_habe[habe11.married_ohne_soz$inc_habe<0]<-0 # One values is -500
+
 
 bd.2011 <- read.csv("../../data/NP_2011_mitnull.csv",dec=",") %>% filter(grepl("Verheiratet",Einheit))
 start <- which(names(bd.2011)=="p1")
@@ -972,6 +1009,11 @@ round(gini(habe11.married$psteink,w=habe11.married$gew)-gini(bd.2011.ind),3)
 habe_bd_2011_married <- rbind(data.frame(cbind("income" = habe11.married$inc_habe,"group"=0,"weight"=habe11.married$gew)),data.frame("income" = bd.2011.ind,"group"=1,"weight"=1))
 habe_bd_2011_married$group <- factor(habe_bd_2011_married$group,labels=c("habe","bd"))
 write.dta(habe_bd_2011_married, file="../../data/stata_data/habe_bd_2011_married.dta")
+
+# und nochmal ohne Sozialhilfe (Vorsicht: hier nehmen wir psteink, vorher verf. einkommen (inc_habe))
+habe_bd_2011_married_ohne_soz <- rbind(data.frame(cbind("income" = habe11.married_ohne_soz$psteink,"group"=0,"weight"=habe11.married_ohne_soz$gew)),data.frame("income" = bd.2011.ind,"group"=1,"weight"=1))
+habe_bd_2011_married_ohne_soz$group <- factor(habe_bd_2011_married_ohne_soz$group,labels=c("habe","bd"))
+write.dta(habe_bd_2011_married_ohne_soz, file="../../data/stata_data/habe_bd_2011_married_ohne_soz.dta")
 
 @
 
@@ -1123,6 +1165,44 @@ round(gini_taxunits-gini_hh,3)
 #diff: 0.058
 @
 
+<<bern_kantonale_analysen>>=
+# core variables from bern 2002-2012
+bern <- read.dta("G:/stick/bern/mini_taxdata_BE_all.dta")
+bern_gini <- bern %>%
+  mutate(stbeink_no_dbs = stbeink_BUND - eink_st_dbs,
+         stbeink_no_tax = stbeink_BUND - steuern_eink) %>% # nur steuern auf einkommen (nicht vermögen) werden abgezogen
+  group_by(stj) %>%
+  summarise(G_TOTEINK = gini(TOTEINK),
+            G_stbeink_BUND = gini(stbeink_BUND),
+            G_stbeink_no_dbs = gini(stbeink_no_dbs),
+            G_stbeink_no_tax = gini(stbeink_no_tax))
+
+library(reshape2)
+
+# wide to long
+bern_gini_long <- melt(bern_gini,id.vars="stj",variable.name="Income",value.name="Gini")
+
+# legend order
+levels(bern_gini_long$Income) <- c("total income", "taxable income", "taxable income after federal income tax", "taxable income after all income taxes")
+bern_gini_long$Income <- factor(bern_gini_long$Income,levels=c("taxable income", "taxable income after federal income tax", "taxable income after all income taxes","total income"))
+
+fig_bern_gini <- ggplot(bern_gini_long, aes(x=stj,y=Gini)) +
+  #scale_y_continuous(limits=c(0.28,0.55))+
+  scale_x_continuous(breaks=number_ticks(5)) +
+  geom_point(aes(shape=Income),size=pointsize)+
+  geom_line(aes(linetype=Income),size=linesize)+
+  theme_bw()+
+  xlab("Year")+
+  theme(legend.justification=c(0,1),legend.position=c(0, 1))+
+  ggtitle("Gini coefficients of different income measures")
+fig_bern_gini
+
+pdf("../figure/fig_bern_gini.pdf",width=10.5,height=6)
+fig_bern_gini
+dev.off()
+@
+
+
 From the discussion in the data section we would expect differences between the income distributions from survey and tax data. Within the FTA data we observe zeros for incomes below the threshold to be liable for federal tax while survey data might cover this range. On the other hand we expect underreporting from both lowest percentiles and highest percentiles (middle class bias) within the survey data. Figure \ref{fig:BruelhartvsHABE} (left) however reveals a more critical issue related to tax data, that is the median location of income compared to survey data. Although we try to measure similar concepts of income, survey data shows a median (93.000 CHF) more than twice as big as tax data (44.600 CHF). The issue here is clearly the assumptions of household composition. While survey data is likely to capture the correct household composition, tax data can only approximate households by using marital status. Splitting the data in married and unmarried tax units underpins this argument. From figure \ref{fig:BruelhartvsHABEmarried} we can see that married tax units (FTA data) and household with married couples (survey data) are better (but still not perfectly) comparable. Figure \ref{fig:BruelhartvsHABEmarried} (right) shows the expected shape difference between the two distributions:  survey data has a bias towards the (median-adjusted) 80\% to 90\% percentile (of the FTA data distribution). Top percentiles are badly covered by survey data, suggesting that inequality measures based on survey data might underestimate inequality development that arises from changes in the incomes of the rich. Though, survey data can be of interest if one is interested in the lower 20\% of the income distribution. 
 
 The bad household approximation within tax data needs to be addressed in further research. One possible way would be to link tax data to household ID's from the residential register.
@@ -1194,13 +1274,14 @@ ypos[Year==1967.5] <- 0.285
 
 })
 
+all_gini_long$Data <- factor(all_gini_long$Data,levels=c("FTA","LIS","EU.SILC","HBS"))
 benplot <- ggplot(data=na.omit(all_gini_long),
   aes(y=Gini,x=Year,shape=Data,linetype=Data))+
   ylab("Gini from different sources") +
   scale_y_continuous(limits=c(0.18,0.45)) +
   scale_x_continuous(limits=c(1945,2012),breaks=number_ticks(10)) +
-  geom_point(size=3)+
-  geom_line()+
+  geom_point(size=pointsize)+
+  geom_line(size=linesize)+
   #geom_text(aes(label=annotation,y=ypos),color="#555555",size=3)+
   #geom_segment(aes(x = 1921, y = 0.27, xend = 1921, yend = Gini[Year==1921]),color="#aaaaaa") +
   #geom_segment(aes(x = 1940, y = 0.305, xend = 1940, yend = Gini[Year==1940]),color="#aaaaaa") +
@@ -1209,8 +1290,26 @@ benplot <- ggplot(data=na.omit(all_gini_long),
   theme_bw()+
   theme(legend.justification=c(0,1),legend.position=c(0, 1))
 
+benplot74 <- ggplot(data=na.omit(all_gini_long),
+  aes(y=Gini,x=Year,shape=Data,linetype=Data))+
+  ylab("Gini from different sources") +
+  scale_y_continuous(limits=c(0.18,0.45)) +
+  scale_x_continuous(limits=c(1973,2012),breaks=number_ticks(10)) +
+  geom_point(size=pointsize)+
+  geom_line(size=linesize)+
+  theme_bw()+
+  theme(legend.justification=c(0,1),legend.position=c(0, 1))
+
 png("../figure/ben_plot.png",width=800,height=450)
 benplot
+dev.off()
+
+pdf("../figure/ben_plot.pdf",width=10.5,height=6)
+benplot
+dev.off()
+
+pdf("../figure/ben_plot74.pdf",width=10.5,height=6)
+benplot74
 dev.off()
 
 # kleiner einschub: verschiedene masse
@@ -1243,6 +1342,7 @@ estv_masse_long <- melt(estv_masse,id=c("id","Year"))
 estv_masse_long$Measure <- factor(estv_masse_long$variable)
 estv_masse_long$Year <- as.double(as.character(estv_masse_long$Year))
 estv_masse_long <- estv_masse_long %>% group_by(Measure) %>% mutate(log_value=log(value)-log(value)[1])
+
 fig_measures <- ggplot(estv_masse_long, aes(x=Year,y=log_value,shape=Measure))+
   scale_y_continuous(limits=c(-0.7,0.45))+
   scale_x_continuous(limits=c(1945,2011),breaks=number_ticks(10)) +
@@ -1258,6 +1358,20 @@ fig_measures
 library(gridExtra)
 png("../figure/figure1234.png",width=1200,height=675)
 grid.arrange(fig_incomes,fig_equiv,fig_measures,fig_zeros)
+dev.off()
+
+#output als einzelne pdfs
+pdf("../figure/fig_incomes.pdf",width=10.5,height=6)
+fig_incomes
+dev.off()
+pdf("../figure/fig_equiv.pdf",width=10.5,height=6)
+fig_equiv
+dev.off()
+pdf("../figure/fig_zeros.pdf",width=10.5,height=6)
+fig_zeros
+dev.off()
+pdf("../figure/fig_measures.pdf",width=10.5,height=6)
+fig_measures
 dev.off()
 @
 
