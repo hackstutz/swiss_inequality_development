@@ -1109,20 +1109,16 @@ habe_bd_2010_unmarried$group <- factor(habe_bd_2010_unmarried$group,labels=c("ha
 write.dta(habe_bd_2010_unmarried, file="../../data/stata_data/habe_bd_2010_unmarried.dta")
 
 #bern kantonal (liegt lokal wegen datenschutz)
-try(bern_kt<-read.dta("U:/Persönlich/Forschung/Uni Bern/taxdata_BE_12.dta"))
+try(bern_kt<-read.dta("U:/Persönlich/Forschung/Uni Bern/Steuerdaten_BE_2002_2012.dta"))
 try(bern_kt <- read.dta("G:/stick/bern/taxdata_BE_12.dta"))
 #> nrow(bern_kt)
 #[1] 622368
 nrow(filter(bern_kt,von=="2012-01-01",bis=="2012-12-31"))
 #[1] 605975 wir filtern ca. 3% unterjährige
-<<<<<<< HEAD
-bern_kt <- filter(bern_kt,VON=="2012-01-01",BIS=="2012-12-31")
-bern_kt <- filter(bern_kt,Satzeink_BUND<=TOTEINK)
-=======
-bern_kt <- filter(bern_kt,von=="2012-01-01",bis=="2012-12-31")
-bern_kt <- filter(bern_kt,Satzeink_BUND<=TOTEINK,erm==0)
->>>>>>> 3e5538522df3f18e4981b2d4c5813fc02e5f5e3a
-bern_kt <- filter(bern_kt,erm==0)
+
+try(bern_kt <- filter(bern_kt,VON=="2012-01-01",BIS=="2012-12-31",Satzeink_BUND<=TOTEINK,erm==0))
+try(bern_kt <- filter(bern_kt,von=="2012-01-01",bis=="2012-12-31",Satzeink_BUND<=TOTEINK,erm==0))
+
 #names(bern_kt)<-tolower(names(bern_kt))
 set0 <- function(x) ifelse(x<0 | is.na(x),0,x)
 bern_kt <- bern_kt %>% mutate(primeink2 = set0(hem)+set0(nem)+set0(esm)+set0(sgm)+set0(hef)+set0(nef)+set0(esf)+set0(sgf)+set0(erfolg_s)+set0(erfolg_l)+set0(kk_ertrag)+set0(bg_ertrag)+ set0(wsert)+set0(eink_lieg)+set0(eg_ertrag)+set0(stm)+set0(stf)+set0(lov)+set0(lmv)+set0(lng))
@@ -1175,13 +1171,8 @@ round(gini_taxunits-gini_hh,3)
 # core variables from bern 2002-2012
 try(bern <- read.dta("G:/stick/bern/mini_taxdata_BE_all.dta"))
 try(bern<-read.dta("P:/WGS/FBS/ISS/Projekte laufend/SNF Ungleichheit/Datengrundlagen/Kantonale Steuerdaten/Bern/taxdata_BE_reduced.dta"))
-<<<<<<< HEAD
 
-=======
-P:\WGS\FBS\ISS\Projekte laufend\SNF Ungleichheit\Datengrundlagen\Kantonale Steuerdaten\Bern
-bern <- filter(bern,Satzeink_BUND<=TOTEINK,erm==0)
-bern <- filter(bern,erm==0)
->>>>>>> 3e5538522df3f18e4981b2d4c5813fc02e5f5e3a
+bern <- filter(bern,Satzeink_KANTON<=TOTEINK,erm==0)
 bern$verfeink<-bern$TOTEINK+bern$privattrans_bez-bern$steuertotal
 
 #bern_gini <- bern %>%
@@ -1201,6 +1192,7 @@ bern_gini <- bern %>%
             G_verfeink = gini(verfeink))
 
 
+
 detach("package:reshape", unload=TRUE) #das ist nötig falls man allen code vorher verwendet hat, da reshape dann geladen ist und reshape und reshape2 gleichnamige funktionen haben die sie intern aufrufen.
 library(reshape2)
 
@@ -1208,27 +1200,19 @@ library(reshape2)
 bern_gini_long <- melt(bern_gini,id.vars="stj",variable.name="Income",value.name="Gini")
 names(bern_gini_long)<-c("stj","Income","Gini")
 # legend order
-<<<<<<< HEAD
-levels(bern_gini_long$Income) <- c("total income", "taxable income", "Disposable income")
-bern_gini_long$Income <- factor(bern_gini_long$Income,levels=c("total income", "taxable income", "Disposable income"))
-=======
 levels(bern_gini_long$Income) <- c("total income", "taxable income", "disposable income")
 bern_gini_long$Income <- factor(bern_gini_long$Income,levels=c("total income", "taxable income", "disposable income"))
 bern_gini_long$Income <- factor(bern_gini_long$Income,levels=c("taxable income","total income","disposable income"))
->>>>>>> 3e5538522df3f18e4981b2d4c5813fc02e5f5e3a
+
 
 fig_bern_gini <- ggplot(bern_gini_long, aes(x=stj,y=Gini)) +
   scale_y_continuous(limits=c(0.28,0.55))+
   scale_x_continuous(breaks=number_ticks(5)) +
-  geom_point(aes(shape=Income),size=5)+
+  geom_point(aes(shape=Income),size=3)+
   geom_line(aes(linetype=Income),size=1)+
   theme_bw()+
   xlab("Year")+
-<<<<<<< HEAD
   theme(legend.justification=c(0,1),legend.position=c(0, 0.3))+
-=======
-  theme(legend.justification=c(0,1),legend.position=c(0, 0.75))+
->>>>>>> 3e5538522df3f18e4981b2d4c5813fc02e5f5e3a
   ggtitle("Gini coefficients of different income concepts")
 fig_bern_gini
 
