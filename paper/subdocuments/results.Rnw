@@ -1172,11 +1172,8 @@ round(gini_taxunits-gini_hh,3)
 try(bern <- read.dta("G:/stick/bern/mini_taxdata_BE_all.dta"))
 try(bern<-read.dta("P:/WGS/FBS/ISS/Projekte laufend/SNF Ungleichheit/Datengrundlagen/Kantonale Steuerdaten/Bern/taxdata_BE_reduced.dta"))
 
-<<<<<<< HEAD
+
 bern <- filter(bern,Satzeink_KANTON<=TOTEINK,erm==0)
-=======
-bern <- filter(bern,Satzeink_BUND<=TOTEINK,erm==0)
->>>>>>> 0faa9d159b19262c05150936a7d182a81aa1c293
 bern$verfeink<-bern$TOTEINK+bern$privattrans_bez-bern$steuertotal
 
 #bern_gini <- bern %>%
@@ -1212,11 +1209,7 @@ bern_gini_long$Income <- factor(bern_gini_long$Income,levels=c("taxable income",
 fig_bern_gini <- ggplot(bern_gini_long, aes(x=stj,y=Gini)) +
   scale_y_continuous(limits=c(0.28,0.6))+
   scale_x_continuous(breaks=number_ticks(5)) +
-<<<<<<< HEAD
   geom_point(aes(shape=Income),size=3)+
-=======
-  geom_point(aes(shape=Income),size=4)+
->>>>>>> 0faa9d159b19262c05150936a7d182a81aa1c293
   geom_line(aes(linetype=Income),size=1)+
   theme_bw()+
   xlab("Year")+
