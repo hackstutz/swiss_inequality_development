@@ -55,8 +55,8 @@ number_ticks <- function(n) {function(limits) pretty(limits, n)}
 dflong <- melt(df[,c("G_steink","G_reink","G_taxed","kanton","bemessungsjahre")], id=c("kanton","bemessungsjahre"))
 names(dflong)[3]<-"Income"
 names(dflong)[4]<-"Gini"
-levels(dflong$Income)<-c("taxable income","net income","taxable income after federal tax")
-dflong$Income <- factor(dflong$Income,levels=c("taxable income","taxable income after federal tax","net income"))
+levels(dflong$Income)<-c("taxable income (total income - all deductions)","net income (total income - non-social deductions)","taxable income after federal tax")
+dflong$Income <- factor(dflong$Income,levels=c("taxable income (total income - all deductions)","taxable income after federal tax","net income (total income - non-social deductions)"))
 fig_incomes <- ggplot(dflong[dflong$kanton=="CH",], aes(x=bemessungsjahre,y=Gini,shape=Income))+
   scale_y_continuous(limits=c(0.28,0.55))+
   scale_x_continuous(limits=c(1945,2011),breaks=number_ticks(10)) +
@@ -664,15 +664,19 @@ dflong$Type <- factor(dflong$Type, levels=c("including non-taxed","imputed value
 fig_zeros <- ggplot(filter(dflong,kanton=="CH"&
   (((bemessungsjahre<=1993.5|bemessungsjahre>=2003)&Type=="without non-taxed")|
   ((bemessungsjahre==1993.5|bemessungsjahre>=2003)&Type!="without non-taxed"))), 
-       aes(x=bemessungsjahre,y=Gini,shape=Type,linetype=Type))+
+       aes(x=bemessungsjahre,y=Gini,linetype=Type))+
   scale_y_continuous(limits=c(0.28,0.55))+
   scale_x_continuous(limits=c(1970,2011),breaks=number_ticks(10)) +
+  #scale_linetype_manual("Taxable income",values=c("including non-taxed"=1,"imputed values for non-taxed"=2,"without non-taxed"=3))+
+  #scale_shape_manual("Taxable income",values=c("including non-taxed"=1,"imputed values for non-taxed"=2,"without non-taxed"=3))+
   geom_line(size=linesize)+
-  geom_point(aes(shape=Type),size=pointsize)+
+  geom_point(aes(shape=Type), fill = "red",size=pointsize)+
   theme_bw()+
   xlab("Year")+
   theme(legend.justification=c(0,1),legend.position=c(0, 1))+
-  ggtitle("Influence of non-taxed")
+  ggtitle("Influence of non-taxed")+
+  labs(shape="Taxable income")+
+  labs(linetype="Taxable income")
 fig_zeros
 
 # Gini range
@@ -1201,9 +1205,9 @@ library(reshape2)
 bern_gini_long <- melt(bern_gini,id.vars="stj",variable.name="Income",value.name="Gini")
 names(bern_gini_long)<-c("stj","Income","Gini")
 # legend order
-levels(bern_gini_long$Income) <- c("total income", "taxable income", "disposable income")
-bern_gini_long$Income <- factor(bern_gini_long$Income,levels=c("total income", "taxable income", "disposable income"))
-bern_gini_long$Income <- factor(bern_gini_long$Income,levels=c("taxable income","total income","disposable income"))
+levels(bern_gini_long$Income) <- c("total income (earnings, self-employment, capital income)", "taxable income (total income - all deductions)", "disposable income (total income - taxes: federal, cantonal, communal and churches)")
+bern_gini_long$Income <- factor(bern_gini_long$Income,levels=c("total income (earnings, self-employment, capital income)", "taxable income (total income - all deductions)", "disposable income (total income - taxes: federal, cantonal, communal and churches)"))
+bern_gini_long$Income <- factor(bern_gini_long$Income,levels=c("taxable income (total income - all deductions)","total income (earnings, self-employment, capital income)","disposable income (total income - taxes: federal, cantonal, communal and churches)"))
 
 
 fig_bern_gini <- ggplot(bern_gini_long, aes(x=stj,y=Gini)) +
